@@ -1,0 +1,19 @@
+# exp reverse proxy (local development). Single host on :8081; the production
+# routing lives in the 3m4 edge Caddy (see PRODUCTION.md), with the same rules.
+
+:8081 {
+	# --- API ---
+	handle /api/* {
+		reverse_proxy api:5000
+	}
+
+	# --- MCP (Streamable HTTP) for AI agents ---
+	handle /mcp* {
+		reverse_proxy mcp:3333
+	}
+
+	# --- Marketing + dashboard (Qwik SSR) --- everything else.
+	handle {
+		reverse_proxy web:3000
+	}
+}

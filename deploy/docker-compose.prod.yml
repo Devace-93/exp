@@ -1,0 +1,22 @@
+# Production overrides. exp shares the Hetzner box with the 3m4 shortener, whose
+# Caddy already owns ports 80/443. exp therefore runs WITHOUT its own Caddy in
+# production: api, web and mcp join the external `edge` network and the 3m4
+# Caddyfile.prod routes exp.3m4.net to them by container name.
+#
+#   docker network create edge            # once per server
+#   cd /opt/exp/deploy
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+services:
+  caddy:
+    profiles: ["disabled"]
+
+  api:
+    networks: [default, edge]
+  web:
+    networks: [default, edge]
+  mcp:
+    networks: [default, edge]
+
+networks:
+  edge:
+    external: true

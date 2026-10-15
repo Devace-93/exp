@@ -1,0 +1,42 @@
+{
+  "_comment": "Registry of exp's OWN feature switches (the product's feature flags live in the database and are called 'flags' everywhere; these are called 'features' in the API and the frontend to avoid confusion). Consumed by the Python backend (dbcore/feature_flags.py) and the Qwik frontend (apps/web/src/lib/features.ts). Source of truth in production is PostHog; the PostHog flag key is POSTHOG_FLAG_PREFIX + key (default prefix 'exp-', because one PostHog project is shared with the other 3m4 apps). `default` is the fail-safe used when PostHog is unreachable or the flag is undefined there; self-host (no POSTHOG_API_KEY) enables everything unless a flag sets `self_host` explicitly (used by inverse-polarity flags like site-building, where ON hides the product).",
+  "flags": {
+    "site-building": {
+      "description": "Site-wide building/under-construction curtain. ON = the whole web UI shows the building page. The API, the evaluation endpoints and the MCP server are unaffected. Inverse polarity: OFF is normal operation.",
+      "default": false,
+      "self_host": false,
+      "created": "2026-10-15"
+    },
+    "signups": {
+      "description": "New account registration. Login is NEVER gated.",
+      "default": true,
+      "created": "2026-10-15"
+    },
+    "early-access": {
+      "description": "Early access mode. ON = every account gets the enterprise limits for free, plan/billing surfaces are hidden and an early-access notice is shown. OFF = plans and limits are enforced as configured.",
+      "default": true,
+      "self_host": true,
+      "created": "2026-10-15"
+    },
+    "public-api": {
+      "description": "Management API access via X-API-Key (and therefore the MCP server). Dashboard sessions and the evaluation endpoints are not affected.",
+      "default": true,
+      "created": "2026-10-15"
+    },
+    "evaluation-api": {
+      "description": "The SDK evaluation endpoints (/api/eval/*). OFF answers 503 to every SDK: an emergency kill switch, never a feature gate.",
+      "default": true,
+      "created": "2026-10-15"
+    },
+    "flag-copy": {
+      "description": "Copying flags between projects (dashboard action, API endpoint and MCP tool).",
+      "default": true,
+      "created": "2026-10-15"
+    },
+    "billing": {
+      "description": "Paywall, checkout and /billing/offerings. The RevenueCat webhook is NEVER gated.",
+      "default": true,
+      "created": "2026-10-15"
+    }
+  }
+}

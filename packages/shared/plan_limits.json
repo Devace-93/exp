@@ -1,0 +1,75 @@
+{
+  "_comment": "Single source of truth for plan limits. -1 means unlimited. Consumed by the Python backend (dbcore/plans.py) and the Qwik frontend (apps/web). Counts (projects, environments_per_project, flags_per_project, api_keys) are hard limits: creating past them returns 402 limit_reached. evaluations_per_month is a SOFT limit: the evaluation API keeps answering past it (never break a running app); the overage is reported in the dashboard and a PostHog event fires once per period.",
+  "plans": {
+    "free": {
+      "label": "Free",
+      "price_monthly": 0,
+      "price_annual": 0,
+      "projects": 3,
+      "environments_per_project": 3,
+      "flags_per_project": 25,
+      "evaluations_per_month": 100000,
+      "api_keys": 5,
+      "audit_retention_days": 7,
+      "max_users": 1,
+      "api": "basic"
+    },
+    "pro": {
+      "label": "Pro / Supporter",
+      "price_monthly": 12,
+      "price_annual": 115,
+      "projects": 20,
+      "environments_per_project": 10,
+      "flags_per_project": 200,
+      "evaluations_per_month": 2000000,
+      "api_keys": 20,
+      "audit_retention_days": 365,
+      "max_users": 2,
+      "api": "full"
+    },
+    "team": {
+      "label": "Team",
+      "price_monthly": 49,
+      "price_annual": 470,
+      "projects": 100,
+      "environments_per_project": 20,
+      "flags_per_project": 1000,
+      "evaluations_per_month": 20000000,
+      "api_keys": 100,
+      "audit_retention_days": 730,
+      "max_users": 20,
+      "api": "full"
+    },
+    "enterprise": {
+      "label": "Enterprise",
+      "price_monthly": -1,
+      "price_annual": -1,
+      "projects": -1,
+      "environments_per_project": -1,
+      "flags_per_project": -1,
+      "evaluations_per_month": -1,
+      "api_keys": -1,
+      "audit_retention_days": -1,
+      "max_users": -1,
+      "api": "full"
+    },
+    "selfhost": {
+      "label": "Self-host",
+      "price_monthly": 0,
+      "price_annual": 0,
+      "projects": -1,
+      "environments_per_project": -1,
+      "flags_per_project": -1,
+      "evaluations_per_month": -1,
+      "api_keys": -1,
+      "audit_retention_days": -1,
+      "max_users": -1,
+      "api": "full"
+    }
+  },
+  "entitlement_to_plan": {
+    "team": "team",
+    "pro": "pro"
+  },
+  "entitlement_priority": ["team", "pro"]
+}

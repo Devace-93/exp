@@ -1,0 +1,31 @@
+{
+  "_comment": "Single source of truth for API-key roles and the scopes they grant. Consumed by the Python API (dbcore/rbac.py enforces scopes per endpoint), the Qwik dashboard (role picker on /dashboard/settings) and the MCP server (filters which tools a key can see and call). Keep roles additive: each role is a superset of the previous one. Environment client keys (exp_env_*) are NOT API keys: they can only call the evaluation endpoints and carry no role.",
+  "default_role": "editor",
+  "scopes": {
+    "projects:read": "List and read projects and their environments.",
+    "projects:write": "Create and update projects and environments, rotate environment keys.",
+    "projects:delete": "Delete projects and environments (destructive).",
+    "flags:read": "List and read flags, their per-environment states, export a project, preview evaluations.",
+    "flags:write": "Create and update flags, change per-environment states, copy flags between projects.",
+    "flags:delete": "Delete flags (destructive).",
+    "usage:read": "Monthly usage counters and plan limits.",
+    "audit:read": "Read the account audit log."
+  },
+  "roles": {
+    "viewer": {
+      "label": "Viewer",
+      "description": "Read-only: projects, flags, usage.",
+      "scopes": ["projects:read", "flags:read", "usage:read"]
+    },
+    "editor": {
+      "label": "Editor",
+      "description": "Viewer, plus create and update projects and flags, toggle states, copy flags.",
+      "scopes": ["projects:read", "projects:write", "flags:read", "flags:write", "usage:read"]
+    },
+    "admin": {
+      "label": "Admin",
+      "description": "Editor, plus delete projects and flags and read the audit log.",
+      "scopes": ["projects:read", "projects:write", "projects:delete", "flags:read", "flags:write", "flags:delete", "usage:read", "audit:read"]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+# Build output
+dist/
+server/
+tmp/
+.vite/
+
+# Deps
+node_modules/
+
+# Logs / misc
+*.log
+.DS_Store

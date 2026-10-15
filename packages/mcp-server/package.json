@@ -1,0 +1,37 @@
+{
+  "name": "exp-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for exp, the feature-flag service: manage projects, environments and flags, toggle per-environment states, preview evaluations, with role-based tool access and audit logging.",
+  "license": "MIT",
+  "author": "Enrique Magallon Alvarez",
+  "repository": { "type": "git", "url": "https://github.com/Devace-93/exp", "directory": "packages/mcp-server" },
+  "keywords": ["mcp", "model-context-protocol", "feature-flags", "feature-toggles", "exp", "rbac"],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": { "exp-mcp": "./dist/stdio.js" },
+  "files": ["dist", "README.md"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/stdio.ts",
+    "dev:http": "tsx src/http.ts",
+    "start": "node dist/stdio.js",
+    "start:http": "node dist/http.js",
+    "test": "bun test",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/stdio.js",
+    "prepublishOnly": "bun run build && bun test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "express": "5.3.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/express": "5.0.3",
+    "@types/node": "24.6.0",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  }
+}
