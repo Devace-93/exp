@@ -41,7 +41,8 @@ without its own Caddy, and the 3m4 Caddy routes `exp.3m4.net` to it.
 5. **DNS (Bluehost)**: A record `exp.3m4.net` → server IP. Caddy issues TLS
    automatically once DNS resolves.
 6. **Backups**: add `/opt/exp/deploy/backup.sh` to the same crontab as 3m4.
-7. **Deploy-on-push**: in the GitHub repo set secrets `DEPLOY_HOST` and
+7. Or do steps 2–3 with `deploy/first-deploy.sh` (idempotent).
+8. **Deploy-on-push**: in the GitHub repo set secrets `DEPLOY_HOST` and
    `DEPLOY_SSH_KEY`, and repo variable `DEPLOY_ENABLED=true`. After that every
    push to master redeploys via `.github/workflows/deploy.yml`.
 
