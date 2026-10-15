@@ -373,7 +373,7 @@ describe("projects and environments", () => {
     const f = (await c.call("get_flag", { project_id: p.id, flag: "new-checkout" })).structuredContent as Flag;
     expect(f.states.qa).toMatchObject({ enabled: false, rollout_percent: 100 });
 
-    const rot = await c.call("rotate_environment_key", { project_id: p.id, environment_id: env.id });
+    const rot = await c.call("rotate_environment_key", { project_id: p.id, environment_id: env.id, confirm: true });
     expect(rot.isError).toBeFalsy();
     expect((rot.structuredContent as { client_key: string }).client_key).not.toBe(env.client_key);
 
@@ -600,5 +600,50 @@ describe("resources and prompts", () => {
     const text = (got.messages[0]!.content as { text: string }).text;
     expect(text).toContain('project_id="p-1"');
     expect(text).toContain("set_flag_state");
+  });
+});
+
+describe("rotate_environment_key requires human approval", () => {
+  const seed = async (c: Awaited<ReturnType<typeof connect>>) => {
+    const p = await c.project();
+    return { p, env: p.environments![0]! };
+  };
+
+  test("refuses without confirmation and succeeds with confirm=true", async () => {
+    const c = await connect("editor");
+    const { p, env } = await seed(c);
+    const refused = await c.call("rotate_environment_key", { project_id: p.id, environment_id: env.id });
+    expect(refused.isError).toBe(true);
+    expect(c.textOf(refused)).toContain("confirmation_required");
+    expect(c.textOf(refused)).toContain("production");
+    expect(c.audit.entries.at(-1)?.outcome).toBe("pending");
+    expect(c.api.calls.filter((x) => x.endsWith("/rotate-key"))).toHaveLength(0);
+
+    const done = await c.call("rotate_environment_key", { project_id: p.id, environment_id: env.id, confirm: true });
+    expect(done.isError).toBeFalsy();
+    const sc = done.structuredContent as { rotated: boolean; client_key: string; client_key_prefix: string };
+    expect(sc.rotated).toBe(true);
+    expect(sc.client_key).toMatch(/^exp_env_/);
+    expect(sc.client_key).not.toBe(env.client_key);
+    expect(sc.client_key_prefix).not.toBe(env.client_key_prefix);
+    expect(c.audit.entries.at(-1)?.outcome).toBe("ok");
+  });
+
+  test("with elicitation, declining cancels and the key is untouched", async () => {
+    const asked: string[] = [];
+    const c = await connect("editor", {
+      elicit: async (message) => {
+        asked.push(message);
+        return { action: "decline" };
+      },
+    });
+    const { p, env } = await seed(c);
+    const r = await c.call("rotate_environment_key", { project_id: p.id, environment_id: env.id });
+    expect(r.isError).toBeFalsy();
+    expect(c.textOf(r)).toContain("cancelled");
+    expect((r.structuredContent as { rotated: boolean }).rotated).toBe(false);
+    expect(asked[0]).toContain("Rotate the client key of environment production");
+    expect(c.api.calls.filter((x) => x.endsWith("/rotate-key"))).toHaveLength(0);
+    expect(c.audit.entries.at(-1)?.outcome).toBe("cancelled");
   });
 });

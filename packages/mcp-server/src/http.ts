@@ -8,7 +8,7 @@
  *   caller's key, so tenants can never share state. The cost is one
  *   `/apikeys/me` lookup per request, cached briefly per key.
  * - No elicitation here: a stateless server has no back-channel to the user,
- *   so `delete_project` and `delete_flag` falls back to the explicit `confirm=true` flow.
+ *   so `delete_project`, `delete_flag` and `rotate_environment_key` fall back to the explicit `confirm=true` flow.
  */
 import { createHash } from "node:crypto";
 

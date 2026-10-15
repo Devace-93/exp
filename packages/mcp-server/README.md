@@ -82,7 +82,7 @@ and a bug in the server can hide access but never grant it.
 | `create_project`         | `projects:write`  |   | ✓ | ✓ | seeds 3 environments, returns one-time client keys |
 | `update_project`         | `projects:write`  |   | ✓ | ✓ | |
 | `create_environment`     | `projects:write`  |   | ✓ | ✓ | returns one-time client key |
-| `rotate_environment_key` | `projects:write`  |   | ✓ | ✓ | old key stops working immediately |
+| `rotate_environment_key` | `projects:write`  |   | ✓ | ✓ | **confirmation required**; old key stops working immediately |
 | `create_flag`            | `flags:write`     |   | ✓ | ✓ | kind, default_value, tags, initial states |
 | `update_flag`            | `flags:write`     |   | ✓ | ✓ | definition only (incl. `archived`) |
 | `set_flag_state`         | `flags:write`     |   | ✓ | ✓ | enabled / value / rollout_percent in one environment |
@@ -101,19 +101,20 @@ environments without changing anything).
 
 ## Human approval for destructive actions
 
-`delete_project` and `delete_flag` are irreversible, so they never run on the
-model's say-so alone:
+`delete_project` and `delete_flag` are irreversible, and `rotate_environment_key`
+invalidates the current client key the moment it runs, so none of them run on
+the model's say-so alone:
 
 - On hosts that support MCP **elicitation** (Claude Code, Inspector) the user
-  gets a native confirmation dialog showing exactly what will be deleted (the
-  project with its flag count, or the flag and where it is currently on).
+  gets a native confirmation dialog showing exactly what will happen (the
+  project with its flag count, the flag and where it is currently on, or the
+  environment whose key is about to be rotated).
 - On hosts that don't (and always over HTTP, which is stateless), the tool
   refuses with `confirmation_required` until the model calls it again with
   `confirm: true` — which it can only honestly do after asking the user.
 
-`rotate_environment_key` is not gated but is marked destructive: the previous
-client key stops working the moment it runs. Prefer `update_flag` with
-`archived: true` over `delete_flag` when the flag may be needed again.
+Prefer `update_flag` with `archived: true` over `delete_flag` when the flag
+may be needed again.
 
 ## Audit trail
 

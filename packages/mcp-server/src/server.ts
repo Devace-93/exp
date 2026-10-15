@@ -7,8 +7,8 @@
  *   which tools are *registered* (hidden tools are never listed), each handler
  *   re-checks its scope at call time, and the REST API enforces the same
  *   scopes independently. See `rbac.ts`.
- * - **Human approval for destructive actions.** `delete_project` and
- *   `delete_flag` ask the user through MCP *elicitation* when the client
+ * - **Human approval for destructive actions.** `delete_project`,
+ *   `delete_flag` and `rotate_environment_key` ask the user through MCP *elicitation* when the client
  *   supports it (Claude Code, the Inspector). Otherwise they refuse until the
  *   model passes `confirm: true`, which forces the model to ask the user first.
  * - **Structured outputs.** Every tool declares an `outputSchema` and returns
@@ -221,7 +221,7 @@ export function buildInstructions(info: KeyInfo): string {
     `This API key has role "${info.key.role}" with scopes: ${info.scopes.join(", ")}. Only tools allowed by those scopes are listed; if a user asks for something outside them, say the key lacks that permission instead of guessing.`,
     "Model: an account has projects; a project has environments (production, staging, development by default) and flags; every flag has one state per environment (enabled, value, rollout_percent). Apps read flags with an environment client key (exp_env_...); you manage them with this management key (exp_live_...).",
     "Flags are referenced by project id plus flag id or key. Keys are lowercase slugs. To turn a flag on or off in one environment use set_flag_state, not update_flag.",
-    "Deleting a project or a flag is irreversible: delete_project and delete_flag require explicit user confirmation.",
+    "Deleting a project or a flag is irreversible and rotating an environment key invalidates the old one at once: delete_project, delete_flag and rotate_environment_key require explicit user confirmation.",
   ].join("\n");
 }
 
@@ -322,12 +322,14 @@ export function createExpServer(opts: ExpServerOptions): McpServer {
   /**
    * Shared confirmation flow for destructive tools: elicit when possible,
    * otherwise require `confirm: true`. Returns null when approved.
+   * `verb` labels the action in the dialog / messages ("delete", "rotate").
    */
   async function confirmOrRefuse(
     confirm: boolean,
     what: string,
     toolName: ToolName,
     cancelled: Record<string, unknown>,
+    verb = "delete",
   ): Promise<Wrapped | null> {
     if (confirm) return null;
     const canAsk = allowElicitation && Boolean(server.server.getClientCapabilities()?.elicitation);
@@ -337,14 +339,14 @@ export function createExpServer(opts: ExpServerOptions): McpServer {
         message: `${what} This cannot be undone.`,
         requestedSchema: {
           type: "object",
-          properties: { confirm: { type: "boolean", title: "Yes, delete it", default: false } },
+          properties: { confirm: { type: "boolean", title: `Yes, ${verb} it`, default: false } },
           required: ["confirm"],
         },
       });
       if (answer.action === "accept" && answer.content?.confirm === true) return null;
       return {
         outcome: "cancelled",
-        result: structured(cancelled, "Deletion was cancelled by the user. Nothing was changed."),
+        result: structured(cancelled, `The ${verb} was cancelled by the user. Nothing was changed.`),
       };
     }
     return {
@@ -491,17 +493,29 @@ export function createExpServer(opts: ExpServerOptions): McpServer {
     {
       title: "Rotate environment client key",
       description:
-        "Issue a new client key (exp_env_...) for one environment. The OLD KEY STOPS WORKING IMMEDIATELY, so only do this when the user asks to rotate or revoke a leaked key, and show them the new key (it is returned once). Use get_project to find the environment id.",
+        "Issue a new client key (exp_env_...) for one environment. The OLD KEY STOPS WORKING IMMEDIATELY, so only do this when the user asks to rotate or revoke a leaked key, and show them the new key (it is returned once). Use get_project to find the environment id. The user must confirm: when the client supports it you will be prompted; otherwise ask the user explicitly and call again with confirm=true.",
       inputSchema: {
         project_id: projectId,
         environment_id: z.uuid().describe("The environment's id (UUID), from get_project."),
+        confirm: z.boolean().default(false).describe("Set to true only after the user explicitly confirmed rotating this specific environment's key."),
       },
-      outputSchema: z.looseObject({ client_key: z.string(), client_key_prefix: z.string() }),
+      outputSchema: z.looseObject({ rotated: z.boolean(), client_key: z.string().optional(), client_key_prefix: z.string() }),
       annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: false },
     },
-    async ({ project_id, environment_id }) => {
+    async ({ project_id, environment_id, confirm }) => {
+      const p = await client.getProject(project_id);
+      const env = p.environments?.find((e) => e.id === environment_id);
+      const label = env ? `${env.key} (${env.client_key_prefix}…)` : environment_id;
+      const refusal = await confirmOrRefuse(
+        confirm,
+        `Rotate the client key of environment ${label} in project "${p.name}"? Apps using the current key will stop getting flags until they switch to the new one.`,
+        "rotate_environment_key",
+        { rotated: false, environment_id, client_key_prefix: env?.client_key_prefix ?? "" },
+        "rotate",
+      );
+      if (refusal) return refusal;
       const k = await client.rotateEnvironmentKey(project_id, environment_id);
-      return structured({ ...k }, `Rotated. New client key (shown once): ${k.client_key}. The previous key is now invalid.`);
+      return structured({ rotated: true, ...k }, `Rotated ${label}. New client key (shown once): ${k.client_key}. The previous key is now invalid.`);
     },
   );
 

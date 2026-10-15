@@ -42,7 +42,7 @@ export type ToolName = keyof typeof TOOL_SCOPES;
 export const ALL_TOOLS = Object.keys(TOOL_SCOPES) as ToolName[];
 
 /** Tools that never run without explicit user confirmation. */
-export const CONFIRMED_TOOLS: readonly ToolName[] = ["delete_project", "delete_flag"];
+export const CONFIRMED_TOOLS: readonly ToolName[] = ["delete_project", "delete_flag", "rotate_environment_key"];
 
 export function hasScope(scopes: Iterable<Scope>, scope: Scope): boolean {
   for (const s of scopes) if (s === scope) return true;

@@ -172,7 +172,8 @@ Archived flags are never returned by the evaluation API.
 - Streamable HTTP endpoint `POST /mcp` (Caddy → `mcp:3333`), auth `Authorization: Bearer exp_live_…` (or `X-API-Key`). Stateless; one server per request bound to the caller's key.
 - stdio flavour published to npm as `exp-mcp`. Tools/roles table in `packages/mcp-server/README.md`.
 - Tools (scope in parentheses): `list_projects` `get_project` (projects:read) ·
-  `create_project` `update_project` `create_environment` `rotate_environment_key` (projects:write) ·
+  `create_project` `update_project` `create_environment` (projects:write) ·
+  `rotate_environment_key` (projects:write, needs confirmation) ·
   `delete_project` (projects:delete, needs confirmation) ·
   `list_flags` `get_flag` `export_project` `evaluate_flags` (flags:read) ·
   `create_flag` `update_flag` `set_flag_state` `copy_flags` (flags:write) ·
