@@ -44,6 +44,7 @@ export default component$(() => {
     limitReached: boolean;
     newName: string;
     newRole: ApiKeyRole;
+    roleTouched: boolean;
     creating: boolean;
     createdSecret: string; // shown once
     copied: boolean;
@@ -55,6 +56,7 @@ export default component$(() => {
     limitReached: false,
     newName: "",
     newRole: REGISTRY_DEFAULT,
+    roleTouched: false,
     creating: false,
     createdSecret: "",
     copied: false,
@@ -91,7 +93,8 @@ export default component$(() => {
       state.keys = keys;
       if (roles) {
         state.roles = roles.roles;
-        state.newRole = roles.default_role;
+        // Do not clobber a role the user already picked while roles were loading.
+        if (!state.roleTouched) state.newRole = roles.default_role;
       }
     } catch (e) {
       if (e instanceof ApiRequestError && e.status === 401) {
@@ -219,7 +222,10 @@ export default component$(() => {
                 id="keyrole"
                 class="input"
                 value={state.newRole}
-                onChange$={(_, el) => (state.newRole = el.value as ApiKeyRole)}
+                onChange$={(_, el) => {
+                  state.newRole = el.value as ApiKeyRole;
+                  state.roleTouched = true;
+                }}
               >
                 {roleKeys.map((r) => (
                   <option key={r} value={r} selected={r === state.newRole}>

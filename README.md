@@ -8,6 +8,10 @@ Agents get the same powers through a role-scoped API and an MCP server. MIT.
 > Built by Enrique Magallon Alvarez. Hosted edition runs at `exp.3m4.net`
 > (free during early access); the core is free to self-host.
 
+![Demo: sign up, create a project, environment keys, flags per environment, rollout preview, copy flags between projects, API keys, MCP](docs/demo.gif)
+
+[▶ Watch the 45-second video (webm)](docs/demo.webm)
+
 ---
 
 ## Why exp

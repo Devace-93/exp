@@ -138,7 +138,16 @@ export default component$(() => {
     state.toggleError = "";
     try {
       const updated = await api.setFlagState(id, flag.id, envKey, { enabled });
-      state.flags = state.flags.map((f) => (f.id === updated.id ? updated : f));
+      // Mutate the row's state in place: the switch is bound to this state
+      // object, so swapping the array entry would leave it showing the old value.
+      const current = state.flags.find((f) => f.id === updated.id);
+      if (current) {
+        for (const [key, st] of Object.entries(updated.states)) {
+          if (current.states[key]) Object.assign(current.states[key], st);
+          else current.states[key] = st;
+        }
+        current.updated_at = updated.updated_at;
+      }
       capture("flag_state_toggled", { enabled, environment: envKey });
     } catch (e) {
       state.toggleError = errorMessage(i18n, e, "project.toggleFailed");
