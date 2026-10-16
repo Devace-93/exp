@@ -26,5 +26,5 @@ jobs:
             cd /opt/exp
             git pull --ff-only
             cd deploy
-            docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build --remove-orphans
+            docker compose --env-file ../.env -f docker-compose.yml -f docker-compose.prod.yml up -d --build --remove-orphans
             docker image prune -f
