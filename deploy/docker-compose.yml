@@ -63,6 +63,8 @@ services:
         VITE_INFO_URL: ${VITE_INFO_URL:-https://info.3m4.net}
         VITE_RETRO_PROJECT_KEY: ${VITE_RETRO_PROJECT_KEY:-}
         VITE_RETRO_WIDGET_URL: ${VITE_RETRO_WIDGET_URL:-https://retro.3m4.net/widget.js}
+        VITE_METRICS_PROJECT_KEY: ${VITE_METRICS_PROJECT_KEY:-}
+        VITE_METRICS_TRACKER_URL: ${VITE_METRICS_TRACKER_URL:-https://metrics.3m4.net/m.js}
     env_file: ../.env
     environment:
       # SSR resolves exp's feature switches straight from the API over the internal network.

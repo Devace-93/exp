@@ -30,6 +30,16 @@ export default component$(() => {
             defer
           />
         )}
+        {/* metrics web analytics (page views, visitors, referrers, devices;
+            cookie-less). Rendered only when a project key is configured at
+            build time. */}
+        {import.meta.env.VITE_METRICS_PROJECT_KEY && (
+          <script
+            src={import.meta.env.VITE_METRICS_TRACKER_URL || "https://metrics.3m4.net/m.js"}
+            data-key={import.meta.env.VITE_METRICS_PROJECT_KEY}
+            defer
+          />
+        )}
       </head>
       <body class="min-h-screen bg-white">
         <RouterOutlet />
