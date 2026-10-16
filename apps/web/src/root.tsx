@@ -20,6 +20,16 @@ export default component$(() => {
         <script
           dangerouslySetInnerHTML={`try{var t=localStorage.getItem("3m4.theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;var l=localStorage.getItem("3m4.lang");if(l){document.documentElement.lang=l;document.documentElement.dir=l.slice(0,2)==="ar"?"rtl":"ltr"}}catch(e){}`}
         />
+        {/* retro feedback widget (bug reports, feedback, feature requests from
+            users). Rendered only when a project key is configured at build
+            time; it follows the same 3m4.theme / 3m4.lang preferences. */}
+        {import.meta.env.VITE_RETRO_PROJECT_KEY && (
+          <script
+            src={import.meta.env.VITE_RETRO_WIDGET_URL || "https://retro.3m4.net/widget.js"}
+            data-project-key={import.meta.env.VITE_RETRO_PROJECT_KEY}
+            defer
+          />
+        )}
       </head>
       <body class="min-h-screen bg-white">
         <RouterOutlet />

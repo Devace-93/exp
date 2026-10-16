@@ -61,6 +61,8 @@ services:
         VITE_REVENUECAT_PUBLIC_KEY: ${VITE_REVENUECAT_PUBLIC_KEY:-}
         VITE_BILLING_ENABLED: ${VITE_BILLING_ENABLED:-true}
         VITE_INFO_URL: ${VITE_INFO_URL:-https://info.3m4.net}
+        VITE_RETRO_PROJECT_KEY: ${VITE_RETRO_PROJECT_KEY:-}
+        VITE_RETRO_WIDGET_URL: ${VITE_RETRO_WIDGET_URL:-https://retro.3m4.net/widget.js}
     env_file: ../.env
     environment:
       # SSR resolves exp's feature switches straight from the API over the internal network.
