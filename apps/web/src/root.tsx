@@ -40,6 +40,15 @@ export default component$(() => {
             defer
           />
         )}
+        {/* oops error tracking (uncaught errors, rejected promises, breadcrumbs). The project key is public by design. */}
+        {import.meta.env.VITE_OOPS_PROJECT_KEY && (
+          <script
+            defer
+            src={import.meta.env.VITE_OOPS_SDK_URL || "https://oops.3m4.net/o.js"}
+            data-key={import.meta.env.VITE_OOPS_PROJECT_KEY}
+            data-env={import.meta.env.VITE_OOPS_ENV || "production"}
+          />
+        )}
       </head>
       <body class="min-h-screen bg-white">
         <RouterOutlet />

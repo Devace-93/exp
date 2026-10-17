@@ -65,6 +65,9 @@ services:
         VITE_RETRO_WIDGET_URL: ${VITE_RETRO_WIDGET_URL:-https://retro.3m4.net/widget.js}
         VITE_METRICS_PROJECT_KEY: ${VITE_METRICS_PROJECT_KEY:-}
         VITE_METRICS_TRACKER_URL: ${VITE_METRICS_TRACKER_URL:-https://metrics.3m4.net/m.js}
+        VITE_OOPS_PROJECT_KEY: ${VITE_OOPS_PROJECT_KEY:-}
+        VITE_OOPS_SDK_URL: ${VITE_OOPS_SDK_URL:-https://oops.3m4.net/o.js}
+        VITE_OOPS_ENV: ${VITE_OOPS_ENV:-production}
     env_file: ../.env
     environment:
       # SSR resolves exp's feature switches straight from the API over the internal network.

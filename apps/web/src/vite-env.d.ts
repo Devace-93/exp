@@ -13,6 +13,10 @@ interface ImportMetaEnv {
   /** metrics (metrics.3m4.net) project public key; the tracker is rendered only when set. */
   readonly VITE_METRICS_PROJECT_KEY?: string;
   readonly VITE_METRICS_TRACKER_URL?: string;
+  /** oops (oops.3m4.net) project public key; the error-tracking SDK is rendered only when set. */
+  readonly VITE_OOPS_PROJECT_KEY?: string;
+  readonly VITE_OOPS_SDK_URL?: string;
+  readonly VITE_OOPS_ENV?: string;
 }
 
 interface ImportMeta {
