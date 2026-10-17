@@ -5,9 +5,14 @@ import { BASE_URL } from "./playwright.config";
 export const API_URL = `${BASE_URL}/api`;
 export const MCP_URL = `${BASE_URL}/mcp`;
 
-/** localStorage keys used by apps/web/src/lib/auth.ts */
-export const ACCESS_KEY = "exp_access_token";
-export const REFRESH_KEY = "exp_refresh_token";
+/**
+ * Identity lives at accounts.3m4.net. Locally that is the accounts stack on
+ * :8085 (Mailpit on :8025 for the verification mail); the `3m4_session`
+ * cookie it sets for `localhost` is sent to this app on :8081 as well.
+ */
+export const ACCOUNTS_URL = (process.env.E2E_ACCOUNTS_URL || "http://localhost:8085").replace(/\/$/, "");
+export const MAILPIT_URL = (process.env.E2E_MAILPIT_URL || "http://localhost:8025").replace(/\/$/, "");
+export const SESSION_COOKIE = "3m4_session";
 
 export const PASSWORD = "E2e-Passw0rd!";
 
@@ -17,10 +22,14 @@ export type FlagKind = "boolean" | "string" | "number" | "json";
 export interface Account {
   email: string;
   password: string;
-  accessToken: string;
-  refreshToken: string;
+  /** Accounts identity id (`sub`). */
+  identityId: string;
+  handle: string;
+  /** The app's local user / account ids, from /auth/me. */
   userId: string;
   accountId: string;
+  /** The current `3m4_session` JWT (also accepted as a bearer by the API). */
+  sessionToken: string;
 }
 
 export interface Environment {
@@ -69,29 +78,85 @@ export function uniqueKey(prefix = "k"): string {
   return `${prefix}-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
 }
 
-/** Create a fresh account through the API. Never reuses existing data. */
+/* ─── Mailpit (local accounts stack) ──────────────────────────────────────── */
+
+interface MailpitSummary {
+  ID: string;
+  Created: string;
+}
+
+async function mailpitJson<T>(path: string): Promise<T> {
+  const res = await fetch(`${MAILPIT_URL}/api/v1${path}`);
+  if (!res.ok) throw new Error(`mailpit ${path}: ${res.status}`);
+  return (await res.json()) as T;
+}
+
+/** The accounts e-mail verification token sent to `email` (polls Mailpit). */
+export async function waitForVerifyToken(email: string, timeoutMs = 20_000): Promise<string> {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    const found = await mailpitJson<{ messages: MailpitSummary[] }>(
+      `/search?query=${encodeURIComponent(`to:${email}`)}`,
+    );
+    for (const m of found.messages ?? []) {
+      const msg = await mailpitJson<{ Text?: string; HTML?: string }>(`/message/${m.ID}`);
+      const match = `${msg.Text ?? ""}\n${msg.HTML ?? ""}`.match(/verify\?token=([A-Za-z0-9_-]+)/);
+      if (match) return match[1];
+    }
+    await new Promise((r) => setTimeout(r, 500));
+  }
+  throw new Error(`no verification mail for ${email} at ${MAILPIT_URL}`);
+}
+
+async function sessionCookie(request: APIRequestContext): Promise<string> {
+  const state = await request.storageState();
+  const cookie = state.cookies.find((c) => c.name === SESSION_COOKIE);
+  expect(cookie, "3m4_session cookie after accounts login").toBeTruthy();
+  return cookie!.value;
+}
+
+/**
+ * Create a fresh, verified identity at accounts and let this app provision
+ * its tenant. The cookies stay in `request`'s jar, so later calls to the app
+ * API from the same context are authenticated. Never reuses existing data.
+ */
 export async function registerAccount(
   request: APIRequestContext,
-  opts: { email?: string; accountName?: string } = {},
+  opts: { email?: string } = {},
 ): Promise<Account> {
   const email = opts.email ?? uniqueEmail();
-  const res = await request.post(`${API_URL}/auth/register`, {
-    data: { email, password: PASSWORD, account_name: opts.accountName },
+  const signup = await request.post(`${ACCOUNTS_URL}/api/auth/signup`, {
+    data: { email, password: PASSWORD },
   });
-  expect(res.status(), `register ${email}: ${await res.text()}`).toBe(201);
-  const body = await res.json();
+  expect(signup.status(), `accounts signup ${email}: ${await signup.text()}`).toBe(201);
+  const identity = (await signup.json()).user as { id: string; handle: string };
+
+  // Verify the e-mail (the app refuses writes until then) and refresh so the
+  // access cookie carries email_verified=true.
+  const token = await waitForVerifyToken(email);
+  const verify = await request.post(`${ACCOUNTS_URL}/api/auth/verify/consume`, { data: { token } });
+  expect(verify.status(), `verify consume: ${await verify.text()}`).toBe(200);
+  const refresh = await request.post(`${ACCOUNTS_URL}/api/session/refresh`, { data: {} });
+  expect(refresh.status(), `session refresh: ${await refresh.text()}`).toBe(200);
+
+  // First call provisions the local user + workspace.
+  const me = await request.get(`${API_URL}/auth/me`);
+  expect(me.status(), `auth/me: ${await me.text()}`).toBe(200);
+  const body = await me.json();
   return {
     email,
     password: PASSWORD,
-    accessToken: body.access_token,
-    refreshToken: body.refresh_token,
+    identityId: identity.id,
+    handle: identity.handle,
     userId: body.user.id,
     accountId: body.account.id,
+    sessionToken: await sessionCookie(request),
   };
 }
 
-export function jwtHeaders(account: Pick<Account, "accessToken">) {
-  return { Authorization: `Bearer ${account.accessToken}` };
+/** Bearer form of the session (for request contexts without the cookie jar). */
+export function jwtHeaders(account: Pick<Account, "sessionToken">) {
+  return { Authorization: `Bearer ${account.sessionToken}` };
 }
 
 /** Management API key (exp_live_…). */
@@ -185,28 +250,22 @@ export function rolloutBucket(flagKey: string, distinctId: string): number {
 }
 
 /**
- * Seed the browser session with API-issued tokens (fast path for dashboard
- * tests). The app reads them from localStorage on hydration. Must be called
- * after the page is on the app origin (localStorage is origin-scoped).
+ * Give the browser the accounts session of `account` (fast path for dashboard
+ * tests): sets the `3m4_session` cookie for the app's host exactly as accounts
+ * would (host-only on localhost). The token is good for 15 minutes, plenty for
+ * a spec; no refresh cookie is seeded. No navigation needed.
  */
-export async function seedSession(page: Page, account: Account): Promise<void> {
-  await page.goto("/login");
-  await page.evaluate(
-    ([ak, rk, at, rt]) => {
-      localStorage.setItem(ak, at);
-      localStorage.setItem(rk, rt);
+export async function seedSession(page: Page, account: Pick<Account, "sessionToken">): Promise<void> {
+  await page.context().addCookies([
+    {
+      name: SESSION_COOKIE,
+      value: account.sessionToken,
+      domain: new URL(BASE_URL).hostname,
+      path: "/",
+      httpOnly: true,
+      sameSite: "Lax",
     },
-    [ACCESS_KEY, REFRESH_KEY, account.accessToken, account.refreshToken] as const,
-  );
-}
-
-/** Log in through the real /login form. */
-export async function loginViaUi(page: Page, email: string, password = PASSWORD): Promise<void> {
-  await page.goto("/login");
-  await page.getByLabel("Email").fill(email);
-  await page.getByLabel("Password").fill(password);
-  await page.getByRole("button", { name: "Log in" }).click();
-  await expect(page).toHaveURL(/\/dashboard\/?$/);
+  ]);
 }
 
 /** Poll an async condition until it holds. */

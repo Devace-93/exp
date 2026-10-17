@@ -9,6 +9,7 @@ export const chrome = {
   "nav.signup": "Sign up free",
   "nav.dashboard": "Dashboard",
   "nav.logout": "Log out",
+  "nav.profile": "Profile",
   "nav.openMenu": "Open menu",
   "nav.closeMenu": "Close menu",
   "nav.projects": "Projects",

@@ -11,6 +11,9 @@ const fr: PartialCatalog = {
   "nav.signup": "S'inscrire gratuitement",
   "nav.dashboard": "Tableau de bord",
   "nav.logout": "Se déconnecter",
+  "nav.profile": "Profil",
+  "auth.unverifiedBanner": "Confirmez votre adresse e-mail ({email}) pour créer des flags et des clés API.",
+  "auth.resendAt": "Vérifier maintenant",
   "nav.openMenu": "Ouvrir le menu",
   "nav.closeMenu": "Fermer le menu",
   "nav.projects": "Projets",
@@ -284,27 +287,8 @@ const fr: PartialCatalog = {
   "common.back": "Retour",
 
   // Auth: login
-  "auth.loginTitle": "Se connecter",
-  "auth.loginSubtitle": "Bon retour sur exp.",
-  "auth.loginFailed": "Échec de la connexion. Vérifiez votre e-mail et votre mot de passe.",
-  "auth.loggingIn": "Connexion…",
-  "auth.noAccount": "Pas encore de compte ?",
-  "auth.signUp": "S'inscrire",
 
   // Auth: signup
-  "auth.signupTitle": "Créez votre compte",
-  "auth.signupFailed": "Échec de l'inscription. Veuillez réessayer.",
-  "auth.inviteOnlyTitle": "🔒 Les inscriptions sont sur invitation pour le moment",
-  "auth.inviteOnlyBody": "Nous ouvrons progressivement. Restez à l'écoute : des places s'ouvrent bientôt.",
-  "auth.haveAccount": "Vous avez déjà un compte ?",
-  "auth.logIn": "Se connecter",
-  "auth.earlyAccessPitch": "Accès anticipé : accès complet, gratuit. Sans carte bancaire.",
-  "auth.freePitch": "Gratuit pour toujours : {projects} projets, {flags} flags par projet et {evals} évaluations / mois.",
-  "auth.workspaceName": "Nom de l'espace de travail",
-  "auth.workspacePlaceholder": "Acme Inc.",
-  "auth.passwordHint": "Au moins 8 caractères.",
-  "auth.creatingAccount": "Création du compte…",
-  "auth.createAccount": "Créer le compte",
 
   // 402 limit_reached
   "limit.projects": "Vous avez atteint la limite de projets de votre forfait.",

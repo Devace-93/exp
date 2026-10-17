@@ -81,8 +81,8 @@ src/
   entry.dev.tsx            CSR dev entry
   global.css               Tailwind + violet theme (CSS variables, light/dark)
   lib/
-    api.ts                 typed client for every CONTRACT.md endpoint (bearer + 401 refresh)
-    auth.ts                token storage (exp_access_token / exp_refresh_token)
+    api.ts                 typed client for every CONTRACT.md endpoint (cookie session + one refresh on 401 session_expired)
+    auth.ts                accounts.3m4.net session client (getSession, loginUrl, logout); m4session.ts is vendored from accounts
     features.ts            exp's own switches: FeaturesContext, FEATURE_DEFAULTS
     features.server.ts     SSR resolution of GET /api/features (with fallback)
     errors.ts              error → message, 402 limit_reached per error.which

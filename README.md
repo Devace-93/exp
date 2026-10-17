@@ -54,7 +54,7 @@ The interface contract is [`CONTRACT.md`](CONTRACT.md); the plan is
 ## Quick start (Docker)
 
 ```bash
-cp .env.example .env        # then edit secrets (JWT_SECRET_KEY, ...)
+cp .env.example .env        # then edit secrets; ACCOUNTS_URL points at the accounts stack (cd ~/accounts && make up)
 make up                     # build + start everything; creates the schema
 # open http://localhost:8081
 ```

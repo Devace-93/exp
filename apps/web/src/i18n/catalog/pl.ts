@@ -11,6 +11,9 @@ const pl: PartialCatalog = {
   "nav.signup": "Zarejestruj się za darmo",
   "nav.dashboard": "Panel",
   "nav.logout": "Wyloguj się",
+  "nav.profile": "Profil",
+  "auth.unverifiedBanner": "Potwierdź swój adres e-mail ({email}), aby tworzyć flagi i klucze API.",
+  "auth.resendAt": "Zweryfikuj teraz",
   "nav.openMenu": "Otwórz menu",
   "nav.closeMenu": "Zamknij menu",
   "nav.projects": "Projekty",
@@ -284,27 +287,8 @@ const pl: PartialCatalog = {
   "common.back": "Wstecz",
 
   // Auth: login
-  "auth.loginTitle": "Zaloguj się",
-  "auth.loginSubtitle": "Witaj ponownie w exp.",
-  "auth.loginFailed": "Logowanie nie powiodło się. Sprawdź e-mail i hasło.",
-  "auth.loggingIn": "Logowanie…",
-  "auth.noAccount": "Nie masz konta?",
-  "auth.signUp": "Zarejestruj się",
 
   // Auth: signup
-  "auth.signupTitle": "Utwórz konto",
-  "auth.signupFailed": "Rejestracja nie powiodła się. Spróbuj ponownie.",
-  "auth.inviteOnlyTitle": "🔒 Rejestracja jest obecnie tylko na zaproszenie",
-  "auth.inviteOnlyBody": "Wdrażamy stopniowo. Bądź na bieżąco — miejsca otworzą się wkrótce.",
-  "auth.haveAccount": "Masz już konto?",
-  "auth.logIn": "Zaloguj się",
-  "auth.earlyAccessPitch": "Wczesny dostęp: pełny dostęp, za darmo. Bez karty.",
-  "auth.freePitch": "Za darmo na zawsze: {projects} projekty, {flags} flag na projekt i {evals} ewaluacji / miesiąc.",
-  "auth.workspaceName": "Nazwa przestrzeni roboczej",
-  "auth.workspacePlaceholder": "Acme Sp. z o.o.",
-  "auth.passwordHint": "Co najmniej 8 znaków.",
-  "auth.creatingAccount": "Tworzenie konta…",
-  "auth.createAccount": "Utwórz konto",
 
   // 402 limit_reached
   "limit.projects": "Osiągnięto limit projektów w Twoim planie.",

@@ -11,6 +11,9 @@ const de: PartialCatalog = {
   "nav.signup": "Kostenlos registrieren",
   "nav.dashboard": "Dashboard",
   "nav.logout": "Abmelden",
+  "nav.profile": "Profil",
+  "auth.unverifiedBanner": "Bestätige deine E-Mail-Adresse ({email}), um Flags und API-Schlüssel zu erstellen.",
+  "auth.resendAt": "Jetzt bestätigen",
   "nav.openMenu": "Menü öffnen",
   "nav.closeMenu": "Menü schließen",
   "nav.projects": "Projekte",
@@ -284,27 +287,8 @@ const de: PartialCatalog = {
   "common.back": "Zurück",
 
   // Auth: login
-  "auth.loginTitle": "Anmelden",
-  "auth.loginSubtitle": "Willkommen zurück bei exp.",
-  "auth.loginFailed": "Anmeldung fehlgeschlagen. Prüfe E-Mail und Passwort.",
-  "auth.loggingIn": "Anmeldung läuft…",
-  "auth.noAccount": "Noch kein Konto?",
-  "auth.signUp": "Registrieren",
 
   // Auth: signup
-  "auth.signupTitle": "Konto erstellen",
-  "auth.signupFailed": "Registrierung fehlgeschlagen. Bitte versuche es erneut.",
-  "auth.inviteOnlyTitle": "🔒 Registrierung derzeit nur auf Einladung",
-  "auth.inviteOnlyBody": "Wir öffnen schrittweise. Bleib dran: Bald gibt es neue Plätze.",
-  "auth.haveAccount": "Schon ein Konto?",
-  "auth.logIn": "Anmelden",
-  "auth.earlyAccessPitch": "Early Access: voller Zugriff, kostenlos. Keine Kreditkarte nötig.",
-  "auth.freePitch": "Für immer kostenlos: {projects} Projekte, {flags} Flags pro Projekt und {evals} Auswertungen / Monat.",
-  "auth.workspaceName": "Workspace-Name",
-  "auth.workspacePlaceholder": "Acme GmbH",
-  "auth.passwordHint": "Mindestens 8 Zeichen.",
-  "auth.creatingAccount": "Konto wird erstellt…",
-  "auth.createAccount": "Konto erstellen",
 
   // 402 limit_reached
   "limit.projects": "Du hast das Projekt-Limit deines Tarifs erreicht.",

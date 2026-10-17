@@ -11,6 +11,9 @@ const ja: PartialCatalog = {
   "nav.signup": "無料で登録",
   "nav.dashboard": "ダッシュボード",
   "nav.logout": "ログアウト",
+  "nav.profile": "プロフィール",
+  "auth.unverifiedBanner": "フラグや API キーを作成するには、メールアドレス（{email}）を確認してください。",
+  "auth.resendAt": "今すぐ確認",
   "nav.openMenu": "メニューを開く",
   "nav.closeMenu": "メニューを閉じる",
   "nav.projects": "プロジェクト",
@@ -283,27 +286,8 @@ const ja: PartialCatalog = {
   "common.back": "戻る",
 
   // Auth: login
-  "auth.loginTitle": "ログイン",
-  "auth.loginSubtitle": "expへおかえりなさい。",
-  "auth.loginFailed": "ログインに失敗しました。メールアドレスとパスワードを確認してください。",
-  "auth.loggingIn": "ログイン中…",
-  "auth.noAccount": "アカウントをお持ちでないですか?",
-  "auth.signUp": "登録",
 
   // Auth: signup
-  "auth.signupTitle": "アカウントを作成",
-  "auth.signupFailed": "登録に失敗しました。もう一度お試しください。",
-  "auth.inviteOnlyTitle": "🔒 現在、登録は招待制です",
-  "auth.inviteOnlyBody": "段階的に公開しています。続報をお待ちください。まもなく枠が開きます。",
-  "auth.haveAccount": "すでにアカウントをお持ちですか?",
-  "auth.logIn": "ログイン",
-  "auth.earlyAccessPitch": "早期アクセス: 全機能を無料で。カード登録不要。",
-  "auth.freePitch": "ずっと無料: {projects}プロジェクト、プロジェクトあたり{flags}フラグ、月{evals}回の評価。",
-  "auth.workspaceName": "ワークスペース名",
-  "auth.workspacePlaceholder": "株式会社Acme",
-  "auth.passwordHint": "8文字以上。",
-  "auth.creatingAccount": "アカウントを作成中…",
-  "auth.createAccount": "アカウントを作成",
 
   // 402 limit_reached
   "limit.projects": "プランのプロジェクト上限に達しました。",

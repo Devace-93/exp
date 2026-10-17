@@ -12,7 +12,7 @@ services/api/
 ├── api/
 │   ├── app.py              # create_app() factory + error handlers + health
 │   ├── extensions.py       # Flask-Limiter (Redis-backed); per-key and per-env-key buckets
-│   ├── auth_utils.py       # passwords, JWT, @require_auth / @require_api_key / @require_environment_key, @require_scope
+│   ├── auth_utils.py       # accounts session verify + JIT provisioning, @require_auth / @require_api_key / @require_environment_key, @require_scope
 │   ├── features.py         # exp's own switches: @require_feature + GET /api/features
 │   ├── serializers.py      # ORM -> JSON (CONTRACT.md shapes)
 │   ├── errors.py           # ApiError -> {"error": {...}}
@@ -27,8 +27,9 @@ is imported, never re-implemented.
 
 ## Auth
 
-- **Dashboard:** `Authorization: Bearer <JWT>` (HS256, TTL `ACCESS_TOKEN_TTL_MIN`).
-  Refresh tokens are opaque and stored **hashed** (sha256). Passwords: argon2.
+- **Dashboard:** the accounts.3m4.net session (`3m4_session` cookie or the same
+  EdDSA JWT as a bearer), verified locally against the accounts JWKS
+  (`ACCOUNTS_INTERNAL_URL`); no passwords or refresh tokens live here.
 - **Management API:** `X-API-Key: exp_live_...` (or as a bearer token); the
   key's role decides its scopes (`packages/shared/api_key_roles.json`).
 - **Evaluation API:** `X-Environment-Key: exp_env_...` (or as a bearer token).
@@ -36,7 +37,7 @@ is imported, never re-implemented.
 
 ## Endpoints (all under `/api`)
 
-- `auth`: `register`, `login`, `refresh`, `logout`, `me`
+- `auth`: `me` (register / login / logout happen at accounts.3m4.net)
 - `projects`: list/create/get/patch/delete, `:id/export`
 - `projects/:id/environments`: list/create/patch/delete, `:envId/rotate-key`
 - `projects/:id/flags`: list/create/get/patch/delete, `:flag/states/:envKey`, `copy`, `evaluate` (preview)

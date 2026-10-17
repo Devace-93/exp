@@ -4,8 +4,6 @@ import type { PartialCatalog } from "./en";
 const esES: PartialCatalog = {
   "early.bannerText":
     "Ahora mismo todas las cuentas tienen acceso completo sin coste. Los planes y límites se introducirán más adelante, con aviso antes de cualquier cambio.",
-  "auth.loginSubtitle": "Bienvenido de nuevo a exp.",
-  "auth.inviteOnlyBody": "Estamos abriendo poco a poco. Mantente al tanto: pronto habrá plazas.",
   "dash.empty": "Aún no hay proyectos. Crea el primero para obtener tres entornos y tus claves de cliente.",
   "psettings.oneTimeKey": "Copia esta clave de cliente ahora: no se volverá a mostrar.",
   "billing.notConfigured":

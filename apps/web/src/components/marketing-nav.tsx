@@ -1,8 +1,7 @@
 import { component$, useContext, useSignal, useTask$, useVisibleTask$, $ } from "@builder.io/qwik";
 import { Link, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { Logo } from "./logo";
-import { clearTokens, getRefreshToken, isAuthenticated } from "../lib/auth";
-import { api } from "../lib/api";
+import { getSession, loginUrl, logout as accountsLogout, profileUrl, signupUrl, type SessionUser } from "../lib/auth";
 import { resetAnalytics } from "../lib/analytics";
 import { FeaturesContext } from "../lib/features";
 import { tr, useI18n } from "../i18n";
@@ -10,9 +9,10 @@ import { LanguagePicker } from "./language-picker";
 import { ThemeToggle } from "./theme-toggle";
 
 /**
- * Public nav. Tokens live in the browser only, so the signed-in state is
- * resolved client-side after hydration: until then neither button set is
- * rendered, which avoids a "Log in" flash for a signed-in visitor.
+ * Public nav. The session is the accounts cookie, so the signed-in state is
+ * resolved client-side after hydration (one call to accounts): until then
+ * neither button set is rendered, which avoids a "Log in" flash for a
+ * signed-in visitor. Log in / Sign up go to the hosted accounts pages.
  */
 export const MarketingNav = component$(() => {
   const nav = useNavigate();
@@ -21,11 +21,13 @@ export const MarketingNav = component$(() => {
   const i18n = useI18n();
   // null = unknown (SSR / before hydration), boolean = resolved.
   const authed = useSignal<boolean | null>(null);
+  const user = useSignal<SessionUser | null>(null);
   const menuOpen = useSignal(false);
 
   // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(() => {
-    authed.value = isAuthenticated();
+  useVisibleTask$(async () => {
+    user.value = await getSession();
+    authed.value = user.value !== null;
   });
 
   // Close the mobile menu whenever the route changes.
@@ -42,21 +44,16 @@ export const MarketingNav = component$(() => {
   ];
 
   const logout = $(async () => {
-    const rt = getRefreshToken();
-    if (rt) {
-      try {
-        await api.logout(rt);
-      } catch {
-        /* best-effort */
-      }
+    try {
+      await accountsLogout(); // revokes the session for every 3m4 app
+    } catch {
+      /* best-effort */
     }
-    clearTokens();
     resetAnalytics();
     authed.value = false;
+    user.value = null;
     await nav("/");
   });
-
-  const signupVisible = features.signups;
 
   return (
     <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/80 backdrop-blur">
@@ -76,6 +73,18 @@ export const MarketingNav = component$(() => {
           </div>
           {authed.value === true && (
             <>
+              {user.value && (
+                <a
+                  href={profileUrl()}
+                  class="hidden items-center gap-2 rounded-lg px-2 py-1 text-sm font-medium text-slate-700 hover:bg-slate-100 md:flex"
+                  title={tr(i18n, "nav.profile")}
+                >
+                  {user.value.avatar_url && (
+                    <img src={user.value.avatar_url} alt="" width="24" height="24" class="h-6 w-6 rounded-full object-cover" />
+                  )}
+                  <span>@{user.value.handle}</span>
+                </a>
+              )}
               <button type="button" class="btn-ghost hidden md:inline-flex" onClick$={logout}>
                 {tr(i18n, "nav.logout")}
               </button>
@@ -86,14 +95,12 @@ export const MarketingNav = component$(() => {
           )}
           {authed.value === false && (
             <>
-              <Link href="/login" class={signupVisible ? "btn-ghost hidden md:inline-flex" : "btn-primary"}>
+              <a href={loginUrl(`${loc.url.origin}/dashboard`)} class="btn-ghost hidden md:inline-flex">
                 {tr(i18n, "nav.login")}
-              </Link>
-              {signupVisible && (
-                <Link href="/signup" class="btn-primary">
-                  {tr(i18n, "nav.signup")}
-                </Link>
-              )}
+              </a>
+              <a href={signupUrl(`${loc.url.origin}/dashboard`)} class="btn-primary">
+                {tr(i18n, "nav.signup")}
+              </a>
             </>
           )}
           {/* Mobile menu toggle */}
@@ -155,14 +162,12 @@ export const MarketingNav = component$(() => {
           )}
           {authed.value === false && (
             <>
-              <Link href="/login" class="rounded-lg px-2 py-3 text-base font-medium text-slate-700 hover:bg-slate-50">
+              <a href={loginUrl(`${loc.url.origin}/dashboard`)} class="rounded-lg px-2 py-3 text-base font-medium text-slate-700 hover:bg-slate-50">
                 {tr(i18n, "nav.login")}
-              </Link>
-              {signupVisible && (
-                <Link href="/signup" class="rounded-lg px-2 py-3 text-base font-medium text-primary-600 hover:bg-slate-50">
-                  {tr(i18n, "nav.signup")}
-                </Link>
-              )}
+              </a>
+              <a href={signupUrl(`${loc.url.origin}/dashboard`)} class="rounded-lg px-2 py-3 text-base font-medium text-primary-600 hover:bg-slate-50">
+                {tr(i18n, "nav.signup")}
+              </a>
             </>
           )}
         </div>

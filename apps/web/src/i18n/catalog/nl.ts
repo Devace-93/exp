@@ -11,6 +11,9 @@ const nl: PartialCatalog = {
   "nav.signup": "Gratis aanmelden",
   "nav.dashboard": "Dashboard",
   "nav.logout": "Uitloggen",
+  "nav.profile": "Profiel",
+  "auth.unverifiedBanner": "Bevestig je e-mailadres ({email}) om flags en API-sleutels te maken.",
+  "auth.resendAt": "Nu verifiëren",
   "nav.openMenu": "Menu openen",
   "nav.closeMenu": "Menu sluiten",
   "nav.projects": "Projecten",
@@ -284,27 +287,8 @@ const nl: PartialCatalog = {
   "common.back": "Terug",
 
   // Auth: login
-  "auth.loginTitle": "Inloggen",
-  "auth.loginSubtitle": "Welkom terug bij exp.",
-  "auth.loginFailed": "Inloggen mislukt. Controleer je e-mail en wachtwoord.",
-  "auth.loggingIn": "Inloggen…",
-  "auth.noAccount": "Nog geen account?",
-  "auth.signUp": "Aanmelden",
 
   // Auth: signup
-  "auth.signupTitle": "Maak je account aan",
-  "auth.signupFailed": "Aanmelden mislukt. Probeer het opnieuw.",
-  "auth.inviteOnlyTitle": "🔒 Aanmelden kan nu alleen op uitnodiging",
-  "auth.inviteOnlyBody": "We openen geleidelijk. Blijf op de hoogte: binnenkort komen er plekken vrij.",
-  "auth.haveAccount": "Al een account?",
-  "auth.logIn": "Inloggen",
-  "auth.earlyAccessPitch": "Early access: volledige toegang, gratis. Geen kaart nodig.",
-  "auth.freePitch": "Voor altijd gratis: {projects} projecten, {flags} flags per project en {evals} evaluaties / maand.",
-  "auth.workspaceName": "Naam van de werkruimte",
-  "auth.workspacePlaceholder": "Acme B.V.",
-  "auth.passwordHint": "Minimaal 8 tekens.",
-  "auth.creatingAccount": "Account aanmaken…",
-  "auth.createAccount": "Account aanmaken",
 
   // 402 limit_reached
   "limit.projects": "Je hebt de projectlimiet van je abonnement bereikt.",

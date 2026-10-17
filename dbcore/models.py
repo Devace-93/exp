@@ -56,13 +56,28 @@ class Account(Base):
 
 
 class User(Base):
+    """A local mirror of an identity from accounts.3m4.net.
+
+    Identity (password, OAuth, e-mail verification, avatar) lives in the
+    accounts service; this row is created the first time a session's ``sub``
+    shows up (just-in-time provisioning in ``api.auth_utils``) and its
+    profile columns are refreshed from the JWT claims on every request.
+    """
+
     __tablename__ = "users"
 
     id: Mapped[uuid.UUID] = _pk()
+    # ``sub`` of the accounts JWT: the one identifier shared by every 3m4 app.
+    identity_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, unique=True, index=True)
     email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True, index=True)
-    password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
+    handle: Mapped[str] = mapped_column(String(32), nullable=False)
+    name: Mapped[str | None] = mapped_column(String(80))
+    avatar_url: Mapped[str | None] = mapped_column(String(500))
     email_verified_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
 
     memberships: Mapped[list["Membership"]] = relationship(back_populates="user")
 
@@ -79,18 +94,6 @@ class Membership(Base):
 
     account: Mapped[Account] = relationship(back_populates="memberships")
     user: Mapped[User] = relationship(back_populates="memberships")
-
-
-class RefreshToken(Base):
-    __tablename__ = "refresh_tokens"
-
-    id: Mapped[uuid.UUID] = _pk()
-    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
-    account_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("accounts.id", ondelete="CASCADE"))
-    token_hash: Mapped[str] = mapped_column(String(128), nullable=False, unique=True, index=True)
-    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
-    revoked: Mapped[bool] = mapped_column(Boolean, default=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
 class Subscription(Base):

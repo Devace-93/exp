@@ -17,7 +17,9 @@ without its own Caddy, and the 3m4 Caddy routes `exp.3m4.net` to it.
    ```
    Prod `.env` checklist: `APP_BASE_URL=https://exp.3m4.net`,
    `DASHBOARD_URL=https://exp.3m4.net`, `VITE_API_URL=/api`,
-   `VITE_APP_URL=https://exp.3m4.net`, fresh `JWT_SECRET_KEY`, PostHog keys
+   `VITE_APP_URL=https://exp.3m4.net`, `ACCOUNTS_URL=https://accounts.3m4.net`,
+   `ACCOUNTS_INTERNAL_URL=http://accounts-api-1:5000`, `VITE_ACCOUNTS_URL=https://accounts.3m4.net`
+   (the accounts stack must be up on the `edge` network first), PostHog keys
    (`POSTHOG_API_KEY`, `POSTHOG_PERSONAL_API_KEY`, `VITE_POSTHOG_KEY`; flags are
    prefixed `exp-` in the shared PostHog project), RevenueCat keys when billing
    is switched on, a fresh Postgres password (also in `DATABASE_URL`).

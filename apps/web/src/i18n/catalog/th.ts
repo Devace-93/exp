@@ -11,6 +11,9 @@ const th: PartialCatalog = {
   "nav.signup": "สมัครฟรี",
   "nav.dashboard": "แดชบอร์ด",
   "nav.logout": "ออกจากระบบ",
+  "nav.profile": "โปรไฟล์",
+  "auth.unverifiedBanner": "ยืนยันอีเมลของคุณ ({email}) เพื่อสร้างแฟล็กและคีย์ API",
+  "auth.resendAt": "ยืนยันตอนนี้",
   "nav.openMenu": "เปิดเมนู",
   "nav.closeMenu": "ปิดเมนู",
   "nav.projects": "โปรเจกต์",
@@ -283,27 +286,8 @@ const th: PartialCatalog = {
   "common.back": "ย้อนกลับ",
 
   // Auth: login
-  "auth.loginTitle": "เข้าสู่ระบบ",
-  "auth.loginSubtitle": "ยินดีต้อนรับกลับสู่ exp",
-  "auth.loginFailed": "เข้าสู่ระบบไม่สำเร็จ ตรวจสอบอีเมลและรหัสผ่านของคุณ",
-  "auth.loggingIn": "กำลังเข้าสู่ระบบ…",
-  "auth.noAccount": "ยังไม่มีบัญชี?",
-  "auth.signUp": "สมัคร",
 
   // Auth: signup
-  "auth.signupTitle": "สร้างบัญชีของคุณ",
-  "auth.signupFailed": "สมัครไม่สำเร็จ โปรดลองอีกครั้ง",
-  "auth.inviteOnlyTitle": "🔒 ตอนนี้เปิดรับสมัครเฉพาะผู้ได้รับเชิญ",
-  "auth.inviteOnlyBody": "เรากำลังทยอยเปิดให้ใช้ ติดตามไว้ เร็วๆ นี้จะมีที่ว่าง",
-  "auth.haveAccount": "มีบัญชีอยู่แล้ว?",
-  "auth.logIn": "เข้าสู่ระบบ",
-  "auth.earlyAccessPitch": "ช่วงเข้าใช้ก่อนใคร: ใช้ได้ครบทุกฟีเจอร์ ฟรี ไม่ต้องใช้บัตร",
-  "auth.freePitch": "ฟรีตลอดไป: {projects} โปรเจกต์, {flags} flag ต่อโปรเจกต์ และ {evals} การประเมิน / เดือน",
-  "auth.workspaceName": "ชื่อเวิร์กสเปซ",
-  "auth.workspacePlaceholder": "บริษัท Acme จำกัด",
-  "auth.passwordHint": "อย่างน้อย 8 ตัวอักษร",
-  "auth.creatingAccount": "กำลังสร้างบัญชี…",
-  "auth.createAccount": "สร้างบัญชี",
 
   // 402 limit_reached
   "limit.projects": "คุณใช้โปรเจกต์ครบโควตาของแพ็กเกจแล้ว",

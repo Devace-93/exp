@@ -18,7 +18,9 @@ if [ ! -f .env ]; then
   # Reuse a value from the 3m4 stack's env (same PostHog project; exp prefixes its flag keys).
   from3m4() { v=$(grep -E "^$1=" /opt/3m4/.env | head -1 | cut -d= -f2-); set_var "$2" "$v"; }
 
-  set_var JWT_SECRET_KEY "$(python3 -c 'import secrets; print(secrets.token_urlsafe(48))')"
+  set_var ACCOUNTS_URL https://accounts.3m4.net
+  set_var ACCOUNTS_INTERNAL_URL http://accounts-api-1:5000
+  set_var VITE_ACCOUNTS_URL https://accounts.3m4.net
   set_var REVENUECAT_WEBHOOK_AUTH_TOKEN "$(python3 -c 'import secrets; print(secrets.token_urlsafe(32))')"
   set_var APP_BASE_URL https://exp.3m4.net
   set_var DASHBOARD_URL https://exp.3m4.net
