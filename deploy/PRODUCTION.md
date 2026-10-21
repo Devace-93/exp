@@ -4,6 +4,20 @@ exp runs on the same Hetzner box as the 3m4 shortener (`/opt/3m4`). That stack's
 Caddy owns ports 80/443, so exp is deployed as a second docker compose project
 without its own Caddy, and the 3m4 Caddy routes `exp.3m4.net` to it.
 
+**Already deployed before the accounts migration?** Append these to `.env` and rebuild
+(the public accounts URL is baked into the web bundle at build time):
+
+```
+ACCOUNTS_URL=https://accounts.3m4.net
+ACCOUNTS_INTERNAL_URL=http://accounts-api-1:5000
+VITE_ACCOUNTS_URL=https://accounts.3m4.net
+PROTOCOL_HEADER=x-forwarded-proto
+```
+then `docker compose --env-file ../.env -f docker-compose.yml -f docker-compose.prod.yml up -d --build web api`
+from `deploy/`. Without `ACCOUNTS_URL` the API rejects every session (issuer mismatch);
+without `PROTOCOL_HEADER` the login redirect carries an `http://` return address that
+accounts refuses, so users land on their profile instead of the dashboard.
+
 ## First-time setup
 
 1. **Shared network** (once per server):

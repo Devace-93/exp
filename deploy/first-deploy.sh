@@ -21,6 +21,7 @@ if [ ! -f .env ]; then
   set_var ACCOUNTS_URL https://accounts.3m4.net
   set_var ACCOUNTS_INTERNAL_URL http://accounts-api-1:5000
   set_var VITE_ACCOUNTS_URL https://accounts.3m4.net
+  set_var PROTOCOL_HEADER x-forwarded-proto
   set_var REVENUECAT_WEBHOOK_AUTH_TOKEN "$(python3 -c 'import secrets; print(secrets.token_urlsafe(32))')"
   set_var APP_BASE_URL https://exp.3m4.net
   set_var DASHBOARD_URL https://exp.3m4.net
