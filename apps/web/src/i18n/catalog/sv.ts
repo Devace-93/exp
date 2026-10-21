@@ -11,6 +11,9 @@ const sv: PartialCatalog = {
   "nav.signup": "Registrera dig gratis",
   "nav.dashboard": "Översikt",
   "nav.logout": "Logga ut",
+  "nav.profile": "Profil",
+  "auth.unverifiedBanner": "Bekräfta din e-postadress ({email}) för att skapa flaggor och API-nycklar.",
+  "auth.resendAt": "Verifiera nu",
   "nav.openMenu": "Öppna menyn",
   "nav.closeMenu": "Stäng menyn",
   "nav.projects": "Projekt",
@@ -284,27 +287,8 @@ const sv: PartialCatalog = {
   "common.back": "Tillbaka",
 
   // Auth: login
-  "auth.loginTitle": "Logga in",
-  "auth.loginSubtitle": "Välkommen tillbaka till exp.",
-  "auth.loginFailed": "Inloggningen misslyckades. Kontrollera e-post och lösenord.",
-  "auth.loggingIn": "Loggar in…",
-  "auth.noAccount": "Har du inget konto?",
-  "auth.signUp": "Registrera dig",
 
   // Auth: signup
-  "auth.signupTitle": "Skapa ditt konto",
-  "auth.signupFailed": "Registreringen misslyckades. Försök igen.",
-  "auth.inviteOnlyTitle": "🔒 Registrering sker just nu endast via inbjudan",
-  "auth.inviteOnlyBody": "Vi öppnar stegvis. Håll utkik: platser öppnar snart.",
-  "auth.haveAccount": "Har du redan ett konto?",
-  "auth.logIn": "Logga in",
-  "auth.earlyAccessPitch": "Tidig åtkomst: full åtkomst, gratis. Inget kort krävs.",
-  "auth.freePitch": "Gratis för alltid: {projects} projekt, {flags} flaggor per projekt och {evals} utvärderingar / månad.",
-  "auth.workspaceName": "Namn på arbetsyta",
-  "auth.workspacePlaceholder": "Acme AB",
-  "auth.passwordHint": "Minst 8 tecken.",
-  "auth.creatingAccount": "Skapar konto…",
-  "auth.createAccount": "Skapa konto",
 
   // 402 limit_reached
   "limit.projects": "Du har nått projektgränsen för din plan.",

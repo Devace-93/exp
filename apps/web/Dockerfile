@@ -25,6 +25,7 @@ RUN bun install --frozen-lockfile || bun install
 # billing page shows a "not configured" notice instead of launching checkout.
 ARG VITE_API_URL=/api
 ARG VITE_APP_URL
+ARG VITE_ACCOUNTS_URL=http://localhost:8085
 ARG VITE_POSTHOG_KEY
 ARG VITE_POSTHOG_HOST=https://us.i.posthog.com
 ARG VITE_REVENUECAT_PUBLIC_KEY
@@ -39,6 +40,7 @@ ARG VITE_OOPS_SDK_URL=https://oops.3m4.net/o.js
 ARG VITE_OOPS_ENV=production
 ENV VITE_API_URL=$VITE_API_URL \
     VITE_APP_URL=$VITE_APP_URL \
+    VITE_ACCOUNTS_URL=$VITE_ACCOUNTS_URL \
     VITE_POSTHOG_KEY=$VITE_POSTHOG_KEY \
     VITE_POSTHOG_HOST=$VITE_POSTHOG_HOST \
     VITE_REVENUECAT_PUBLIC_KEY=$VITE_REVENUECAT_PUBLIC_KEY \

@@ -15,8 +15,44 @@ jobs:
     timeout-minutes: 30
     env:
       E2E_BASE_URL: http://localhost:8081
+      E2E_ACCOUNTS_URL: http://localhost:8085
+      E2E_MAILPIT_URL: http://localhost:8025
     steps:
       - uses: actions/checkout@v4
+
+      # Identity lives in the accounts service: run its stack first (:8085,
+      # Mailpit :8025) on the shared `edge` network, like production.
+      - name: Start the accounts stack
+        run: |
+          git clone --depth 1 https://github.com/Devace-93/accounts /tmp/accounts
+          cd /tmp/accounts
+          cp .env.example .env
+          set_var() { sed -i "s|^$1=.*|$1=$2|" .env; grep -q "^$1=" .env || echo "$1=$2" >> .env; }
+          set_var ACCOUNTS_URL http://localhost:8085
+          set_var VITE_API_URL http://localhost:8085/api
+          set_var VITE_APP_URL http://localhost:8085
+          set_var COOKIE_DOMAIN ""
+          set_var COOKIE_SECURE false
+          set_var POSTHOG_API_KEY ""
+          set_var POSTHOG_PERSONAL_API_KEY ""
+          set_var VITE_POSTHOG_KEY ""
+          set_var SESSION_SIGNING_KEY "$(python3 -c "import base64, secrets; print(base64.urlsafe_b64encode(secrets.token_bytes(32)).decode().rstrip('='))")"
+          set_var SECRET_KEY e2e-ci-secret-not-for-production
+          set_var IP_HASH_SECRET e2e-ci-ip-hash-secret-not-for-production
+          set_var MAIL_ENABLED true
+          set_var SMTP_URL smtp://mailpit:1025
+          set_var RATE_LIMITS_ENABLED false
+          docker network create edge
+          docker compose --env-file .env -f deploy/docker-compose.yml up -d --build
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:8085/api/healthz | grep -q '"ok"'; then
+              echo "accounts healthy after ${i} tries"; exit 0
+            fi
+            sleep 5
+          done
+          echo "accounts did not become healthy in 5 minutes"
+          docker compose --env-file .env -f deploy/docker-compose.yml ps
+          exit 1
 
       - name: Write .env for the local stack
         run: |
@@ -29,7 +65,9 @@ jobs:
           set_var POSTHOG_API_KEY ""
           set_var POSTHOG_PERSONAL_API_KEY ""
           set_var VITE_POSTHOG_KEY ""
-          set_var JWT_SECRET_KEY e2e-ci-jwt-secret-not-for-production
+          set_var ACCOUNTS_URL http://localhost:8085
+          set_var ACCOUNTS_INTERNAL_URL http://accounts-api-1:5000
+          set_var VITE_ACCOUNTS_URL http://localhost:8085
           grep -v -i 'secret\|token' .env
 
       - name: Start the stack

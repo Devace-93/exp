@@ -11,6 +11,9 @@ const ko: PartialCatalog = {
   "nav.signup": "무료 가입",
   "nav.dashboard": "대시보드",
   "nav.logout": "로그아웃",
+  "nav.profile": "프로필",
+  "auth.unverifiedBanner": "플래그와 API 키를 만들려면 이메일 주소({email})를 인증하세요.",
+  "auth.resendAt": "지금 인증",
   "nav.openMenu": "메뉴 열기",
   "nav.closeMenu": "메뉴 닫기",
   "nav.projects": "프로젝트",
@@ -283,27 +286,8 @@ const ko: PartialCatalog = {
   "common.back": "뒤로",
 
   // Auth: login
-  "auth.loginTitle": "로그인",
-  "auth.loginSubtitle": "exp에 다시 오신 것을 환영합니다.",
-  "auth.loginFailed": "로그인에 실패했습니다. 이메일과 비밀번호를 확인하세요.",
-  "auth.loggingIn": "로그인 중…",
-  "auth.noAccount": "계정이 없으신가요?",
-  "auth.signUp": "가입하기",
 
   // Auth: signup
-  "auth.signupTitle": "계정 만들기",
-  "auth.signupFailed": "가입에 실패했습니다. 다시 시도해 주세요.",
-  "auth.inviteOnlyTitle": "🔒 현재 가입은 초대제입니다",
-  "auth.inviteOnlyBody": "단계적으로 열고 있습니다. 소식을 지켜봐 주세요. 곧 자리가 열립니다.",
-  "auth.haveAccount": "이미 계정이 있으신가요?",
-  "auth.logIn": "로그인",
-  "auth.earlyAccessPitch": "얼리 액세스: 전체 기능 무료. 카드 등록 불필요.",
-  "auth.freePitch": "영원히 무료: 프로젝트 {projects}개, 프로젝트당 플래그 {flags}개, 월 {evals}회 평가.",
-  "auth.workspaceName": "워크스페이스 이름",
-  "auth.workspacePlaceholder": "Acme 주식회사",
-  "auth.passwordHint": "8자 이상.",
-  "auth.creatingAccount": "계정 생성 중…",
-  "auth.createAccount": "계정 만들기",
 
   // 402 limit_reached
   "limit.projects": "요금제의 프로젝트 한도에 도달했습니다.",

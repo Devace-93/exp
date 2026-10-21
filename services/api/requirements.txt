@@ -5,8 +5,10 @@ flask-cors==6.0.5
 flask-limiter==4.1.1
 sqlalchemy==2.0.51
 psycopg[binary]==3.3.4
+# Session verification (accounts.3m4.net JWTs: EdDSA via cryptography, JWKS over requests).
 pyjwt==2.13.0
-argon2-cffi==25.1.0
+cryptography==50.0.2
+requests==2.34.2
 redis==8.0.0
 posthog==7.20.2
 gunicorn==26.0.0

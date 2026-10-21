@@ -1,48 +1,29 @@
 /**
- * Token storage. Access token is kept in memory (primary) and mirrored to
- * localStorage so it survives reloads; refresh token lives in localStorage.
- * All access is browser-guarded so this module is import-safe during SSR.
+ * Session state for the dashboard, delegated to accounts.3m4.net.
+ *
+ * The browser never handles tokens: accounts sets the HttpOnly `3m4_session`
+ * cookie on `.3m4.net` (host-only on localhost), this app's API verifies it,
+ * and this module only asks accounts who the visitor is and where its hosted
+ * pages live. Import-safe during SSR (nothing touches `window` at load).
  */
-const ACCESS_KEY = "exp_access_token";
-const REFRESH_KEY = "exp_refresh_token";
+import { createSessionClient, type SessionUser } from "./m4session";
 
-let accessTokenMem: string | null = null;
+export const ACCOUNTS_URL = (import.meta.env.VITE_ACCOUNTS_URL || "http://localhost:8085").replace(/\/$/, "");
 
-export function getAccessToken(): string | null {
-  if (accessTokenMem) return accessTokenMem;
-  if (typeof localStorage !== "undefined") {
-    accessTokenMem = localStorage.getItem(ACCESS_KEY);
-  }
-  return accessTokenMem;
-}
+export const session = createSessionClient(ACCOUNTS_URL);
 
-export function getRefreshToken(): string | null {
-  if (typeof localStorage === "undefined") return null;
-  return localStorage.getItem(REFRESH_KEY);
-}
+export type { SessionUser };
 
-export function setAccessToken(token: string): void {
-  accessTokenMem = token;
-  if (typeof localStorage !== "undefined") {
-    localStorage.setItem(ACCESS_KEY, token);
-  }
-}
+/** Current identity or `null` when signed out (cached ~30 s). */
+export const getSession = (force = false): Promise<SessionUser | null> => session.getSession(force);
 
-export function setTokens(access: string, refresh?: string): void {
-  setAccessToken(access);
-  if (refresh && typeof localStorage !== "undefined") {
-    localStorage.setItem(REFRESH_KEY, refresh);
-  }
-}
+/** Hosted pages; `returnTo` defaults to the current page. */
+export const loginUrl = (returnTo?: string): string => session.loginUrl(returnTo);
+export const signupUrl = (returnTo?: string): string => session.signupUrl(returnTo);
+export const profileUrl = (): string => session.profileUrl();
+/** Where an unverified user confirms the e-mail (shows the resend button). */
+export const verifyUrl = (returnTo?: string): string =>
+  `${ACCOUNTS_URL}/verify?return_to=${encodeURIComponent(returnTo ?? (typeof location !== "undefined" ? location.href : "/"))}`;
 
-export function clearTokens(): void {
-  accessTokenMem = null;
-  if (typeof localStorage !== "undefined") {
-    localStorage.removeItem(ACCESS_KEY);
-    localStorage.removeItem(REFRESH_KEY);
-  }
-}
-
-export function isAuthenticated(): boolean {
-  return !!getAccessToken();
-}
+/** Revoke the session at accounts (every app at once). */
+export const logout = (): Promise<void> => session.logout();

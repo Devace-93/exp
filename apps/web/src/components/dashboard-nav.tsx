@@ -1,8 +1,7 @@
 import { component$, $, useContext } from "@builder.io/qwik";
 import { Link, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { Logo } from "./logo";
-import { getRefreshToken, clearTokens } from "../lib/auth";
-import { api } from "../lib/api";
+import { logout as accountsLogout, profileUrl, type SessionUser } from "../lib/auth";
 import { resetAnalytics } from "../lib/analytics";
 import { FeaturesContext, type FeatureKey } from "../lib/features";
 import { tr, useI18n } from "../i18n";
@@ -18,7 +17,8 @@ const items: { href: string; label: CatalogKey; feature?: FeatureKey }[] = [
   { href: "/dashboard/billing", label: "nav.billing", feature: "billing" },
 ];
 
-export const DashboardNav = component$(() => {
+/** Dashboard chrome. `user` is the accounts identity resolved by the layout. */
+export const DashboardNav = component$<{ user: SessionUser | null }>(({ user }) => {
   const loc = useLocation();
   const nav = useNavigate();
   const features = useContext(FeaturesContext);
@@ -31,17 +31,13 @@ export const DashboardNav = component$(() => {
   });
 
   const logout = $(async () => {
-    const rt = getRefreshToken();
-    if (rt) {
-      try {
-        await api.logout(rt);
-      } catch {
-        /* best-effort */
-      }
+    try {
+      await accountsLogout(); // revokes the session for every 3m4 app
+    } catch {
+      /* best-effort */
     }
-    clearTokens();
     resetAnalytics();
-    await nav("/login");
+    await nav("/");
   });
 
   const path = loc.url.pathname.replace(/\/$/, "") || "/dashboard";
@@ -76,7 +72,20 @@ export const DashboardNav = component$(() => {
         <div class="flex items-center gap-1">
           <LanguagePicker />
           <ThemeToggle />
-          <button type="button" class="btn-secondary ml-1" onClick$={logout}>
+          {user && (
+            <a
+              href={profileUrl()}
+              class="ml-1 flex items-center gap-2 rounded-lg px-2 py-1 text-sm font-medium text-slate-700 hover:bg-slate-100"
+              title={tr(i18n, "nav.profile")}
+              data-testid="nav-profile"
+            >
+              {user.avatar_url && (
+                <img src={user.avatar_url} alt="" width="24" height="24" class="h-6 w-6 rounded-full object-cover" />
+              )}
+              <span class="hidden sm:inline">@{user.handle}</span>
+            </a>
+          )}
+          <button type="button" class="btn-secondary ml-1" onClick$={logout} data-testid="logout">
             {tr(i18n, "nav.logout")}
           </button>
         </div>

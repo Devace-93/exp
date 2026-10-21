@@ -4,6 +4,20 @@ exp runs on the same Hetzner box as the 3m4 shortener (`/opt/3m4`). That stack's
 Caddy owns ports 80/443, so exp is deployed as a second docker compose project
 without its own Caddy, and the 3m4 Caddy routes `exp.3m4.net` to it.
 
+**Already deployed before the accounts migration?** Append these to `.env` and rebuild
+(the public accounts URL is baked into the web bundle at build time):
+
+```
+ACCOUNTS_URL=https://accounts.3m4.net
+ACCOUNTS_INTERNAL_URL=http://accounts-api-1:5000
+VITE_ACCOUNTS_URL=https://accounts.3m4.net
+PROTOCOL_HEADER=x-forwarded-proto
+```
+then `docker compose --env-file ../.env -f docker-compose.yml -f docker-compose.prod.yml up -d --build web api`
+from `deploy/`. Without `ACCOUNTS_URL` the API rejects every session (issuer mismatch);
+without `PROTOCOL_HEADER` the login redirect carries an `http://` return address that
+accounts refuses, so users land on their profile instead of the dashboard.
+
 ## First-time setup
 
 1. **Shared network** (once per server):
@@ -17,7 +31,9 @@ without its own Caddy, and the 3m4 Caddy routes `exp.3m4.net` to it.
    ```
    Prod `.env` checklist: `APP_BASE_URL=https://exp.3m4.net`,
    `DASHBOARD_URL=https://exp.3m4.net`, `VITE_API_URL=/api`,
-   `VITE_APP_URL=https://exp.3m4.net`, fresh `JWT_SECRET_KEY`, PostHog keys
+   `VITE_APP_URL=https://exp.3m4.net`, `ACCOUNTS_URL=https://accounts.3m4.net`,
+   `ACCOUNTS_INTERNAL_URL=http://accounts-api-1:5000`, `VITE_ACCOUNTS_URL=https://accounts.3m4.net`
+   (the accounts stack must be up on the `edge` network first), PostHog keys
    (`POSTHOG_API_KEY`, `POSTHOG_PERSONAL_API_KEY`, `VITE_POSTHOG_KEY`; flags are
    prefixed `exp-` in the shared PostHog project), RevenueCat keys when billing
    is switched on, a fresh Postgres password (also in `DATABASE_URL`).

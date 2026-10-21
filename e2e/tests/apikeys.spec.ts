@@ -3,6 +3,7 @@ import {
   API_URL,
   ROLE_SCOPES,
   keyHeaders,
+  jwtHeaders,
   registerAccount,
   seedSession,
   type Account,
@@ -52,7 +53,7 @@ test.describe("API keys + RBAC", () => {
       expect(body.roles[role].label).toBe(role[0].toUpperCase() + role.slice(1));
     }
     const bad = await request.post(`${API_URL}/apikeys`, {
-      headers: { Authorization: `Bearer ${account.accessToken}` },
+      headers: jwtHeaders(account),
       data: { name: "bad", role: "owner" },
     });
     expect(bad.status()).toBe(400);
@@ -119,7 +120,7 @@ test.describe("API keys + RBAC", () => {
     }
 
     // Keys are listed with last_used_at once used.
-    const keys = await (await request.get(`${API_URL}/apikeys`, { headers: { Authorization: `Bearer ${account.accessToken}` } })).json();
+    const keys = await (await request.get(`${API_URL}/apikeys`, { headers: jwtHeaders(account) })).json();
     expect(keys).toHaveLength(3);
     for (const k of keys) {
       expect(k.prefix).toMatch(/^exp_live_/);

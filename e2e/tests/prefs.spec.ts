@@ -21,10 +21,11 @@ test.describe("shared chrome: theme, language", () => {
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     expect(await page.evaluate(() => localStorage.getItem("3m4.theme"))).toBe("dark");
 
-    // The auth pages honour the same preference (and carry the same toggle).
-    await page.goto("/login");
+    // Other pages honour the same preference (and carry the same toggle).
+    // /login is a redirect to accounts.3m4.net now, so use another in-app page.
+    await page.goto("/info/docs");
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-    await expect(page.locator("header button[data-theme-toggle]")).toHaveText("☀️");
+    await expect(page.locator("header button[data-theme-toggle]").first()).toHaveText("☀️");
 
     await page.locator("header button[data-theme-toggle]").first().click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
@@ -53,9 +54,10 @@ test.describe("shared chrome: theme, language", () => {
     await expect(page.locator("html")).toHaveAttribute("lang", "es-MX");
     await expect(page.getByRole("banner").getByRole("link", { name: "Iniciar sesión" })).toBeVisible();
 
-    // The login page follows too.
-    await page.goto("/login");
-    await expect(page.getByRole("heading", { level: 1, name: "Iniciar sesión" })).toBeVisible();
+    // Other pages follow too (/login is a redirect to accounts.3m4.net now).
+    await page.goto("/info/docs");
+    await expect(page.locator("html")).toHaveAttribute("lang", "es-MX");
+    await expect(page.getByRole("banner").getByRole("link", { name: "Iniciar sesión" })).toBeVisible();
 
     // Arabic flips the document direction.
     await page.evaluate(() => localStorage.setItem("3m4.lang", "ar-SA"));

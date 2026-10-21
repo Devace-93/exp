@@ -11,6 +11,9 @@ const ru: PartialCatalog = {
   "nav.signup": "Зарегистрироваться бесплатно",
   "nav.dashboard": "Панель",
   "nav.logout": "Выйти",
+  "nav.profile": "Профиль",
+  "auth.unverifiedBanner": "Подтвердите свой адрес электронной почты ({email}), чтобы создавать флаги и API-ключи.",
+  "auth.resendAt": "Подтвердить сейчас",
   "nav.openMenu": "Открыть меню",
   "nav.closeMenu": "Закрыть меню",
   "nav.projects": "Проекты",
@@ -284,27 +287,8 @@ const ru: PartialCatalog = {
   "common.back": "Назад",
 
   // Auth: login
-  "auth.loginTitle": "Вход",
-  "auth.loginSubtitle": "С возвращением в exp.",
-  "auth.loginFailed": "Не удалось войти. Проверьте почту и пароль.",
-  "auth.loggingIn": "Вход…",
-  "auth.noAccount": "Нет аккаунта?",
-  "auth.signUp": "Зарегистрироваться",
 
   // Auth: signup
-  "auth.signupTitle": "Создайте аккаунт",
-  "auth.signupFailed": "Не удалось зарегистрироваться. Попробуйте ещё раз.",
-  "auth.inviteOnlyTitle": "🔒 Регистрация сейчас только по приглашениям",
-  "auth.inviteOnlyBody": "Мы открываем доступ постепенно. Следите за новостями — места появятся скоро.",
-  "auth.haveAccount": "Уже есть аккаунт?",
-  "auth.logIn": "Войти",
-  "auth.earlyAccessPitch": "Ранний доступ: полный доступ, бесплатно. Карта не нужна.",
-  "auth.freePitch": "Бесплатно навсегда: {projects} проектов, {flags} флагов на проект и {evals} вычислений / месяц.",
-  "auth.workspaceName": "Название рабочего пространства",
-  "auth.workspacePlaceholder": "ООО «Acme»",
-  "auth.passwordHint": "Не менее 8 символов.",
-  "auth.creatingAccount": "Создание аккаунта…",
-  "auth.createAccount": "Создать аккаунт",
 
   // 402 limit_reached
   "limit.projects": "Вы достигли лимита проектов своего тарифа.",

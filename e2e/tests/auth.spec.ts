@@ -1,115 +1,95 @@
 import { test, expect } from "@playwright/test";
-import {
-  ACCESS_KEY,
-  API_URL,
-  PASSWORD,
-  REFRESH_KEY,
-  jwtHeaders,
-  registerAccount,
-  seedSession,
-  uniqueEmail,
-} from "../helpers";
+import { ACCOUNTS_URL, API_URL, registerAccount, seedSession } from "../helpers";
 
 /**
- * Sign-up → dashboard → marketing nav reflects the session → log out from the
- * dashboard nav → dashboard guard → log in again. Token refresh through the
- * API and transparently from the app. One account per test.
+ * Identity lives at accounts.3m4.net: this app only recognises its session.
+ * These tests cover the hand-offs — the redirects to the hosted pages, the
+ * dashboard guard, the marketing nav reflecting the shared session, and a
+ * logout that revokes it everywhere.
  */
 test.describe("auth + session", () => {
-  test("@critical sign up through the UI, keep the session, log out, log in", async ({ page }) => {
-    const email = uniqueEmail();
+  test("@critical /login and /signup hand off to accounts with return_to", async ({ page }) => {
+    const login = await page.request.get("/login", { maxRedirects: 0 });
+    expect(login.status()).toBe(302);
+    const loginTarget = new URL(login.headers()["location"]);
+    expect(loginTarget.origin + loginTarget.pathname).toBe(`${ACCOUNTS_URL}/login`);
+    expect(loginTarget.searchParams.get("return_to")).toMatch(/\/dashboard$/);
 
-    await page.goto("/signup");
-    await expect(page.getByRole("heading", { name: "Create your account" })).toBeVisible();
-    await expect(page.getByText("Early access: full access, free.")).toBeVisible();
-    await page.getByLabel("Workspace name").fill("E2E workspace");
-    await page.getByLabel("Email").fill(email);
-    await page.getByLabel("Password").fill(PASSWORD);
-    await page.getByRole("button", { name: "Create account" }).click();
+    const signup = await page.request.get("/signup?return_to=https://evil.example/", { maxRedirects: 0 });
+    expect(signup.status()).toBe(302);
+    const signupTarget = new URL(signup.headers()["location"]);
+    expect(signupTarget.pathname).toBe("/signup");
+    // Foreign return targets are replaced by our dashboard.
+    expect(signupTarget.searchParams.get("return_to")).toMatch(/\/dashboard$/);
+  });
+
+  test("the dashboard sends a signed-out visitor to the accounts login page", async ({ page }) => {
+    await page.goto("/dashboard");
+    await expect(page).toHaveURL(new RegExp(`^${ACCOUNTS_URL.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/login`));
+    expect(new URL(page.url()).searchParams.get("return_to")).toContain("/dashboard");
+  });
+
+  test("@critical a shared session: dashboard, marketing nav, profile link, logout everywhere", async ({ page, request }) => {
+    const account = await registerAccount(request);
+    await seedSession(page, account);
+
+    await page.goto("/dashboard");
     await expect(page).toHaveURL(/\/dashboard\/?$/);
     await expect(page.getByRole("heading", { level: 1, name: "Projects" })).toBeVisible();
-    await expect(page.getByText("E2E workspace")).toBeVisible();
-    await expect(page.getByText("No projects yet.")).toBeVisible();
-    expect(await page.evaluate((k) => localStorage.getItem(k), ACCESS_KEY)).toBeTruthy();
-    expect(await page.evaluate((k) => localStorage.getItem(k), REFRESH_KEY)).toBeTruthy();
+    // Identity in the nav links to the accounts profile.
+    const profile = page.getByTestId("nav-profile");
+    await expect(profile).toContainText(`@${account.handle}`);
+    await expect(profile).toHaveAttribute("href", new RegExp(`^${ACCOUNTS_URL}/profile`));
+    await expect(page.getByTestId("unverified-banner")).toHaveCount(0);
 
-    // Marketing nav resolves the session client-side on every page.
+    // Marketing nav resolves the shared session client-side on every page.
     const authBox = page.getByRole("banner").locator("[data-auth-state]");
     for (const path of ["/", "/blog", "/info/docs"]) {
       await page.goto(path);
       await expect(authBox).toHaveAttribute("data-auth-state", "true");
       await expect(authBox.getByRole("link", { name: "Dashboard" })).toBeVisible();
+      await expect(authBox.getByRole("button", { name: "Log out" })).toBeVisible();
       await expect(authBox.getByRole("link", { name: "Log in" })).toHaveCount(0);
     }
 
-    // /login and /signup bounce a signed-in visitor to the dashboard.
-    await page.goto("/login");
-    await expect(page).toHaveURL(/\/dashboard\/?$/);
+    // Log out from the marketing nav: the session is revoked at accounts, so
+    // the API no longer accepts the cookie either.
+    await authBox.getByRole("button", { name: "Log out" }).click();
+    await expect(authBox).toHaveAttribute("data-auth-state", "false");
+    await expect(authBox.getByRole("link", { name: "Log in" })).toBeVisible();
+    const me = await page.request.get(`${API_URL}/auth/me`);
+    expect(me.status()).toBe(401);
 
-    // Log out from the dashboard nav.
-    await page.getByRole("banner").getByRole("button", { name: "Log out" }).click();
-    await expect(page).toHaveURL(/\/login\/?$/);
-    expect(await page.evaluate((k) => localStorage.getItem(k), ACCESS_KEY)).toBeNull();
-    expect(await page.evaluate((k) => localStorage.getItem(k), REFRESH_KEY)).toBeNull();
-
-    // Dashboard is now guarded.
+    // Dashboard is guarded again.
     await page.goto("/dashboard");
-    await expect(page).toHaveURL(/\/login\/?$/);
-
-    // Log in again.
-    await page.getByLabel("Email").fill(email);
-    await page.getByLabel("Password").fill(PASSWORD);
-    await page.getByRole("button", { name: "Log in" }).click();
-    await expect(page).toHaveURL(/\/dashboard\/?$/);
-    await expect(page.getByRole("heading", { level: 1, name: "Projects" })).toBeVisible();
+    await expect(page).toHaveURL(new RegExp(`^${ACCOUNTS_URL}/login`));
   });
 
-  test("login rejects a wrong password", async ({ page, request }) => {
-    const account = await registerAccount(request);
-    await page.goto("/login");
-    await page.getByLabel("Email").fill(account.email);
-    await page.getByLabel("Password").fill("definitely-wrong-1");
-    await page.getByRole("button", { name: "Log in" }).click();
-    await expect(page.getByRole("heading", { name: "Log in" })).toBeVisible();
-    await expect(page).toHaveURL(/\/login\/?$/);
-    await expect(page.locator("form").getByText(/invalid|incorrect|wrong|failed/i)).toBeVisible();
-  });
+  test("an unverified identity sees the banner and cannot create projects", async ({ page, request, browser }) => {
+    // Sign up but do NOT verify.
+    const email = `unverified+${Date.now()}@example.com`;
+    const ctx = await browser.newContext();
+    try {
+      const signup = await ctx.request.post(`${ACCOUNTS_URL}/api/auth/signup`, {
+        data: { email, password: "E2e-Passw0rd!" },
+      });
+      expect(signup.status()).toBe(201);
+      const me = await ctx.request.get(`${API_URL}/auth/me`);
+      expect(me.status(), await me.text()).toBe(200);
+      expect((await me.json()).user.email_verified).toBe(false);
 
-  test("@critical refresh issues a new access token; logout revokes the refresh token", async ({ request }) => {
-    const account = await registerAccount(request);
+      const create = await ctx.request.post(`${API_URL}/projects`, { data: { name: "Unverified project" } });
+      expect(create.status()).toBe(403);
+      expect((await create.json()).error.code).toBe("email_unverified");
 
-    const refreshed = await request.post(`${API_URL}/auth/refresh`, {
-      data: { refresh_token: account.refreshToken },
-    });
-    expect(refreshed.status(), await refreshed.text()).toBe(200);
-    const { access_token } = await refreshed.json();
-    expect(typeof access_token).toBe("string");
-    const me = await request.get(`${API_URL}/auth/me`, { headers: { Authorization: `Bearer ${access_token}` } });
-    expect(me.status()).toBe(200);
-    expect((await me.json()).account.id).toBe(account.accountId);
-
-    const logout = await request.post(`${API_URL}/auth/logout`, {
-      data: { refresh_token: account.refreshToken },
-    });
-    expect(logout.status()).toBe(204);
-
-    const again = await request.post(`${API_URL}/auth/refresh`, {
-      data: { refresh_token: account.refreshToken },
-    });
-    expect(again.status()).toBe(401);
-  });
-
-  test("dashboard transparently refreshes an expired access token", async ({ page, request }) => {
-    const account = await registerAccount(request);
-    // A valid refresh token but a garbage access token: the API answers 401,
-    // the client refreshes once and retries.
-    await seedSession(page, { ...account, accessToken: "not-a-valid-jwt" });
-    await page.goto("/dashboard");
-    await expect(page.getByRole("heading", { level: 1, name: "Projects" })).toBeVisible();
-    await expect(page.getByText("No projects yet.")).toBeVisible();
-    const stored = await page.evaluate((k) => localStorage.getItem(k), ACCESS_KEY);
-    expect(stored).not.toBe("not-a-valid-jwt");
-    const me = await request.get(`${API_URL}/auth/me`, { headers: jwtHeaders({ accessToken: stored! }) });
-    expect(me.status()).toBe(200);
+      const state = await ctx.request.storageState();
+      await page.context().addCookies(state.cookies.filter((c) => c.name.startsWith("3m4_")));
+      await page.goto("/dashboard");
+      await expect(page.getByTestId("unverified-banner")).toContainText(email);
+      await expect(page.getByTestId("resend-verification")).toHaveAttribute("href", new RegExp(`^${ACCOUNTS_URL}/verify`));
+    } finally {
+      await ctx.close();
+    }
+    void request;
   });
 });

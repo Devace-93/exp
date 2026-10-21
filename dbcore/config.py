@@ -5,6 +5,10 @@ import os
 from dataclasses import dataclass
 
 
+def _url(name: str, default: str) -> str:
+    return (os.getenv(name) or default).strip().rstrip("/")
+
+
 def _bool(name: str, default: bool = False) -> bool:
     return os.getenv(name, str(default)).strip().lower() in {"1", "true", "yes", "on"}
 
@@ -18,10 +22,13 @@ class Config:
     )
     redis_url: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 
-    # auth
-    jwt_secret_key: str = os.getenv("JWT_SECRET_KEY", "dev-insecure-change-me")
-    access_token_ttl_min: int = int(os.getenv("ACCESS_TOKEN_TTL_MIN", "30"))
-    refresh_token_ttl_days: int = int(os.getenv("REFRESH_TOKEN_TTL_DAYS", "30"))
+    # identity: sessions are issued by accounts.3m4.net (see CONTRACT.md "Auth").
+    # ACCOUNTS_URL is the public origin (JWT issuer, where the browser is sent to
+    # log in); ACCOUNTS_INTERNAL_URL is where THIS service fetches the JWKS
+    # (the `edge` docker network: http://accounts-api-1:5000). Defaults to the
+    # public one.
+    accounts_url: str = _url("ACCOUNTS_URL", "http://localhost:8085")
+    accounts_internal_url: str = _url("ACCOUNTS_INTERNAL_URL", "") or _url("ACCOUNTS_URL", "http://localhost:8085")
 
     # urls
     app_base_url: str = os.getenv("APP_BASE_URL", "http://localhost:8081")

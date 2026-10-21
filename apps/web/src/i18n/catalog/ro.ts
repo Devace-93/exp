@@ -11,6 +11,9 @@ const ro: PartialCatalog = {
   "nav.signup": "Înregistrare gratuită",
   "nav.dashboard": "Panou",
   "nav.logout": "Deconectare",
+  "nav.profile": "Profil",
+  "auth.unverifiedBanner": "Confirmă adresa de e-mail ({email}) pentru a crea flag-uri și chei API.",
+  "auth.resendAt": "Verifică acum",
   "nav.openMenu": "Deschide meniul",
   "nav.closeMenu": "Închide meniul",
   "nav.projects": "Proiecte",
@@ -284,27 +287,8 @@ const ro: PartialCatalog = {
   "common.back": "Înapoi",
 
   // Auth: login
-  "auth.loginTitle": "Autentificare",
-  "auth.loginSubtitle": "Bine ai revenit la exp.",
-  "auth.loginFailed": "Autentificarea a eșuat. Verifică e-mailul și parola.",
-  "auth.loggingIn": "Se autentifică…",
-  "auth.noAccount": "Nu ai cont?",
-  "auth.signUp": "Înregistrează-te",
 
   // Auth: signup
-  "auth.signupTitle": "Creează-ți contul",
-  "auth.signupFailed": "Înregistrarea a eșuat. Te rugăm să încerci din nou.",
-  "auth.inviteOnlyTitle": "🔒 Înregistrările sunt momentan doar pe bază de invitație",
-  "auth.inviteOnlyBody": "Lansăm treptat. Rămâi pe aproape — locurile se deschid în curând.",
-  "auth.haveAccount": "Ai deja cont?",
-  "auth.logIn": "Autentifică-te",
-  "auth.earlyAccessPitch": "Acces timpuriu: acces complet, gratuit. Fără card.",
-  "auth.freePitch": "Gratuit pentru totdeauna: {projects} proiecte, {flags} flaguri per proiect și {evals} evaluări / lună.",
-  "auth.workspaceName": "Numele spațiului de lucru",
-  "auth.workspacePlaceholder": "Acme SRL",
-  "auth.passwordHint": "Cel puțin 8 caractere.",
-  "auth.creatingAccount": "Se creează contul…",
-  "auth.createAccount": "Creează cont",
 
   // 402 limit_reached
   "limit.projects": "Ai atins limita de proiecte a planului tău.",

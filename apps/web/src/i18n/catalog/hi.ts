@@ -11,6 +11,9 @@ const hi: PartialCatalog = {
   "nav.signup": "मुफ़्त साइन अप",
   "nav.dashboard": "डैशबोर्ड",
   "nav.logout": "लॉग आउट",
+  "nav.profile": "प्रोफ़ाइल",
+  "auth.unverifiedBanner": "फ़्लैग और API कुंजियाँ बनाने के लिए अपना ई-मेल पता ({email}) सत्यापित करें।",
+  "auth.resendAt": "अभी सत्यापित करें",
   "nav.openMenu": "मेनू खोलें",
   "nav.closeMenu": "मेनू बंद करें",
   "nav.projects": "प्रोजेक्ट",
@@ -283,27 +286,8 @@ const hi: PartialCatalog = {
   "common.back": "वापस",
 
   // Auth: login
-  "auth.loginTitle": "लॉग इन",
-  "auth.loginSubtitle": "exp में आपका फिर से स्वागत है।",
-  "auth.loginFailed": "लॉग इन विफल। अपना ईमेल और पासवर्ड जाँचें।",
-  "auth.loggingIn": "लॉग इन हो रहा है…",
-  "auth.noAccount": "खाता नहीं है?",
-  "auth.signUp": "साइन अप",
 
   // Auth: signup
-  "auth.signupTitle": "अपना खाता बनाएँ",
-  "auth.signupFailed": "साइन अप विफल। कृपया फिर से प्रयास करें।",
-  "auth.inviteOnlyTitle": "🔒 अभी साइन अप सिर्फ़ आमंत्रण से हो रहा है",
-  "auth.inviteOnlyBody": "हम धीरे-धीरे खोल रहे हैं। जुड़े रहें — जगहें जल्द खुलेंगी।",
-  "auth.haveAccount": "पहले से खाता है?",
-  "auth.logIn": "लॉग इन",
-  "auth.earlyAccessPitch": "अर्ली एक्सेस: पूरी सुविधाएँ, मुफ़्त। कार्ड की ज़रूरत नहीं।",
-  "auth.freePitch": "हमेशा मुफ़्त: {projects} प्रोजेक्ट, प्रति प्रोजेक्ट {flags} फ़्लैग और {evals} इवैल्यूएशन / माह।",
-  "auth.workspaceName": "वर्कस्पेस का नाम",
-  "auth.workspacePlaceholder": "Acme Inc.",
-  "auth.passwordHint": "कम से कम 8 अक्षर।",
-  "auth.creatingAccount": "खाता बनाया जा रहा है…",
-  "auth.createAccount": "खाता बनाएँ",
 
   // 402 limit_reached
   "limit.projects": "आप अपने प्लान की प्रोजेक्ट सीमा तक पहुँच गए हैं।",

@@ -6,6 +6,7 @@ import {
   $,
 } from "@builder.io/qwik";
 import { Link, useNavigate, type DocumentHead } from "@builder.io/qwik-city";
+import { profileUrl } from "../../../../lib/auth";
 import { api, ApiRequestError } from "../../../../lib/api";
 import { errorMessage, isLimitError } from "../../../../lib/errors";
 import { FeaturesContext } from "../../../../lib/features";
@@ -158,6 +159,12 @@ export default component$(() => {
   return (
     <div class="mx-auto max-w-4xl px-4 py-8">
       <h1 class="text-2xl font-bold text-slate-900">{tr(i18n, "keys.title")}</h1>
+      {/* Identity (e-mail, password, avatar, linked logins) is managed at accounts. */}
+      <p class="mt-2 text-sm text-slate-500">
+        <a href={profileUrl()} class="font-medium text-primary-600 hover:underline" data-testid="profile-link">
+          {tr(i18n, "nav.profile")} →
+        </a>
+      </p>
 
       {!features["public-api"] ? (
         <div class="mt-6 card p-8 text-slate-600">

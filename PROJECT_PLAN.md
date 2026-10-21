@@ -11,7 +11,7 @@ Owner: Enrique Magallon Alvarez. License: **MIT** (open-source core, self-hostab
 | Stack | Same as 3m4: Flask API + PostgreSQL + Redis, Qwik City frontend (Bun), MCP server (TS), Caddy, Docker |
 | Domain | `exp.3m4.net`, single host: web + `/api` + `/mcp` |
 | Brand | Tailwind **violet** (3m4 is blue) |
-| Auth | Roll-your-own JWT + refresh tokens; API keys `exp_live_…` with roles; environment client keys `exp_env_…` for evaluation only |
+| Auth | Identity at accounts.3m4.net (shared session cookie verified via JWKS, see CONTRACT.md); API keys `exp_live_…` with roles; environment client keys `exp_env_…` for evaluation only |
 | Tenancy | Account is the billing unit; users join via memberships |
 | Model | account → projects → environments + flags → one state per (flag, environment) |
 | Flag kinds | boolean, string, number, json; per-environment enabled / value / rollout percentage |

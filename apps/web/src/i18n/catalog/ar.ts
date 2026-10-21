@@ -11,6 +11,9 @@ const ar: PartialCatalog = {
   "nav.signup": "سجّل مجانًا",
   "nav.dashboard": "لوحة التحكم",
   "nav.logout": "تسجيل الخروج",
+  "nav.profile": "الملف الشخصي",
+  "auth.unverifiedBanner": "أكّد عنوان بريدك الإلكتروني ({email}) لإنشاء الأعلام ومفاتيح API.",
+  "auth.resendAt": "تحقق الآن",
   "nav.openMenu": "فتح القائمة",
   "nav.closeMenu": "إغلاق القائمة",
   "nav.projects": "المشاريع",
@@ -283,27 +286,8 @@ const ar: PartialCatalog = {
   "common.back": "رجوع",
 
   // Auth: login
-  "auth.loginTitle": "تسجيل الدخول",
-  "auth.loginSubtitle": "مرحبًا بعودتك إلى exp.",
-  "auth.loginFailed": "فشل تسجيل الدخول. تحقق من بريدك الإلكتروني وكلمة المرور.",
-  "auth.loggingIn": "جارٍ تسجيل الدخول…",
-  "auth.noAccount": "ليس لديك حساب؟",
-  "auth.signUp": "إنشاء حساب",
 
   // Auth: signup
-  "auth.signupTitle": "أنشئ حسابك",
-  "auth.signupFailed": "فشل التسجيل. يُرجى المحاولة مرة أخرى.",
-  "auth.inviteOnlyTitle": "🔒 التسجيل بالدعوة فقط حاليًا",
-  "auth.inviteOnlyBody": "نفتح الباب تدريجيًا. تابعنا — الأماكن ستُفتح قريبًا.",
-  "auth.haveAccount": "لديك حساب بالفعل؟",
-  "auth.logIn": "تسجيل الدخول",
-  "auth.earlyAccessPitch": "وصول مبكر: وصول كامل، مجانًا. لا حاجة لبطاقة.",
-  "auth.freePitch": "مجاني للأبد: {projects} مشاريع، و{flags} علمًا لكل مشروع، و{evals} تقييم شهريًا.",
-  "auth.workspaceName": "اسم مساحة العمل",
-  "auth.workspacePlaceholder": "شركة Acme",
-  "auth.passwordHint": "8 أحرف على الأقل.",
-  "auth.creatingAccount": "جارٍ إنشاء الحساب…",
-  "auth.createAccount": "إنشاء الحساب",
 
   // 402 limit_reached
   "limit.projects": "لقد بلغت حد المشاريع في خطتك.",
