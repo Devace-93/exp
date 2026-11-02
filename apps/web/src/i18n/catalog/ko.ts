@@ -236,13 +236,17 @@ const ko: PartialCatalog = {
   "sponsors.emptyBody": "모든 Pro / Supporter 구독자는 이곳에 자리를 얻고 삽입 가능한 배지를 받습니다.",
   "sponsors.emptyBodyEarly":
     "Supporter 구독은 얼리 액세스 이후 유료 요금제와 함께 열립니다. 그때까지 모든 계정은 무료입니다.",
-  "sponsors.tierSupporter": "{tier} 후원자",
   "sponsors.badgeTitle": "후원자 배지",
   "sponsors.badgeBody": "Pro 후원자는 사이트나 README에 삽입할 수 있는 배지를 받습니다:",
   "sponsors.badgeBodyEarly": "Pro 후원자는 사이트나 README에 삽입할 수 있는 배지를 받게 됩니다:",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "예정된 요금제 알아보기",
   "sponsors.become": "후원자 되기",
+  "sponsors.tierPro": "Pro 후원자",
+  "sponsors.tierTeam": "Team 후원자",
+  "sponsors.tierDonor": "후원자",
+  "sponsors.since": "{date}부터",
+  "sponsors.donateIntro": "일회성이 더 좋으신가요? 커피 한 잔 사주세요. 동의한 기부자도 여기에 표시됩니다.",
 
   // Early-access banner
   "early.bannerTitle": "얼리 액세스.",
@@ -519,12 +523,9 @@ const ko: PartialCatalog = {
   "billing.currentPlan": "현재 요금제",
   "billing.processing": "처리 중…",
   "billing.upgradeTo": "{plan}(으)로 업그레이드",
-  "billing.processedBy": "결제는 RevenueCat (Stripe)에서 처리합니다.",
+  "billing.processedBy": "결제는 3m4 결제 포털(Stripe)에서 처리됩니다.",
   "billing.entitlementsPrefix": "권한(Entitlements)",
   "billing.entitlementsSuffix": "은 요금제에 자동으로 매핑됩니다.",
-  "billing.notConfigured":
-    "결제가 아직 설정되지 않았습니다 (VITE_REVENUECAT_PUBLIC_KEY 누락). RevenueCat Web Billing 공개 키를 .env에 추가하고 web 이미지를 다시 빌드하세요.",
-  "billing.signInAgain": "업그레이드하려면 다시 로그인해 주세요.",
   "billing.openingCheckout": "안전한 결제 페이지를 여는 중…",
   "billing.activating": "결제 완료 — 요금제를 활성화하는 중…",
   "billing.nowOnPlan": "이제 {plan} 요금제를 사용합니다! 🎉",
@@ -532,5 +533,12 @@ const ko: PartialCatalog = {
   "billing.cancelled": "결제가 취소되었습니다.",
   "billing.checkoutFailed": "결제 실패: {msg}",
   "billing.unknownError": "알 수 없는 오류",
+  "billing.manage": "구독 관리",
+  "billing.manageHint": "고객 포털에서 결제 수단 변경, 청구서 다운로드, 해지를 할 수 있습니다.",
+  "billing.donate": "커피 한 잔 사주기",
+  "billing.donateThanks": "exp를 후원해 주셔서 감사합니다!",
+  "billing.notPurchasable": "이 플랜은 아직 구매할 수 없습니다. 필요하시면 문의해 주세요.",
+  "billing.periodEnd": "현재 기간은 {date}에 끝납니다",
+  "billing.cancelsAtEnd": "현재 기간이 끝나면 해지됩니다.",
 };
 export default ko;

@@ -97,17 +97,22 @@ class Membership(Base):
 
 
 class Subscription(Base):
+    """Mirror of the account owner's subscription at payments.3m4.net (one per
+    account). Written only by ``dbcore.billing_sync.apply_entitlements`` from
+    push webhooks and the nightly reconcile; never from a browser."""
+
     __tablename__ = "subscriptions"
 
     id: Mapped[uuid.UUID] = _pk()
     account_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("accounts.id", ondelete="CASCADE"), unique=True, index=True
     )
-    rc_app_user_id: Mapped[str | None] = mapped_column(String(255), index=True)
+    # payments' subscription id (``data.subscription.id`` in its events).
+    stripe_subscription_id: Mapped[str | None] = mapped_column(String(255), index=True)
     entitlement: Mapped[str | None] = mapped_column(String(20))   # pro | team
-    product_id: Mapped[str | None] = mapped_column(String(120))
+    product_id: Mapped[str | None] = mapped_column(String(120))   # product label/key from payments
     period: Mapped[str | None] = mapped_column(String(12))        # monthly | annual
-    status: Mapped[str | None] = mapped_column(String(30))        # active | expired | ...
+    status: Mapped[str | None] = mapped_column(String(30))        # Stripe status: active | canceled | ... | none
     current_period_start: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     current_period_end: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     will_renew: Mapped[bool] = mapped_column(Boolean, default=True)
@@ -263,7 +268,7 @@ class WebhookEvent(Base):
     __tablename__ = "webhook_events"
 
     id: Mapped[uuid.UUID] = _pk()
-    provider: Mapped[str] = mapped_column(String(40), default="revenuecat")
+    provider: Mapped[str] = mapped_column(String(40), default="payments")
     event_id: Mapped[str] = mapped_column(String(255), nullable=False, unique=True, index=True)
     type: Mapped[str | None] = mapped_column(String(60))
     payload: Mapped[dict | None] = mapped_column(JSONB)

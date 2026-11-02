@@ -74,7 +74,7 @@ export const DashboardNav = component$<{ user: SessionUser | null }>(({ user }) 
           <ThemeToggle />
           {user && (
             <a
-              href={profileUrl()}
+              href={profileUrl(i18n.lang)}
               class="ml-1 flex items-center gap-2 rounded-lg px-2 py-1 text-sm font-medium text-slate-700 hover:bg-slate-100"
               title={tr(i18n, "nav.profile")}
               data-testid="nav-profile"

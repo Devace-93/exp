@@ -75,7 +75,7 @@ export const MarketingNav = component$(() => {
             <>
               {user.value && (
                 <a
-                  href={profileUrl()}
+                  href={profileUrl(i18n.lang)}
                   class="hidden items-center gap-2 rounded-lg px-2 py-1 text-sm font-medium text-slate-700 hover:bg-slate-100 md:flex"
                   title={tr(i18n, "nav.profile")}
                 >
@@ -95,10 +95,10 @@ export const MarketingNav = component$(() => {
           )}
           {authed.value === false && (
             <>
-              <a href={loginUrl(`${loc.url.origin}/dashboard`)} class="btn-ghost hidden md:inline-flex">
+              <a href={loginUrl(`${loc.url.origin}/dashboard`, i18n.lang)} class="btn-ghost hidden md:inline-flex">
                 {tr(i18n, "nav.login")}
               </a>
-              <a href={signupUrl(`${loc.url.origin}/dashboard`)} class="btn-primary">
+              <a href={signupUrl(`${loc.url.origin}/dashboard`, i18n.lang)} class="btn-primary">
                 {tr(i18n, "nav.signup")}
               </a>
             </>
@@ -162,10 +162,10 @@ export const MarketingNav = component$(() => {
           )}
           {authed.value === false && (
             <>
-              <a href={loginUrl(`${loc.url.origin}/dashboard`)} class="rounded-lg px-2 py-3 text-base font-medium text-slate-700 hover:bg-slate-50">
+              <a href={loginUrl(`${loc.url.origin}/dashboard`, i18n.lang)} class="rounded-lg px-2 py-3 text-base font-medium text-slate-700 hover:bg-slate-50">
                 {tr(i18n, "nav.login")}
               </a>
-              <a href={signupUrl(`${loc.url.origin}/dashboard`)} class="rounded-lg px-2 py-3 text-base font-medium text-primary-600 hover:bg-slate-50">
+              <a href={signupUrl(`${loc.url.origin}/dashboard`, i18n.lang)} class="rounded-lg px-2 py-3 text-base font-medium text-primary-600 hover:bg-slate-50">
                 {tr(i18n, "nav.signup")}
               </a>
             </>

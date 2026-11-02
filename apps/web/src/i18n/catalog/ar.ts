@@ -236,13 +236,17 @@ const ar: PartialCatalog = {
   "sponsors.emptyBody": "كل مشترك في Pro / Supporter يحصل على مكان هنا وشارة قابلة للتضمين.",
   "sponsors.emptyBodyEarly":
     "اشتراكات Supporter ستُفتح مع الخطط المدفوعة بعد الوصول المبكر. حتى ذلك الحين، كل حساب مجاني.",
-  "sponsors.tierSupporter": "داعم {tier}",
   "sponsors.badgeTitle": "شارة الداعم",
   "sponsors.badgeBody": "يحصل داعمو Pro على شارة قابلة للتضمين في موقعهم أو ملف README:",
   "sponsors.badgeBodyEarly": "سيحصل داعمو Pro على شارة قابلة للتضمين في موقعهم أو ملف README:",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "اقرأ عن الخطط القادمة",
   "sponsors.become": "كن داعمًا",
+  "sponsors.tierPro": "داعم Pro",
+  "sponsors.tierTeam": "داعم Team",
+  "sponsors.tierDonor": "داعم",
+  "sponsors.since": "منذ {date}",
+  "sponsors.donateIntro": "تفضّل تبرعًا لمرة واحدة؟ اشترِ لي قهوة، فالمتبرعون الذين يوافقون يظهرون هنا أيضًا.",
 
   // Early-access banner
   "early.bannerTitle": "وصول مبكر.",
@@ -519,12 +523,9 @@ const ar: PartialCatalog = {
   "billing.currentPlan": "الخطة الحالية",
   "billing.processing": "جارٍ المعالجة…",
   "billing.upgradeTo": "الترقية إلى {plan}",
-  "billing.processedBy": "تُعالَج المدفوعات بواسطة RevenueCat (Stripe).",
+  "billing.processedBy": "تُعالَج المدفوعات عبر بوابة مدفوعات 3m4 (Stripe).",
   "billing.entitlementsPrefix": "الاستحقاقات",
   "billing.entitlementsSuffix": "تُربط بخطتك تلقائيًا.",
-  "billing.notConfigured":
-    "الفوترة غير مضبوطة بعد (VITE_REVENUECAT_PUBLIC_KEY مفقود). أضف مفتاح RevenueCat Web Billing العام إلى ملف .env وأعد بناء صورة web.",
-  "billing.signInAgain": "يُرجى تسجيل الدخول مرة أخرى للترقية.",
   "billing.openingCheckout": "جارٍ فتح صفحة الدفع الآمنة…",
   "billing.activating": "اكتمل الدفع — جارٍ تفعيل خطتك…",
   "billing.nowOnPlan": "أنت الآن على خطة {plan}! 🎉",
@@ -532,5 +533,12 @@ const ar: PartialCatalog = {
   "billing.cancelled": "أُلغيت عملية الدفع.",
   "billing.checkoutFailed": "فشل الدفع: {msg}",
   "billing.unknownError": "خطأ غير معروف",
+  "billing.manage": "إدارة الاشتراك",
+  "billing.manageHint": "غيّر طريقة الدفع أو نزّل الفواتير أو ألغِ الاشتراك من بوابة العملاء.",
+  "billing.donate": "اشترِ لي قهوة",
+  "billing.donateThanks": "شكرًا لدعمك exp!",
+  "billing.notPurchasable": "لا يمكن شراء هذه الخطة بعد. تواصل معنا إذا كنت بحاجة إليها.",
+  "billing.periodEnd": "تنتهي الفترة الحالية في {date}",
+  "billing.cancelsAtEnd": "يُلغى في نهاية الفترة الحالية.",
 };
 export default ar;

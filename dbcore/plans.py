@@ -31,8 +31,14 @@ def within_limit(used: int, limit: int) -> bool:
     return used < limit
 
 
+def price_keys() -> dict:
+    """``{plan: {period: product_key}}`` at payments.3m4.net (``price_keys`` in
+    plan_limits.json); plans without an entry are not purchasable."""
+    return _data().get("price_keys", {})
+
+
 def resolve_plan_from_entitlements(entitlements: list[str]) -> str:
-    """Map active RevenueCat entitlements to our effective plan.
+    """Map the entitlement set from payments.3m4.net to our effective plan.
 
     `team` outranks `pro`. No entitlement => free.
     """

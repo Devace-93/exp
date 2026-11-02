@@ -6,8 +6,10 @@ import {
   $,
 } from "@builder.io/qwik";
 import { Link, type DocumentHead } from "@builder.io/qwik-city";
-import { PLANS, fmtLimit, fmtPrice, fmtRetention } from "../../../../lib/plans";
+import { PLANS, PRICE_KEYS, fmtLimit, fmtPrice, fmtRetention } from "../../../../lib/plans";
 import { api } from "../../../../lib/api";
+import { pay } from "../../../../lib/pay";
+import type { BillingSubscription } from "../../../../lib/types";
 import { capture } from "../../../../lib/analytics";
 import { FeaturesContext } from "../../../../lib/features";
 import { tr, useI18n } from "../../../../i18n";
@@ -17,13 +19,19 @@ const BILLING_ENABLED = import.meta.env.VITE_BILLING_ENABLED !== "false";
 
 const PAID = ["pro", "team"] as const;
 
+/**
+ * Billing: the plan comes from `/auth/me` + `/billing/status`; buying and
+ * managing happen at payments.3m4.net (hosted checkout, Stripe's Customer
+ * Portal). exp's backend flips `account.plan` when the portal's signed
+ * webhook lands, so after a purchase we poll `/auth/me` until it reflects.
+ */
 export default component$(() => {
   const features = useContext(FeaturesContext);
   const i18n = useI18n();
   const state = useStore({
     annual: false,
     plan: "free",
-    accountId: "",
+    subscription: null as BillingSubscription | null,
     notice: "",
     busy: false,
   });
@@ -32,19 +40,22 @@ export default component$(() => {
   useVisibleTask$(() => {
     capture("paywall_viewed");
     api
-      .me()
-      .then((me) => {
-        state.plan = me.account.plan;
-        state.accountId = me.account.id;
+      .billingStatus()
+      .then((status) => {
+        state.plan = status.plan;
+        state.subscription = status.subscription;
       })
-      .catch(() => {});
+      .catch(() =>
+        api
+          .me()
+          .then((me) => (state.plan = me.account.plan))
+          .catch(() => {}),
+      );
   });
 
   // Resolved during render so the handler captures plain strings, not the
   // i18n store. Templates with placeholders are filled inside the handler.
   const msg = {
-    notConfigured: tr(i18n, "billing.notConfigured"),
-    signInAgain: tr(i18n, "billing.signInAgain"),
     opening: tr(i18n, "billing.openingCheckout"),
     activating: tr(i18n, "billing.activating"),
     nowOnPlan: tr(i18n, "billing.nowOnPlan"), // {plan}
@@ -52,62 +63,29 @@ export default component$(() => {
     cancelled: tr(i18n, "billing.cancelled"),
     checkoutFailed: tr(i18n, "billing.checkoutFailed"), // {msg}
     unknownError: tr(i18n, "billing.unknownError"),
+    notPurchasable: tr(i18n, "billing.notPurchasable"),
+    donateThanks: tr(i18n, "billing.donateThanks"),
   };
 
   const upgrade = $(async (plan: "pro" | "team") => {
     if (state.busy) return;
-    capture("checkout_started", {
-      plan,
-      period: state.annual ? "annual" : "monthly",
-    });
+    const period = state.annual ? "annual" : "monthly";
+    capture("checkout_started", { plan, period });
 
-    const apiKey = import.meta.env.VITE_REVENUECAT_PUBLIC_KEY;
-    if (!apiKey) {
-      state.notice = msg.notConfigured;
+    const price = PRICE_KEYS[plan]?.[period];
+    if (!price) {
+      state.notice = msg.notPurchasable;
       return;
-    }
-
-    // RevenueCat's app_user_id MUST be our account id.
-    if (!state.accountId) {
-      try {
-        const me = await api.me();
-        state.accountId = me.account.id;
-      } catch {
-        state.notice = msg.signInAgain;
-        return;
-      }
     }
 
     state.busy = true;
     state.notice = msg.opening;
     try {
-      const { Purchases } = await import("@revenuecat/purchases-js");
+      // Opens the portal's /subscribe in a popup (login gate + Stripe Checkout
+      // happen there). Resolves on the success page's postMessage or when the
+      // portal's entitlements change; the backend webhook is the source of truth.
+      await pay().open("subscription", { price, returnTo: location.href });
 
-      // Configure once per app_user_id; reuse the shared instance afterwards.
-      let purchases!: InstanceType<typeof Purchases>;
-      try {
-        purchases = Purchases.getSharedInstance();
-      } catch {
-        purchases = Purchases.configure({ apiKey, appUserId: state.accountId });
-      }
-
-      const offerings = await purchases.getOfferings();
-      // The offering identifier matches the plan id ("pro" | "team").
-      const offering = offerings.all?.[plan] ?? offerings.current;
-      if (!offering) throw new Error(`No RevenueCat offering found for "${plan}".`);
-
-      const pkg = state.annual ? offering.annual : offering.monthly;
-      if (!pkg) {
-        throw new Error(
-          `No ${state.annual ? "annual" : "monthly"} package in the "${plan}" offering.`,
-        );
-      }
-
-      // Opens RevenueCat's hosted checkout (Stripe under the hood). Resolves on success.
-      await purchases.purchase({ rcPackage: pkg });
-
-      // Entitlement is granted immediately; our backend webhook flips
-      // accounts.plan asynchronously, so poll /auth/me until it reflects.
       state.notice = msg.activating;
       for (let i = 0; i < 12; i++) {
         const me = await api.me();
@@ -117,18 +95,34 @@ export default component$(() => {
         }
         await new Promise((r) => setTimeout(r, 1500));
       }
-      state.notice =
-        state.plan === plan
-          ? msg.nowOnPlan.split("{plan}").join(PLANS[plan].label)
-          : msg.willUpdate;
+      if (state.plan === plan) {
+        state.notice = msg.nowOnPlan.split("{plan}").join(PLANS[plan].label);
+        api.billingStatus().then((s) => (state.subscription = s.subscription)).catch(() => {});
+      } else {
+        state.notice = msg.willUpdate;
+      }
     } catch (err: any) {
       const m = String(err?.message ?? err ?? "");
-      state.notice =
-        /cancel/i.test(m) || err?.errorCode === "UserCancelledError"
-          ? msg.cancelled
-          : msg.checkoutFailed.split("{msg}").join(m || msg.unknownError);
+      state.notice = /cancel|timeout/i.test(m)
+        ? msg.cancelled
+        : msg.checkoutFailed.split("{msg}").join(m || msg.unknownError);
     } finally {
       state.busy = false;
+    }
+  });
+
+  const manage = $(() => {
+    capture("portal_opened", { plan: state.plan });
+    location.assign(pay().portalUrl(location.href));
+  });
+
+  const donate = $(async () => {
+    capture("donate_started", { from: "billing" });
+    try {
+      await pay().open("donation", { returnTo: location.href });
+      state.notice = msg.donateThanks;
+    } catch {
+      /* closed without paying: nothing to say */
     }
   });
 
@@ -184,6 +178,11 @@ export default component$(() => {
     );
   }
 
+  const sub = state.subscription;
+  const periodEnd = sub?.current_period_end
+    ? new Date(sub.current_period_end).toLocaleDateString(i18n.lang, { dateStyle: "medium" })
+    : "";
+
   return (
     <div class="mx-auto max-w-4xl px-4 py-12">
       <div class="text-center">
@@ -194,6 +193,24 @@ export default component$(() => {
           {tr(i18n, "billing.onPlanSuffix")}
         </p>
       </div>
+
+      {/* Existing subscription: Stripe's Customer Portal via payments /me */}
+      {sub && sub.active && (
+        <div class="mx-auto mt-6 flex max-w-xl flex-col items-center gap-3 card p-5 text-center sm:flex-row sm:justify-between sm:text-left">
+          <div class="text-sm text-slate-600">
+            <p class="font-medium text-slate-800">
+              {PLANS[state.plan as keyof typeof PLANS]?.label ?? state.plan}
+              {sub.period ? ` · ${tr(i18n, sub.period === "annual" ? "billing.annual" : "billing.monthly")}` : ""}
+            </p>
+            {periodEnd && <p>{tr(i18n, "billing.periodEnd", { date: periodEnd })}</p>}
+            {!sub.will_renew && <p class="text-amber-700">{tr(i18n, "billing.cancelsAtEnd")}</p>}
+            <p class="mt-1 text-xs text-slate-400">{tr(i18n, "billing.manageHint")}</p>
+          </div>
+          <button type="button" class="btn-secondary shrink-0" onClick$={manage}>
+            {tr(i18n, "billing.manage")}
+          </button>
+        </div>
+      )}
 
       {/* Monthly / annual toggle */}
       <div class="mt-6 flex items-center justify-center gap-3">
@@ -234,6 +251,7 @@ export default component$(() => {
           const plan = PLANS[key];
           const price = state.annual ? plan.price_annual : plan.price_monthly;
           const current = state.plan === key;
+          const purchasable = !!PRICE_KEYS[key];
           return (
             <div
               key={key}
@@ -259,21 +277,34 @@ export default component$(() => {
                 <li>{tr(i18n, "billing.featRetention", { n: fmtRetention(plan.audit_retention_days, i18n) })}</li>
                 <li>{tr(i18n, "billing.featUsers", { n: fmtLimit(plan.max_users, i18n) })}</li>
               </ul>
-              <button
-                type="button"
-                class={current ? "btn-secondary mt-6" : "btn-primary mt-6"}
-                disabled={current || state.busy}
-                onClick$={() => upgrade(key)}
-              >
-                {current
-                  ? tr(i18n, "billing.currentPlan")
-                  : state.busy
-                    ? tr(i18n, "billing.processing")
-                    : tr(i18n, "billing.upgradeTo", { plan: plan.label.split(" ")[0] })}
-              </button>
+              {current && sub?.active ? (
+                <button type="button" class="btn-secondary mt-6" onClick$={manage}>
+                  {tr(i18n, "billing.manage")}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  class={current ? "btn-secondary mt-6" : "btn-primary mt-6"}
+                  disabled={current || state.busy || !purchasable}
+                  title={purchasable ? undefined : tr(i18n, "billing.notPurchasable")}
+                  onClick$={() => upgrade(key)}
+                >
+                  {current
+                    ? tr(i18n, "billing.currentPlan")
+                    : state.busy
+                      ? tr(i18n, "billing.processing")
+                      : tr(i18n, "billing.upgradeTo", { plan: plan.label.split(" ")[0] })}
+                </button>
+              )}
             </div>
           );
         })}
+      </div>
+
+      <div class="mt-8 text-center">
+        <button type="button" class="btn-secondary" onClick$={donate}>
+          ☕ {tr(i18n, "billing.donate")}
+        </button>
       </div>
 
       <p class="mt-6 text-center text-xs text-slate-400">

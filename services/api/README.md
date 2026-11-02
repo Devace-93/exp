@@ -2,7 +2,7 @@
 
 JSON REST API for exp, the feature-flag service. Auth, projects, environments,
 flags and their per-environment states, the SDK evaluation API, account usage,
-API keys, and (optionally) RevenueCat billing. Mounted at `/api` behind Caddy.
+API keys, and (optionally) billing through the payments.3m4.net portal. Mounted at `/api` behind Caddy.
 The spec is the repo-root `CONTRACT.md`.
 
 ## Layout
@@ -45,7 +45,7 @@ is imported, never re-implemented.
 - `account/usage`, `account/audit`
 - `apikeys`: list/create/delete, `roles`, `me`
 - `features`
-- `billing` (only if `BILLING_ENABLED=true`): `offerings`, `webhook`
+- `billing` (only if `BILLING_ENABLED=true`): `status` (session), `webhook` (signed push events from payments.3m4.net; never gated)
 - `healthz` (also at the bare path for container health checks)
 
 ## Run

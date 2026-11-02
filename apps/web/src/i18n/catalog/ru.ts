@@ -237,13 +237,17 @@ const ru: PartialCatalog = {
   "sponsors.emptyBody": "Каждый подписчик Pro / Supporter получает здесь место и встраиваемый значок.",
   "sponsors.emptyBodyEarly":
     "Подписки Supporter откроются вместе с платными тарифами, после раннего доступа. До тех пор каждый аккаунт бесплатен.",
-  "sponsors.tierSupporter": "Сторонник {tier}",
   "sponsors.badgeTitle": "Значок сторонника",
   "sponsors.badgeBody": "Сторонники Pro получают встраиваемый значок для сайта или README:",
   "sponsors.badgeBodyEarly": "Сторонники Pro получат встраиваемый значок для сайта или README:",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "Прочитать о будущих тарифах",
   "sponsors.become": "Стать сторонником",
+  "sponsors.tierPro": "Сторонник Pro",
+  "sponsors.tierTeam": "Сторонник Team",
+  "sponsors.tierDonor": "Сторонник",
+  "sponsors.since": "с {date}",
+  "sponsors.donateIntro": "Предпочитаете разово? Угостите меня кофе — доноры, давшие согласие, тоже появятся здесь.",
 
   // Early-access banner
   "early.bannerTitle": "Ранний доступ.",
@@ -520,12 +524,9 @@ const ru: PartialCatalog = {
   "billing.currentPlan": "Текущий тариф",
   "billing.processing": "Обработка…",
   "billing.upgradeTo": "Перейти на {plan}",
-  "billing.processedBy": "Платежи обрабатывает RevenueCat (Stripe).",
+  "billing.processedBy": "Платежи обрабатывает платёжный портал 3m4 (Stripe).",
   "billing.entitlementsPrefix": "Права",
   "billing.entitlementsSuffix": "автоматически сопоставляются с вашим тарифом.",
-  "billing.notConfigured":
-    "Оплата ещё не настроена (отсутствует VITE_REVENUECAT_PUBLIC_KEY). Добавьте публичный ключ RevenueCat Web Billing в .env и пересоберите web-образ.",
-  "billing.signInAgain": "Войдите снова, чтобы улучшить тариф.",
   "billing.openingCheckout": "Открываем безопасную оплату…",
   "billing.activating": "Оплата завершена — активируем ваш тариф…",
   "billing.nowOnPlan": "Теперь у вас тариф {plan}! 🎉",
@@ -533,5 +534,12 @@ const ru: PartialCatalog = {
   "billing.cancelled": "Оплата отменена.",
   "billing.checkoutFailed": "Ошибка оплаты: {msg}",
   "billing.unknownError": "неизвестная ошибка",
+  "billing.manage": "Управлять подпиской",
+  "billing.manageHint": "Смените способ оплаты, скачайте счета или отмените подписку в портале клиента.",
+  "billing.donate": "Угостите меня кофе",
+  "billing.donateThanks": "Спасибо за поддержку exp!",
+  "billing.notPurchasable": "Этот план пока нельзя купить. Напишите нам, если он вам нужен.",
+  "billing.periodEnd": "Текущий период заканчивается {date}",
+  "billing.cancelsAtEnd": "Отменяется в конце текущего периода.",
 };
 export default ru;

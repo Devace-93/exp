@@ -1,6 +1,6 @@
 name: exp
 
-# Self-host overlay: NO billing (RevenueCat).
+# Self-host overlay: NO billing (no payments.3m4.net portal).
 #   docker compose -f docker-compose.yml -f docker-compose.selfhost.yml up -d
 # Set BILLING_ENABLED=false in .env. The api service will not register the
 # billing blueprint, the frontend hides paywalls, and plan limits come from

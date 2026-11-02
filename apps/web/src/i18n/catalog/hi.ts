@@ -236,13 +236,17 @@ const hi: PartialCatalog = {
   "sponsors.emptyBody": "हर Pro / Supporter सब्सक्राइबर को यहाँ जगह और एक एम्बेड करने योग्य बैज मिलता है।",
   "sponsors.emptyBodyEarly":
     "Supporter सब्सक्रिप्शन अर्ली एक्सेस के बाद सशुल्क प्लान के साथ खुलेंगे। तब तक हर खाता मुफ़्त है।",
-  "sponsors.tierSupporter": "{tier} समर्थक",
   "sponsors.badgeTitle": "समर्थक बैज",
   "sponsors.badgeBody": "Pro समर्थकों को अपनी साइट या README के लिए एम्बेड करने योग्य बैज मिलता है:",
   "sponsors.badgeBodyEarly": "Pro समर्थकों को अपनी साइट या README के लिए एम्बेड करने योग्य बैज मिलेगा:",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "आने वाले प्लान के बारे में पढ़ें",
   "sponsors.become": "समर्थक बनें",
+  "sponsors.tierPro": "Pro समर्थक",
+  "sponsors.tierTeam": "Team समर्थक",
+  "sponsors.tierDonor": "समर्थक",
+  "sponsors.since": "{date} से",
+  "sponsors.donateIntro": "एक बार का योगदान पसंद है? मुझे एक कॉफ़ी पिलाएँ — सहमति देने वाले दानदाता भी यहाँ दिखते हैं।",
 
   // Early-access banner
   "early.bannerTitle": "अर्ली एक्सेस।",
@@ -519,12 +523,9 @@ const hi: PartialCatalog = {
   "billing.currentPlan": "वर्तमान प्लान",
   "billing.processing": "प्रोसेस हो रहा है…",
   "billing.upgradeTo": "{plan} पर अपग्रेड करें",
-  "billing.processedBy": "भुगतान RevenueCat (Stripe) द्वारा प्रोसेस किए जाते हैं।",
+  "billing.processedBy": "भुगतान 3m4 भुगतान पोर्टल (Stripe) के ज़रिए होते हैं।",
   "billing.entitlementsPrefix": "एंटाइटलमेंट",
   "billing.entitlementsSuffix": "अपने आप आपके प्लान से मैप हो जाते हैं।",
-  "billing.notConfigured":
-    "बिलिंग अभी कॉन्फ़िगर नहीं है (VITE_REVENUECAT_PUBLIC_KEY नहीं मिला)। अपनी RevenueCat Web Billing सार्वजनिक कुंजी .env में जोड़ें और web इमेज फिर से बिल्ड करें।",
-  "billing.signInAgain": "अपग्रेड करने के लिए कृपया फिर से साइन इन करें।",
   "billing.openingCheckout": "सुरक्षित चेकआउट खोला जा रहा है…",
   "billing.activating": "भुगतान पूरा — आपका प्लान सक्रिय किया जा रहा है…",
   "billing.nowOnPlan": "अब आप {plan} प्लान पर हैं! 🎉",
@@ -532,5 +533,12 @@ const hi: PartialCatalog = {
   "billing.cancelled": "चेकआउट रद्द किया गया।",
   "billing.checkoutFailed": "चेकआउट विफल: {msg}",
   "billing.unknownError": "अज्ञात त्रुटि",
+  "billing.manage": "सदस्यता प्रबंधित करें",
+  "billing.manageHint": "ग्राहक पोर्टल में भुगतान विधि बदलें, इनवॉइस डाउनलोड करें या रद्द करें।",
+  "billing.donate": "मुझे एक कॉफ़ी पिलाएँ",
+  "billing.donateThanks": "exp का समर्थन करने के लिए धन्यवाद!",
+  "billing.notPurchasable": "यह प्लान अभी खरीदा नहीं जा सकता। ज़रूरत हो तो हमसे संपर्क करें।",
+  "billing.periodEnd": "वर्तमान अवधि {date} को समाप्त होती है",
+  "billing.cancelsAtEnd": "वर्तमान अवधि के अंत में रद्द हो जाएगी।",
 };
 export default hi;

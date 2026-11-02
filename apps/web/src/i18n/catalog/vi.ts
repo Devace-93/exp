@@ -237,13 +237,17 @@ const vi: PartialCatalog = {
   "sponsors.emptyBody": "Mỗi người đăng ký Pro / Supporter đều có một vị trí ở đây và một huy hiệu có thể nhúng.",
   "sponsors.emptyBodyEarly":
     "Đăng ký Supporter sẽ mở cùng với các gói trả phí, sau giai đoạn truy cập sớm. Cho đến lúc đó, mọi tài khoản đều miễn phí.",
-  "sponsors.tierSupporter": "Nhà tài trợ {tier}",
   "sponsors.badgeTitle": "Huy hiệu nhà tài trợ",
   "sponsors.badgeBody": "Nhà tài trợ Pro nhận một huy hiệu có thể nhúng vào trang web hoặc README của họ:",
   "sponsors.badgeBodyEarly": "Nhà tài trợ Pro sẽ nhận một huy hiệu có thể nhúng vào trang web hoặc README của họ:",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "Đọc về các gói sắp ra mắt",
   "sponsors.become": "Trở thành nhà tài trợ",
+  "sponsors.tierPro": "Người ủng hộ Pro",
+  "sponsors.tierTeam": "Người ủng hộ Team",
+  "sponsors.tierDonor": "Người ủng hộ",
+  "sponsors.since": "từ {date}",
+  "sponsors.donateIntro": "Thích ủng hộ một lần? Mời tôi một ly cà phê — người quyên góp đồng ý cũng xuất hiện ở đây.",
 
   // Early-access banner
   "early.bannerTitle": "Truy cập sớm.",
@@ -520,12 +524,9 @@ const vi: PartialCatalog = {
   "billing.currentPlan": "Gói hiện tại",
   "billing.processing": "Đang xử lý…",
   "billing.upgradeTo": "Nâng cấp lên {plan}",
-  "billing.processedBy": "Thanh toán được xử lý bởi RevenueCat (Stripe).",
+  "billing.processedBy": "Thanh toán được xử lý qua cổng thanh toán 3m4 (Stripe).",
   "billing.entitlementsPrefix": "Các quyền lợi (entitlements)",
   "billing.entitlementsSuffix": "được tự động ánh xạ sang gói của bạn.",
-  "billing.notConfigured":
-    "Thanh toán chưa được cấu hình (thiếu VITE_REVENUECAT_PUBLIC_KEY). Thêm khóa công khai RevenueCat Web Billing của bạn vào .env và build lại image web.",
-  "billing.signInAgain": "Vui lòng đăng nhập lại để nâng cấp.",
   "billing.openingCheckout": "Đang mở trang thanh toán an toàn…",
   "billing.activating": "Thanh toán hoàn tất — đang kích hoạt gói của bạn…",
   "billing.nowOnPlan": "Bạn hiện đang dùng gói {plan}! 🎉",
@@ -533,5 +534,12 @@ const vi: PartialCatalog = {
   "billing.cancelled": "Đã hủy thanh toán.",
   "billing.checkoutFailed": "Thanh toán thất bại: {msg}",
   "billing.unknownError": "lỗi không xác định",
+  "billing.manage": "Quản lý gói đăng ký",
+  "billing.manageHint": "Đổi phương thức thanh toán, tải hóa đơn hoặc hủy trong cổng khách hàng.",
+  "billing.donate": "Mời tôi một ly cà phê",
+  "billing.donateThanks": "Cảm ơn bạn đã ủng hộ exp!",
+  "billing.notPurchasable": "Gói này chưa thể mua. Hãy liên hệ nếu bạn cần.",
+  "billing.periodEnd": "Kỳ hiện tại kết thúc vào {date}",
+  "billing.cancelsAtEnd": "Sẽ hủy vào cuối kỳ hiện tại.",
 };
 export default vi;

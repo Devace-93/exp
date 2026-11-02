@@ -7,7 +7,7 @@
 COMPOSE      := docker compose --env-file .env -f deploy/docker-compose.yml
 COMPOSE_SH   := docker compose --env-file .env -f deploy/docker-compose.yml -f deploy/docker-compose.selfhost.yml
 
-.PHONY: help up up-selfhost down build rebuild logs ps migrate shell-api shell-db clean e2e
+.PHONY: help up up-selfhost down build rebuild logs worker-logs ps migrate reconcile-billing shell-api shell-db clean e2e test
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-16s\033[0m %s\n", $$1, $$2}'
@@ -36,6 +36,15 @@ ps: ## Show service status
 
 migrate: ## Run create-all + alembic upgrade
 	$(COMPOSE) run --rm migrate python -m dbcore.cli upgrade
+
+worker-logs: ## Tail the billing worker (daily reconcile with payments.3m4.net)
+	$(COMPOSE) logs -f --tail=100 worker
+
+reconcile-billing: ## Pull the last 2 days of subscriptions from payments.3m4.net once (worker --reconcile)
+	$(COMPOSE) run --rm worker python -m dbcore.worker --reconcile
+
+test: ## Run the API pytest suite against a disposable Postgres (no stack needed)
+	sh deploy/test.sh
 
 shell-api: ## Shell into the api container
 	$(COMPOSE) exec api sh

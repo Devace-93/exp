@@ -114,9 +114,6 @@ const ptPT: PartialCatalog = {
   "billing.annualSave": "(poupe ~20%)",
   "billing.featUsers": "{n} utilizadores",
   "billing.processing": "A processar…",
-  "billing.notConfigured":
-    "A faturação ainda não está configurada (falta VITE_REVENUECAT_PUBLIC_KEY). Adicione a sua chave pública do RevenueCat Web Billing ao .env e reconstrua a imagem web.",
-  "billing.signInAgain": "Inicie sessão novamente para fazer upgrade.",
   "billing.openingCheckout": "A abrir o checkout seguro…",
   "billing.activating": "Pagamento concluído. A ativar o seu plano…",
   "billing.nowOnPlan": "Está agora no plano {plan}! 🎉",

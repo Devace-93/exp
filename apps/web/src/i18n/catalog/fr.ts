@@ -237,13 +237,17 @@ const fr: PartialCatalog = {
   "sponsors.emptyBody": "Chaque abonné Pro / Supporter obtient une place ici et un badge à intégrer.",
   "sponsors.emptyBodyEarly":
     "Les abonnements Supporter ouvriront en même temps que les forfaits payants, après l'accès anticipé. D'ici là, chaque compte est gratuit.",
-  "sponsors.tierSupporter": "Supporter {tier}",
   "sponsors.badgeTitle": "Le badge supporter",
   "sponsors.badgeBody": "Les supporters Pro reçoivent un badge à intégrer sur leur site ou README :",
   "sponsors.badgeBodyEarly": "Les supporters Pro recevront un badge à intégrer sur leur site ou README :",
   "sponsors.badgeLabel": "Supporter exp",
   "sponsors.readPlans": "En savoir plus sur les forfaits à venir",
   "sponsors.become": "Devenir supporter",
+  "sponsors.tierPro": "Soutien Pro",
+  "sponsors.tierTeam": "Soutien Team",
+  "sponsors.tierDonor": "Soutien",
+  "sponsors.since": "depuis {date}",
+  "sponsors.donateIntro": "Vous préférez un don ponctuel ? Offrez-moi un café : les donateurs qui l'acceptent apparaissent aussi ici.",
 
   // Early-access banner
   "early.bannerTitle": "Accès anticipé.",
@@ -520,12 +524,9 @@ const fr: PartialCatalog = {
   "billing.currentPlan": "Forfait actuel",
   "billing.processing": "Traitement…",
   "billing.upgradeTo": "Passer à {plan}",
-  "billing.processedBy": "Les paiements sont traités par RevenueCat (Stripe).",
+  "billing.processedBy": "Les paiements sont gérés par le portail de paiement 3m4 (Stripe).",
   "billing.entitlementsPrefix": "Les entitlements",
   "billing.entitlementsSuffix": "sont associés à votre forfait automatiquement.",
-  "billing.notConfigured":
-    "La facturation n'est pas encore configurée (VITE_REVENUECAT_PUBLIC_KEY manquante). Ajoutez votre clé publique RevenueCat Web Billing dans .env et reconstruisez l'image web.",
-  "billing.signInAgain": "Veuillez vous reconnecter pour changer de forfait.",
   "billing.openingCheckout": "Ouverture du paiement sécurisé…",
   "billing.activating": "Paiement effectué. Activation de votre forfait…",
   "billing.nowOnPlan": "Vous êtes maintenant sur le forfait {plan} ! 🎉",
@@ -533,5 +534,12 @@ const fr: PartialCatalog = {
   "billing.cancelled": "Paiement annulé.",
   "billing.checkoutFailed": "Échec du paiement : {msg}",
   "billing.unknownError": "erreur inconnue",
+  "billing.manage": "Gérer l'abonnement",
+  "billing.manageHint": "Changez de moyen de paiement, téléchargez vos factures ou résiliez dans le portail client.",
+  "billing.donate": "Offrez-moi un café",
+  "billing.donateThanks": "Merci de soutenir exp !",
+  "billing.notPurchasable": "Ce forfait n'est pas encore disponible à l'achat. Contactez-nous si vous en avez besoin.",
+  "billing.periodEnd": "La période en cours se termine le {date}",
+  "billing.cancelsAtEnd": "Résiliation à la fin de la période en cours.",
 };
 export default fr;

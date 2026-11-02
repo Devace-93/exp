@@ -4,7 +4,7 @@
 requester. Backend enforcement is the source of truth — the frontend only
 mirrors these switches (delivered via ``/auth/me`` and ``GET /api/features``).
 
-Never gate: login, the RevenueCat webhook. The evaluation API is gated by
+Never gate: login, the payments.3m4.net webhook. The evaluation API is gated by
 ``evaluation-api`` as an emergency kill switch (503), never as a feature gate.
 """
 from __future__ import annotations

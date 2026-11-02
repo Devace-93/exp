@@ -237,13 +237,17 @@ const id: PartialCatalog = {
   "sponsors.emptyBody": "Setiap pelanggan Pro / Supporter mendapat tempat di sini dan lencana yang bisa disematkan.",
   "sponsors.emptyBodyEarly":
     "Langganan Supporter dibuka bersamaan dengan paket berbayar, setelah akses awal. Sampai saat itu, setiap akun gratis.",
-  "sponsors.tierSupporter": "Supporter {tier}",
   "sponsors.badgeTitle": "Lencana supporter",
   "sponsors.badgeBody": "Supporter Pro mendapat lencana yang bisa disematkan di situs atau README mereka:",
   "sponsors.badgeBodyEarly": "Supporter Pro akan mendapat lencana yang bisa disematkan di situs atau README mereka:",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "Baca tentang paket yang akan datang",
   "sponsors.become": "Jadi supporter",
+  "sponsors.tierPro": "Pendukung Pro",
+  "sponsors.tierTeam": "Pendukung Team",
+  "sponsors.tierDonor": "Pendukung",
+  "sponsors.since": "sejak {date}",
+  "sponsors.donateIntro": "Lebih suka sekali saja? Traktir saya kopi — donatur yang setuju juga tampil di sini.",
 
   // Early-access banner
   "early.bannerTitle": "Akses awal.",
@@ -520,12 +524,9 @@ const id: PartialCatalog = {
   "billing.currentPlan": "Paket saat ini",
   "billing.processing": "Memproses…",
   "billing.upgradeTo": "Tingkatkan ke {plan}",
-  "billing.processedBy": "Pembayaran diproses oleh RevenueCat (Stripe).",
+  "billing.processedBy": "Pembayaran diproses oleh portal pembayaran 3m4 (Stripe).",
   "billing.entitlementsPrefix": "Entitlement",
   "billing.entitlementsSuffix": "dipetakan ke paket Anda secara otomatis.",
-  "billing.notConfigured":
-    "Penagihan belum dikonfigurasi (VITE_REVENUECAT_PUBLIC_KEY tidak ada). Tambahkan kunci publik RevenueCat Web Billing Anda ke .env dan build ulang image web.",
-  "billing.signInAgain": "Silakan masuk lagi untuk meningkatkan paket.",
   "billing.openingCheckout": "Membuka checkout aman…",
   "billing.activating": "Pembayaran selesai — mengaktifkan paket Anda…",
   "billing.nowOnPlan": "Anda sekarang memakai paket {plan}! 🎉",
@@ -533,5 +534,12 @@ const id: PartialCatalog = {
   "billing.cancelled": "Checkout dibatalkan.",
   "billing.checkoutFailed": "Checkout gagal: {msg}",
   "billing.unknownError": "kesalahan tak dikenal",
+  "billing.manage": "Kelola langganan",
+  "billing.manageHint": "Ubah metode pembayaran, unduh faktur, atau batalkan di portal pelanggan.",
+  "billing.donate": "Traktir saya kopi",
+  "billing.donateThanks": "Terima kasih telah mendukung exp!",
+  "billing.notPurchasable": "Paket ini belum bisa dibeli. Hubungi kami jika Anda membutuhkannya.",
+  "billing.periodEnd": "Periode saat ini berakhir pada {date}",
+  "billing.cancelsAtEnd": "Dibatalkan di akhir periode saat ini.",
 };
 export default id;

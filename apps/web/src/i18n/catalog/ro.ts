@@ -237,13 +237,17 @@ const ro: PartialCatalog = {
   "sponsors.emptyBody": "Fiecare abonat Pro / Supporter primește un loc aici și o insignă încorporabilă.",
   "sponsors.emptyBodyEarly":
     "Abonamentele Supporter se deschid odată cu planurile plătite, după accesul timpuriu. Până atunci fiecare cont este gratuit.",
-  "sponsors.tierSupporter": "Susținător {tier}",
   "sponsors.badgeTitle": "Insigna de susținător",
   "sponsors.badgeBody": "Susținătorii Pro primesc o insignă încorporabilă pentru site sau README:",
   "sponsors.badgeBodyEarly": "Susținătorii Pro vor primi o insignă încorporabilă pentru site sau README:",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "Citește despre planurile viitoare",
   "sponsors.become": "Devino susținător",
+  "sponsors.tierPro": "Susținător Pro",
+  "sponsors.tierTeam": "Susținător Team",
+  "sponsors.tierDonor": "Susținător",
+  "sponsors.since": "din {date}",
+  "sponsors.donateIntro": "Preferi o donație unică? Fă-mi cinste cu o cafea – donatorii care acceptă apar și ei aici.",
 
   // Early-access banner
   "early.bannerTitle": "Acces timpuriu.",
@@ -520,12 +524,9 @@ const ro: PartialCatalog = {
   "billing.currentPlan": "Planul curent",
   "billing.processing": "Se procesează…",
   "billing.upgradeTo": "Treci la {plan}",
-  "billing.processedBy": "Plățile sunt procesate de RevenueCat (Stripe).",
+  "billing.processedBy": "Plățile sunt gestionate de portalul de plăți 3m4 (Stripe).",
   "billing.entitlementsPrefix": "Drepturile",
   "billing.entitlementsSuffix": "se asociază automat planului tău.",
-  "billing.notConfigured":
-    "Facturarea nu este configurată încă (lipsește VITE_REVENUECAT_PUBLIC_KEY). Adaugă cheia publică RevenueCat Web Billing în .env și reconstruiește imaginea web.",
-  "billing.signInAgain": "Te rugăm să te autentifici din nou pentru upgrade.",
   "billing.openingCheckout": "Se deschide plata securizată…",
   "billing.activating": "Plată finalizată — se activează planul tău…",
   "billing.nowOnPlan": "Acum ești pe planul {plan}! 🎉",
@@ -533,5 +534,12 @@ const ro: PartialCatalog = {
   "billing.cancelled": "Plată anulată.",
   "billing.checkoutFailed": "Plata a eșuat: {msg}",
   "billing.unknownError": "eroare necunoscută",
+  "billing.manage": "Gestionează abonamentul",
+  "billing.manageHint": "Schimbă metoda de plată, descarcă facturi sau anulează din portalul clientului.",
+  "billing.donate": "Fă-mi cinste cu o cafea",
+  "billing.donateThanks": "Mulțumim că susții exp!",
+  "billing.notPurchasable": "Acest plan nu poate fi cumpărat încă. Scrie-ne dacă ai nevoie de el.",
+  "billing.periodEnd": "Perioada curentă se încheie pe {date}",
+  "billing.cancelsAtEnd": "Se anulează la sfârșitul perioadei curente.",
 };
 export default ro;

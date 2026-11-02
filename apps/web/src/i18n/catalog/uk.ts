@@ -237,13 +237,17 @@ const uk: PartialCatalog = {
   "sponsors.emptyBody": "Кожен підписник Pro / Supporter отримує тут місце та значок для вбудовування.",
   "sponsors.emptyBodyEarly":
     "Підписки Supporter відкриються разом із платними тарифами, після раннього доступу. До того часу кожен акаунт безкоштовний.",
-  "sponsors.tierSupporter": "Прихильник {tier}",
   "sponsors.badgeTitle": "Значок прихильника",
   "sponsors.badgeBody": "Прихильники Pro отримують значок для вбудовування на сайт або в README:",
   "sponsors.badgeBodyEarly": "Прихильники Pro отримають значок для вбудовування на сайт або в README:",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "Прочитати про майбутні тарифи",
   "sponsors.become": "Стати прихильником",
+  "sponsors.tierPro": "Підтримувач Pro",
+  "sponsors.tierTeam": "Підтримувач Team",
+  "sponsors.tierDonor": "Підтримувач",
+  "sponsors.since": "з {date}",
+  "sponsors.donateIntro": "Волієте разово? Пригостіть мене кавою — донори, які погодилися, теж з’являються тут.",
 
   // Early-access banner
   "early.bannerTitle": "Ранній доступ.",
@@ -520,12 +524,9 @@ const uk: PartialCatalog = {
   "billing.currentPlan": "Поточний тариф",
   "billing.processing": "Обробка…",
   "billing.upgradeTo": "Перейти на {plan}",
-  "billing.processedBy": "Платежі обробляє RevenueCat (Stripe).",
+  "billing.processedBy": "Платежі обробляє платіжний портал 3m4 (Stripe).",
   "billing.entitlementsPrefix": "Права",
   "billing.entitlementsSuffix": "автоматично зіставляються з вашим тарифом.",
-  "billing.notConfigured":
-    "Оплату ще не налаштовано (відсутній VITE_REVENUECAT_PUBLIC_KEY). Додайте публічний ключ RevenueCat Web Billing у .env і перезберіть web-образ.",
-  "billing.signInAgain": "Увійдіть ще раз, щоб покращити тариф.",
   "billing.openingCheckout": "Відкриваємо безпечну оплату…",
   "billing.activating": "Оплату завершено — активуємо ваш тариф…",
   "billing.nowOnPlan": "Тепер у вас тариф {plan}! 🎉",
@@ -533,5 +534,12 @@ const uk: PartialCatalog = {
   "billing.cancelled": "Оплату скасовано.",
   "billing.checkoutFailed": "Помилка оплати: {msg}",
   "billing.unknownError": "невідома помилка",
+  "billing.manage": "Керувати підпискою",
+  "billing.manageHint": "Змініть спосіб оплати, завантажте рахунки або скасуйте підписку в порталі клієнта.",
+  "billing.donate": "Пригостіть мене кавою",
+  "billing.donateThanks": "Дякуємо за підтримку exp!",
+  "billing.notPurchasable": "Цей план поки що не можна придбати. Напишіть нам, якщо він вам потрібен.",
+  "billing.periodEnd": "Поточний період завершується {date}",
+  "billing.cancelsAtEnd": "Скасовується наприкінці поточного періоду.",
 };
 export default uk;

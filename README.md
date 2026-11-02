@@ -32,7 +32,7 @@ Agents get the same powers through a role-scoped API and an MCP server. MIT.
 ```
 Caddy (reverse proxy)
  ├─ web   Qwik City (Bun)  landing + /info + /blog + /sponsors + dashboard
- ├─ api   Flask            auth, projects, environments, flags, evaluation, keys, audit, billing webhooks
+ ├─ api   Flask            auth, projects, environments, flags, evaluation, keys, audit, billing webhooks (payments.3m4.net)
  └─ mcp   Node (MCP)       AI-agent access: tools over the API, RBAC, confirmations, audit
       Postgres (source of truth) · Redis (rate limits)
 ```

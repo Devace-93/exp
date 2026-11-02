@@ -71,5 +71,9 @@
     "team": "team",
     "pro": "pro"
   },
-  "entitlement_priority": ["team", "pro"]
+  "entitlement_priority": ["team", "pro"],
+  "_price_keys": "Product keys at payments.3m4.net (packages/shared/catalog.json there: app `exp`) per plan and period; the Stripe lookup keys are `exp_<key>`. The billing page opens the portal's /subscribe with these; `team` has no product yet, so it is not purchasable.",
+  "price_keys": {
+    "pro": { "monthly": "pro_monthly", "annual": "pro_annual" }
+  }
 }

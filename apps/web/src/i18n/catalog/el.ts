@@ -237,13 +237,17 @@ const el: PartialCatalog = {
   "sponsors.emptyBody": "Κάθε συνδρομητής Pro / Supporter παίρνει θέση εδώ και ενσωματώσιμο σήμα.",
   "sponsors.emptyBodyEarly":
     "Οι συνδρομές Supporter ανοίγουν μαζί με τα πληρωμένα πλάνα, μετά την πρώιμη πρόσβαση. Μέχρι τότε κάθε λογαριασμός είναι δωρεάν.",
-  "sponsors.tierSupporter": "Υποστηρικτής {tier}",
   "sponsors.badgeTitle": "Το σήμα υποστηρικτή",
   "sponsors.badgeBody": "Οι υποστηρικτές Pro παίρνουν ενσωματώσιμο σήμα για τον ιστότοπο ή το README τους:",
   "sponsors.badgeBodyEarly": "Οι υποστηρικτές Pro θα πάρουν ενσωματώσιμο σήμα για τον ιστότοπο ή το README τους:",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "Διάβασε για τα επερχόμενα πλάνα",
   "sponsors.become": "Γίνε υποστηρικτής",
+  "sponsors.tierPro": "Υποστηρικτής Pro",
+  "sponsors.tierTeam": "Υποστηρικτής Team",
+  "sponsors.tierDonor": "Υποστηρικτής",
+  "sponsors.since": "από {date}",
+  "sponsors.donateIntro": "Προτιμάτε εφάπαξ; Κεράστε με έναν καφέ – οι δωρητές που συμφωνούν εμφανίζονται κι αυτοί εδώ.",
 
   // Early-access banner
   "early.bannerTitle": "Πρώιμη πρόσβαση.",
@@ -520,12 +524,9 @@ const el: PartialCatalog = {
   "billing.currentPlan": "Τρέχον πλάνο",
   "billing.processing": "Επεξεργασία…",
   "billing.upgradeTo": "Αναβάθμιση σε {plan}",
-  "billing.processedBy": "Οι πληρωμές διεκπεραιώνονται από το RevenueCat (Stripe).",
+  "billing.processedBy": "Οι πληρωμές γίνονται μέσω της πύλης πληρωμών 3m4 (Stripe).",
   "billing.entitlementsPrefix": "Τα δικαιώματα",
   "billing.entitlementsSuffix": "αντιστοιχίζονται αυτόματα στο πλάνο σου.",
-  "billing.notConfigured":
-    "Οι χρεώσεις δεν έχουν ρυθμιστεί ακόμα (λείπει το VITE_REVENUECAT_PUBLIC_KEY). Πρόσθεσε το δημόσιο κλειδί RevenueCat Web Billing στο .env και ξαναχτίσε το web image.",
-  "billing.signInAgain": "Συνδέσου ξανά για να αναβαθμίσεις.",
   "billing.openingCheckout": "Άνοιγμα ασφαλούς πληρωμής…",
   "billing.activating": "Η πληρωμή ολοκληρώθηκε — ενεργοποίηση του πλάνου σου…",
   "billing.nowOnPlan": "Είσαι τώρα στο πλάνο {plan}! 🎉",
@@ -533,5 +534,12 @@ const el: PartialCatalog = {
   "billing.cancelled": "Η πληρωμή ακυρώθηκε.",
   "billing.checkoutFailed": "Η πληρωμή απέτυχε: {msg}",
   "billing.unknownError": "άγνωστο σφάλμα",
+  "billing.manage": "Διαχείριση συνδρομής",
+  "billing.manageHint": "Αλλάξτε τρόπο πληρωμής, κατεβάστε τιμολόγια ή ακυρώστε από την πύλη πελατών.",
+  "billing.donate": "Κεράστε με έναν καφέ",
+  "billing.donateThanks": "Ευχαριστούμε που στηρίζετε το exp!",
+  "billing.notPurchasable": "Αυτό το πλάνο δεν είναι ακόμη διαθέσιμο για αγορά. Επικοινωνήστε μαζί μας αν το χρειάζεστε.",
+  "billing.periodEnd": "Η τρέχουσα περίοδος λήγει στις {date}",
+  "billing.cancelsAtEnd": "Ακυρώνεται στο τέλος της τρέχουσας περιόδου.",
 };
 export default el;

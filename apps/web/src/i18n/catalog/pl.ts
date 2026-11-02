@@ -237,13 +237,17 @@ const pl: PartialCatalog = {
   "sponsors.emptyBody": "Każdy subskrybent Pro / Supporter dostaje tu miejsce i odznakę do osadzenia.",
   "sponsors.emptyBodyEarly":
     "Subskrypcje Supporter ruszą razem z płatnymi planami, po wczesnym dostępie. Do tego czasu każde konto jest darmowe.",
-  "sponsors.tierSupporter": "Wspierający {tier}",
   "sponsors.badgeTitle": "Odznaka wspierającego",
   "sponsors.badgeBody": "Wspierający Pro dostają odznakę do osadzenia na stronie lub w README:",
   "sponsors.badgeBodyEarly": "Wspierający Pro dostaną odznakę do osadzenia na stronie lub w README:",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "Przeczytaj o nadchodzących planach",
   "sponsors.become": "Zostań wspierającym",
+  "sponsors.tierPro": "Wspierający Pro",
+  "sponsors.tierTeam": "Wspierający Team",
+  "sponsors.tierDonor": "Wspierający",
+  "sponsors.since": "od {date}",
+  "sponsors.donateIntro": "Wolisz jednorazowo? Postaw mi kawę – darczyńcy, którzy wyrażą zgodę, też pojawią się tutaj.",
 
   // Early-access banner
   "early.bannerTitle": "Wczesny dostęp.",
@@ -520,12 +524,9 @@ const pl: PartialCatalog = {
   "billing.currentPlan": "Obecny plan",
   "billing.processing": "Przetwarzanie…",
   "billing.upgradeTo": "Przejdź na {plan}",
-  "billing.processedBy": "Płatności obsługuje RevenueCat (Stripe).",
+  "billing.processedBy": "Płatności obsługuje portal płatności 3m4 (Stripe).",
   "billing.entitlementsPrefix": "Uprawnienia",
   "billing.entitlementsSuffix": "są automatycznie mapowane na Twój plan.",
-  "billing.notConfigured":
-    "Płatności nie są jeszcze skonfigurowane (brak VITE_REVENUECAT_PUBLIC_KEY). Dodaj publiczny klucz RevenueCat Web Billing do .env i przebuduj obraz web.",
-  "billing.signInAgain": "Zaloguj się ponownie, aby ulepszyć plan.",
   "billing.openingCheckout": "Otwieranie bezpiecznej płatności…",
   "billing.activating": "Płatność zakończona — aktywujemy Twój plan…",
   "billing.nowOnPlan": "Masz teraz plan {plan}! 🎉",
@@ -533,5 +534,12 @@ const pl: PartialCatalog = {
   "billing.cancelled": "Płatność anulowana.",
   "billing.checkoutFailed": "Płatność nie powiodła się: {msg}",
   "billing.unknownError": "nieznany błąd",
+  "billing.manage": "Zarządzaj subskrypcją",
+  "billing.manageHint": "Zmień metodę płatności, pobierz faktury lub anuluj w portalu klienta.",
+  "billing.donate": "Postaw mi kawę",
+  "billing.donateThanks": "Dziękujemy za wsparcie exp!",
+  "billing.notPurchasable": "Tego planu nie można jeszcze kupić. Napisz do nas, jeśli go potrzebujesz.",
+  "billing.periodEnd": "Bieżący okres kończy się {date}",
+  "billing.cancelsAtEnd": "Anulowanie na koniec bieżącego okresu.",
 };
 export default pl;

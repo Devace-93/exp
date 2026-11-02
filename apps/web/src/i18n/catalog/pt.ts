@@ -237,13 +237,17 @@ const pt: PartialCatalog = {
   "sponsors.emptyBody": "Cada assinante Pro / Supporter ganha um lugar aqui e um selo para incorporar.",
   "sponsors.emptyBodyEarly":
     "As assinaturas Supporter abrem junto com os planos pagos, após o acesso antecipado. Até lá, toda conta é grátis.",
-  "sponsors.tierSupporter": "Supporter {tier}",
   "sponsors.badgeTitle": "O selo de supporter",
   "sponsors.badgeBody": "Supporters Pro ganham um selo para incorporar no site ou README:",
   "sponsors.badgeBodyEarly": "Supporters Pro vão ganhar um selo para incorporar no site ou README:",
   "sponsors.badgeLabel": "Supporter do exp",
   "sponsors.readPlans": "Leia sobre os próximos planos",
   "sponsors.become": "Seja um supporter",
+  "sponsors.tierPro": "Apoiador Pro",
+  "sponsors.tierTeam": "Apoiador Team",
+  "sponsors.tierDonor": "Apoiador",
+  "sponsors.since": "desde {date}",
+  "sponsors.donateIntro": "Prefere algo avulso? Me pague um café: quem doa e autoriza também aparece aqui.",
 
   // Early-access banner
   "early.bannerTitle": "Acesso antecipado.",
@@ -520,12 +524,9 @@ const pt: PartialCatalog = {
   "billing.currentPlan": "Plano atual",
   "billing.processing": "Processando…",
   "billing.upgradeTo": "Fazer upgrade para {plan}",
-  "billing.processedBy": "Os pagamentos são processados pelo RevenueCat (Stripe).",
+  "billing.processedBy": "Os pagamentos são processados pelo portal de pagamentos da 3m4 (Stripe).",
   "billing.entitlementsPrefix": "Os entitlements",
   "billing.entitlementsSuffix": "são mapeados para o seu plano automaticamente.",
-  "billing.notConfigured":
-    "A cobrança ainda não está configurada (falta VITE_REVENUECAT_PUBLIC_KEY). Adicione sua chave pública do RevenueCat Web Billing ao .env e reconstrua a imagem web.",
-  "billing.signInAgain": "Entre novamente para fazer upgrade.",
   "billing.openingCheckout": "Abrindo o checkout seguro…",
   "billing.activating": "Pagamento concluído. Ativando seu plano…",
   "billing.nowOnPlan": "Você agora está no plano {plan}! 🎉",
@@ -533,5 +534,12 @@ const pt: PartialCatalog = {
   "billing.cancelled": "Checkout cancelado.",
   "billing.checkoutFailed": "Falha no checkout: {msg}",
   "billing.unknownError": "erro desconhecido",
+  "billing.manage": "Gerenciar assinatura",
+  "billing.manageHint": "Altere o método de pagamento, baixe faturas ou cancele no portal do cliente.",
+  "billing.donate": "Me pague um café",
+  "billing.donateThanks": "Obrigado por apoiar o exp!",
+  "billing.notPurchasable": "Este plano ainda não pode ser comprado. Fale com a gente se precisar dele.",
+  "billing.periodEnd": "O período atual termina em {date}",
+  "billing.cancelsAtEnd": "Cancela ao fim do período atual.",
 };
 export default pt;

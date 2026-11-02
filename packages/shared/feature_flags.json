@@ -34,7 +34,7 @@
       "created": "2026-10-15"
     },
     "billing": {
-      "description": "Paywall, checkout and /billing/offerings. The RevenueCat webhook is NEVER gated.",
+      "description": "Paywall (the dashboard billing page) and GET /billing/status. The payments.3m4.net webhook is NEVER gated.",
       "default": true,
       "created": "2026-10-15"
     }

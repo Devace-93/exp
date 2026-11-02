@@ -236,13 +236,17 @@ const zh: PartialCatalog = {
   "sponsors.emptyBody": "每一位 Pro / Supporter 订阅者都会在这里获得一席之地和一枚可嵌入的徽章。",
   "sponsors.emptyBodyEarly":
     "Supporter 订阅将在抢先体验结束后与付费方案一同开放。在此之前，所有账户均免费。",
-  "sponsors.tierSupporter": "{tier} 赞助者",
   "sponsors.badgeTitle": "赞助者徽章",
   "sponsors.badgeBody": "Pro 赞助者可获得可嵌入网站或 README 的徽章：",
   "sponsors.badgeBodyEarly": "Pro 赞助者将获得可嵌入网站或 README 的徽章：",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "了解即将推出的方案",
   "sponsors.become": "成为赞助者",
+  "sponsors.tierPro": "Pro 支持者",
+  "sponsors.tierTeam": "Team 支持者",
+  "sponsors.tierDonor": "支持者",
+  "sponsors.since": "自 {date} 起",
+  "sponsors.donateIntro": "更想一次性支持？请我喝杯咖啡——同意公开的捐赠者也会出现在这里。",
 
   // Early-access banner
   "early.bannerTitle": "抢先体验。",
@@ -519,12 +523,9 @@ const zh: PartialCatalog = {
   "billing.currentPlan": "当前方案",
   "billing.processing": "处理中…",
   "billing.upgradeTo": "升级到 {plan}",
-  "billing.processedBy": "付款由 RevenueCat (Stripe) 处理。",
+  "billing.processedBy": "付款由 3m4 支付门户（Stripe）处理。",
   "billing.entitlementsPrefix": "权益",
   "billing.entitlementsSuffix": "会自动映射到你的方案。",
-  "billing.notConfigured":
-    "账单尚未配置（缺少 VITE_REVENUECAT_PUBLIC_KEY）。请把你的 RevenueCat Web Billing 公钥添加到 .env 并重新构建 web 镜像。",
-  "billing.signInAgain": "请重新登录后再升级。",
   "billing.openingCheckout": "正在打开安全结账页面…",
   "billing.activating": "付款完成 — 正在激活你的方案…",
   "billing.nowOnPlan": "你现在使用的是 {plan} 方案！🎉",
@@ -532,5 +533,12 @@ const zh: PartialCatalog = {
   "billing.cancelled": "已取消结账。",
   "billing.checkoutFailed": "结账失败：{msg}",
   "billing.unknownError": "未知错误",
+  "billing.manage": "管理订阅",
+  "billing.manageHint": "在客户门户中更换付款方式、下载发票或取消订阅。",
+  "billing.donate": "请我喝杯咖啡",
+  "billing.donateThanks": "感谢你支持 exp！",
+  "billing.notPurchasable": "此方案暂不可购买。如有需要请联系我们。",
+  "billing.periodEnd": "当前周期于 {date} 结束",
+  "billing.cancelsAtEnd": "将在当前周期结束时取消。",
 };
 export default zh;

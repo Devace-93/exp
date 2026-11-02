@@ -236,13 +236,17 @@ const ja: PartialCatalog = {
   "sponsors.emptyBody": "Pro / Supporterの購読者全員がここに掲載され、埋め込み可能なバッジを受け取れます。",
   "sponsors.emptyBodyEarly":
     "サポーター購読は早期アクセス終了後、有料プランと同時に開始します。それまではすべてのアカウントが無料です。",
-  "sponsors.tierSupporter": "{tier}サポーター",
   "sponsors.badgeTitle": "サポーターバッジ",
   "sponsors.badgeBody": "Proサポーターは、サイトやREADMEに埋め込めるバッジを受け取れます:",
   "sponsors.badgeBodyEarly": "Proサポーターは、サイトやREADMEに埋め込めるバッジを受け取れる予定です:",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "今後のプランについて読む",
   "sponsors.become": "サポーターになる",
+  "sponsors.tierPro": "Pro サポーター",
+  "sponsors.tierTeam": "Team サポーター",
+  "sponsors.tierDonor": "サポーター",
+  "sponsors.since": "{date} から",
+  "sponsors.donateIntro": "単発がお好みですか？コーヒーをおごってください。同意した寄付者もここに表示されます。",
 
   // Early-access banner
   "early.bannerTitle": "早期アクセス。",
@@ -519,12 +523,9 @@ const ja: PartialCatalog = {
   "billing.currentPlan": "現在のプラン",
   "billing.processing": "処理中…",
   "billing.upgradeTo": "{plan}にアップグレード",
-  "billing.processedBy": "支払いはRevenueCat (Stripe) が処理します。",
+  "billing.processedBy": "決済は 3m4 の決済ポータル（Stripe）が処理します。",
   "billing.entitlementsPrefix": "エンタイトルメント",
   "billing.entitlementsSuffix": "は自動的にプランに対応付けられます。",
-  "billing.notConfigured":
-    "請求はまだ設定されていません (VITE_REVENUECAT_PUBLIC_KEYがありません)。RevenueCat Web Billingの公開キーを.envに追加し、webイメージを再ビルドしてください。",
-  "billing.signInAgain": "アップグレードするには再度サインインしてください。",
   "billing.openingCheckout": "安全なチェックアウトを開いています…",
   "billing.activating": "支払い完了 — プランを有効化しています…",
   "billing.nowOnPlan": "{plan}プランになりました! 🎉",
@@ -532,5 +533,12 @@ const ja: PartialCatalog = {
   "billing.cancelled": "チェックアウトをキャンセルしました。",
   "billing.checkoutFailed": "チェックアウトに失敗しました: {msg}",
   "billing.unknownError": "不明なエラー",
+  "billing.manage": "サブスクリプションを管理",
+  "billing.manageHint": "カスタマーポータルで支払い方法の変更、請求書のダウンロード、解約ができます。",
+  "billing.donate": "コーヒーをおごる",
+  "billing.donateThanks": "exp を支援していただきありがとうございます！",
+  "billing.notPurchasable": "このプランはまだ購入できません。必要な場合はお問い合わせください。",
+  "billing.periodEnd": "現在の期間は {date} に終了します",
+  "billing.cancelsAtEnd": "現在の期間の終了時に解約されます。",
 };
 export default ja;
