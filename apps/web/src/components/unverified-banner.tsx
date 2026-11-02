@@ -17,7 +17,7 @@ export const UnverifiedBanner = component$<{ email: string }>(({ email }) => {
     >
       <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2">
         <span>{tr(i18n, "auth.unverifiedBanner", { email })}</span>
-        <a href={verifyUrl()} class="font-medium underline hover:no-underline" data-testid="resend-verification">
+        <a href={verifyUrl(undefined, i18n.lang)} class="font-medium underline hover:no-underline" data-testid="resend-verification">
           {tr(i18n, "auth.resendAt")}
         </a>
       </div>

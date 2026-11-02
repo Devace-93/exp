@@ -34,10 +34,20 @@ class Config:
     app_base_url: str = os.getenv("APP_BASE_URL", "http://localhost:8081")
     dashboard_url: str = os.getenv("DASHBOARD_URL", "http://localhost:8081")
 
-    # billing
+    # billing: the hosted portal payments.3m4.net (see CONTRACT.md "Billing").
+    # exp never talks to Stripe: it sends users to the portal, receives its
+    # signed push webhooks and pulls entitlements with a service key.
+    # PAYMENTS_URL is the public origin (hosted pages, supporters list);
+    # PAYMENTS_INTERNAL_URL is where the api/worker containers reach the
+    # payments api (the `edge` docker network: http://payments-api-1:5000).
     billing_enabled: bool = _bool("BILLING_ENABLED", True)
-    revenuecat_webhook_token: str = os.getenv("REVENUECAT_WEBHOOK_AUTH_TOKEN", "")
-    revenuecat_api_key: str = os.getenv("REVENUECAT_SECRET_API_KEY", "")
+    payments_url: str = _url("PAYMENTS_URL", "https://payments.3m4.net")
+    payments_internal_url: str = _url("PAYMENTS_INTERNAL_URL", "") or _url("PAYMENTS_URL", "https://payments.3m4.net")
+    # `python -m dbcore.cli app-key exp <webhook_url>` on the payments box
+    # prints both once: the service key (pull) and the webhook secret (push).
+    payments_service_key: str = os.getenv("PAYMENTS_SERVICE_KEY", "")
+    payments_webhook_secret: str = os.getenv("PAYMENTS_WEBHOOK_SECRET", "")
+    payments_app: str = os.getenv("PAYMENTS_APP", "exp")
 
     # posthog
     posthog_api_key: str = os.getenv("POSTHOG_API_KEY", "")

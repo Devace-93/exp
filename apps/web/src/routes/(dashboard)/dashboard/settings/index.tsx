@@ -161,7 +161,7 @@ export default component$(() => {
       <h1 class="text-2xl font-bold text-slate-900">{tr(i18n, "keys.title")}</h1>
       {/* Identity (e-mail, password, avatar, linked logins) is managed at accounts. */}
       <p class="mt-2 text-sm text-slate-500">
-        <a href={profileUrl()} class="font-medium text-primary-600 hover:underline" data-testid="profile-link">
+        <a href={profileUrl(i18n.lang)} class="font-medium text-primary-600 hover:underline" data-testid="profile-link">
           {tr(i18n, "nav.profile")} →
         </a>
       </p>

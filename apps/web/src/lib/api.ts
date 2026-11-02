@@ -18,6 +18,7 @@ import type {
   ApiKey,
   ApiKeyRole,
   AuditEvent,
+  BillingStatus,
   CopyResult,
   Environment,
   Evaluation,
@@ -114,6 +115,7 @@ const p = (id: string) => `/projects/${encodeURIComponent(id)}`;
 export const api = {
   /* ─── Auth (identity lives at accounts.3m4.net; this is the tenant view) ── */
   me: () => apiFetch<MeResponse>("/auth/me"),
+  billingStatus: () => apiFetch<BillingStatus>("/billing/status"),
 
   /* ─── Features (exp's own switches; public, used by anonymous pages) ──── */
   features: () =>

@@ -12,6 +12,7 @@
  *   const session = createSessionClient("https://accounts.3m4.net");
  *   const user = await session.getSession();          // User | null
  *   location.assign(session.loginUrl());              // → hosted login, back here after
+ *   location.assign(session.loginUrl(undefined, "es-MX")); // …opened in the app's language
  *   const res = await session.fetchWithSession("/api/links");  // this app's own API
  */
 
@@ -22,6 +23,8 @@ export interface SessionUser {
   handle: string;
   name: string | null;
   avatar_url: string;
+  /** Lowercase ISO 4217 (usd | mxn | eur); null / absent when never set. Same value as the `currency` JWT claim. */
+  preferred_currency?: string | null;
   created_at?: string;
 }
 
@@ -34,10 +37,15 @@ export interface SessionClient {
   refresh(): Promise<boolean>;
   /** Revoke the session (everywhere with `all`) and clear the cache. */
   logout(all?: boolean): Promise<void>;
-  loginUrl(returnTo?: string): string;
-  signupUrl(returnTo?: string): string;
-  profileUrl(): string;
-  logoutUrl(returnTo?: string): string;
+  /**
+   * Hosted page URLs with `return_to` (default: the current page). `lang`
+   * (e.g. the app's `localStorage["3m4.lang"]`) is appended as `?lang=` so
+   * accounts opens in the same language; unknown values are ignored there.
+   */
+  loginUrl(returnTo?: string, lang?: string): string;
+  signupUrl(returnTo?: string, lang?: string): string;
+  profileUrl(lang?: string): string;
+  logoutUrl(returnTo?: string, lang?: string): string;
   /**
    * `fetch` with credentials that, on `401 session_expired`, refreshes once and
    * retries. Any other 401 / 403 is returned as-is for the caller to handle
@@ -70,8 +78,8 @@ export function createSessionClient(accountsUrl: string, opts: { cacheMs?: numbe
   let refreshing: Promise<boolean> | null = null;
 
   const here = (): string => (typeof location !== "undefined" ? location.href : "/");
-  const page = (path: string, returnTo?: string): string =>
-    `${origin}${path}?return_to=${encodeURIComponent(returnTo ?? here())}`;
+  const page = (path: string, returnTo?: string, lang?: string): string =>
+    `${origin}${path}?return_to=${encodeURIComponent(returnTo ?? here())}` + (lang ? `&lang=${encodeURIComponent(lang)}` : "");
 
   const refresh = (): Promise<boolean> => {
     if (refreshing) return refreshing;
@@ -132,10 +140,10 @@ export function createSessionClient(accountsUrl: string, opts: { cacheMs?: numbe
         cached = { user: null, at: Date.now() };
       }
     },
-    loginUrl: (rt?: string) => page("/login", rt),
-    signupUrl: (rt?: string) => page("/signup", rt),
-    profileUrl: () => page("/profile"),
-    logoutUrl: (rt?: string) => page("/logout", rt),
+    loginUrl: (rt?: string, lang?: string) => page("/login", rt, lang),
+    signupUrl: (rt?: string, lang?: string) => page("/signup", rt, lang),
+    profileUrl: (lang?: string) => page("/profile", undefined, lang),
+    logoutUrl: (rt?: string, lang?: string) => page("/logout", rt, lang),
     fetchWithSession,
     invalidate() {
       cached = null;

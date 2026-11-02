@@ -8,7 +8,8 @@ interface ImportMetaEnv {
   readonly VITE_INFO_URL?: string;
   readonly VITE_POSTHOG_KEY?: string;
   readonly VITE_POSTHOG_HOST?: string;
-  readonly VITE_REVENUECAT_PUBLIC_KEY?: string;
+  /** Public origin of the payments portal (payments.3m4.net): hosted checkout, Customer Portal, pay.js. */
+  readonly VITE_PAYMENTS_URL?: string;
   readonly VITE_BILLING_ENABLED?: string;
   /** metrics (metrics.3m4.net) project public key; the tracker is rendered only when set. */
   readonly VITE_METRICS_PROJECT_KEY?: string;

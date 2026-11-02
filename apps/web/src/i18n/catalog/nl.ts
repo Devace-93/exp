@@ -237,13 +237,17 @@ const nl: PartialCatalog = {
   "sponsors.emptyBody": "Elke Pro / Supporter-abonnee krijgt hier een plek en een insluitbare badge.",
   "sponsors.emptyBodyEarly":
     "Supporter-abonnementen openen samen met de betaalde abonnementen, na de early access. Tot dan is elk account gratis.",
-  "sponsors.tierSupporter": "{tier}-supporter",
   "sponsors.badgeTitle": "De supporter-badge",
   "sponsors.badgeBody": "Pro-supporters krijgen een insluitbare badge voor hun site of README:",
   "sponsors.badgeBodyEarly": "Pro-supporters gaan een insluitbare badge krijgen voor hun site of README:",
   "sponsors.badgeLabel": "exp-supporter",
   "sponsors.readPlans": "Lees over de komende abonnementen",
   "sponsors.become": "Word supporter",
+  "sponsors.tierPro": "Pro-supporter",
+  "sponsors.tierTeam": "Team-supporter",
+  "sponsors.tierDonor": "Supporter",
+  "sponsors.since": "sinds {date}",
+  "sponsors.donateIntro": "Liever eenmalig? Trakteer me op een koffie – donateurs die dat willen staan hier ook.",
 
   // Early-access banner
   "early.bannerTitle": "Early access.",
@@ -520,12 +524,9 @@ const nl: PartialCatalog = {
   "billing.currentPlan": "Huidig abonnement",
   "billing.processing": "Verwerken…",
   "billing.upgradeTo": "Upgraden naar {plan}",
-  "billing.processedBy": "Betalingen worden verwerkt door RevenueCat (Stripe).",
+  "billing.processedBy": "Betalingen lopen via het 3m4-betaalportaal (Stripe).",
   "billing.entitlementsPrefix": "Entitlements",
   "billing.entitlementsSuffix": "worden automatisch aan je abonnement gekoppeld.",
-  "billing.notConfigured":
-    "Facturering is nog niet geconfigureerd (VITE_REVENUECAT_PUBLIC_KEY ontbreekt). Voeg je publieke RevenueCat Web Billing-sleutel toe aan .env en bouw de web-image opnieuw.",
-  "billing.signInAgain": "Log opnieuw in om te upgraden.",
   "billing.openingCheckout": "Beveiligde checkout openen…",
   "billing.activating": "Betaling voltooid. Je abonnement wordt geactiveerd…",
   "billing.nowOnPlan": "Je hebt nu het abonnement {plan}! 🎉",
@@ -533,5 +534,12 @@ const nl: PartialCatalog = {
   "billing.cancelled": "Checkout geannuleerd.",
   "billing.checkoutFailed": "Checkout mislukt: {msg}",
   "billing.unknownError": "onbekende fout",
+  "billing.manage": "Abonnement beheren",
+  "billing.manageHint": "Wijzig de betaalmethode, download facturen of zeg op in het klantenportaal.",
+  "billing.donate": "Trakteer me op een koffie",
+  "billing.donateThanks": "Bedankt dat je exp steunt!",
+  "billing.notPurchasable": "Dit plan is nog niet te koop. Neem contact op als je het nodig hebt.",
+  "billing.periodEnd": "Huidige periode eindigt op {date}",
+  "billing.cancelsAtEnd": "Wordt aan het einde van de huidige periode opgezegd.",
 };
 export default nl;

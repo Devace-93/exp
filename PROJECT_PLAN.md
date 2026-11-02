@@ -30,7 +30,7 @@ Owner: Enrique Magallon Alvarez. License: **MIT** (open-source core, self-hostab
 - **Phase 2:** import (`exp.project.v1`), targeting rules (attribute matching),
   flag change history and scheduled changes, SDK snippets (JS/Python helpers),
   evaluation cache in Redis, webhooks on state change.
-- **Phase 3:** billing on (RevenueCat), team members and invitations, dogfooding
+- **Phase 3:** billing on (payments.3m4.net portal), team members and invitations, dogfooding
   (exp resolves its own features from an exp project instead of PostHog).
 
 ## 3. Open questions

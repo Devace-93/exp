@@ -237,13 +237,17 @@ const tr: PartialCatalog = {
   "sponsors.emptyBody": "Her Pro / Supporter abonesi burada bir yer ve gömülebilir bir rozet alır.",
   "sponsors.emptyBodyEarly":
     "Supporter abonelikleri, erken erişimden sonra ücretli planlarla birlikte açılacak. O zamana kadar her hesap ücretsiz.",
-  "sponsors.tierSupporter": "{tier} destekçisi",
   "sponsors.badgeTitle": "Destekçi rozeti",
   "sponsors.badgeBody": "Pro destekçileri siteleri veya README'leri için gömülebilir bir rozet alır:",
   "sponsors.badgeBodyEarly": "Pro destekçileri siteleri veya README'leri için gömülebilir bir rozet alacak:",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "Yaklaşan planlar hakkında bilgi alın",
   "sponsors.become": "Destekçi olun",
+  "sponsors.tierPro": "Pro destekçisi",
+  "sponsors.tierTeam": "Team destekçisi",
+  "sponsors.tierDonor": "Destekçi",
+  "sponsors.since": "{date} tarihinden beri",
+  "sponsors.donateIntro": "Tek seferlik mi tercih edersiniz? Bana bir kahve ısmarlayın; izin veren bağışçılar da burada görünür.",
 
   // Early-access banner
   "early.bannerTitle": "Erken erişim.",
@@ -520,12 +524,9 @@ const tr: PartialCatalog = {
   "billing.currentPlan": "Mevcut plan",
   "billing.processing": "İşleniyor…",
   "billing.upgradeTo": "{plan} planına yükselt",
-  "billing.processedBy": "Ödemeler RevenueCat (Stripe) tarafından işlenir.",
+  "billing.processedBy": "Ödemeler 3m4 ödeme portalı (Stripe) üzerinden yapılır.",
   "billing.entitlementsPrefix": "Yetkiler",
   "billing.entitlementsSuffix": "otomatik olarak planınızla eşleşir.",
-  "billing.notConfigured":
-    "Faturalandırma henüz yapılandırılmadı (VITE_REVENUECAT_PUBLIC_KEY eksik). RevenueCat Web Billing genel anahtarınızı .env dosyasına ekleyin ve web imajını yeniden derleyin.",
-  "billing.signInAgain": "Yükseltmek için lütfen tekrar giriş yapın.",
   "billing.openingCheckout": "Güvenli ödeme açılıyor…",
   "billing.activating": "Ödeme tamamlandı — planınız etkinleştiriliyor…",
   "billing.nowOnPlan": "Artık {plan} planındasınız! 🎉",
@@ -533,5 +534,12 @@ const tr: PartialCatalog = {
   "billing.cancelled": "Ödeme iptal edildi.",
   "billing.checkoutFailed": "Ödeme başarısız: {msg}",
   "billing.unknownError": "bilinmeyen hata",
+  "billing.manage": "Aboneliği yönet",
+  "billing.manageHint": "Müşteri portalında ödeme yöntemini değiştirin, faturaları indirin veya iptal edin.",
+  "billing.donate": "Bana bir kahve ısmarla",
+  "billing.donateThanks": "exp'yu desteklediğiniz için teşekkürler!",
+  "billing.notPurchasable": "Bu plan henüz satın alınamıyor. İhtiyacınız varsa bize yazın.",
+  "billing.periodEnd": "Mevcut dönem {date} tarihinde bitiyor",
+  "billing.cancelsAtEnd": "Mevcut dönemin sonunda iptal edilir.",
 };
 export default tr;

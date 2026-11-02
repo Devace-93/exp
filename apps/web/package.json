@@ -20,7 +20,6 @@
     "check:i18n": "bun scripts/check-i18n.ts"
   },
   "dependencies": {
-    "@revenuecat/purchases-js": "^1.73.1",
     "posthog-js": "^1.438.21"
   },
   "devDependencies": {

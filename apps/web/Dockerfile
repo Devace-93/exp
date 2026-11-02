@@ -22,13 +22,13 @@ RUN bun install --frozen-lockfile || bun install
 # Build-time public config. Vite inlines VITE_* at build time, so these must be
 # present during `bun run build` (passed via compose build.args from .env). All
 # optional — the app degrades gracefully when unset: PostHog no-ops, and the
-# billing page shows a "not configured" notice instead of launching checkout.
+# billing page sends users to payments.3m4.net (VITE_PAYMENTS_URL) for checkout.
 ARG VITE_API_URL=/api
 ARG VITE_APP_URL
 ARG VITE_ACCOUNTS_URL=http://localhost:8085
 ARG VITE_POSTHOG_KEY
 ARG VITE_POSTHOG_HOST=https://us.i.posthog.com
-ARG VITE_REVENUECAT_PUBLIC_KEY
+ARG VITE_PAYMENTS_URL=https://payments.3m4.net
 ARG VITE_BILLING_ENABLED=true
 ARG VITE_INFO_URL=https://info.3m4.net
 ARG VITE_RETRO_PROJECT_KEY
@@ -43,7 +43,7 @@ ENV VITE_API_URL=$VITE_API_URL \
     VITE_ACCOUNTS_URL=$VITE_ACCOUNTS_URL \
     VITE_POSTHOG_KEY=$VITE_POSTHOG_KEY \
     VITE_POSTHOG_HOST=$VITE_POSTHOG_HOST \
-    VITE_REVENUECAT_PUBLIC_KEY=$VITE_REVENUECAT_PUBLIC_KEY \
+    VITE_PAYMENTS_URL=$VITE_PAYMENTS_URL \
     VITE_BILLING_ENABLED=$VITE_BILLING_ENABLED \
     VITE_INFO_URL=$VITE_INFO_URL \
     VITE_RETRO_PROJECT_KEY=$VITE_RETRO_PROJECT_KEY \

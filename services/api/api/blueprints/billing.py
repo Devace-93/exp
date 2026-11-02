@@ -1,164 +1,121 @@
 """Billing blueprint (only registered when ``BILLING_ENABLED`` is true).
 
-- ``GET  /billing/offerings`` — plans shaped for the RevenueCat-style paywall.
-- ``POST /billing/webhook``   — RevenueCat server-to-server events.
+exp never talks to Stripe: the hosted portal payments.3m4.net owns checkout,
+the Customer Portal, receipts and donations (see CONTRACT.md "Billing").
 
-The webhook is **idempotent**: every event is deduped on its ``event_id`` via
-the ``webhook_events`` table, so RevenueCat retries are safe.
+- ``GET  /billing/status``  — the account's plan + subscription mirror and the
+  portal's product keys, for the dashboard billing page (session auth).
+- ``POST /billing/webhook`` — signed push events from payments
+  (``m4pay.verify_webhook``), deduped on the event ``id`` via
+  ``webhook_events`` and applied with ``dbcore.billing_sync``.
+
+The webhook is NEVER feature-gated and never answers 4xx for a verified event
+(payments retries on non-2xx): an identity that never signed in to exp is
+acknowledged with ``{"status": "unknown_identity"}`` and picked up by the
+nightly reconcile once it does.
 """
 from __future__ import annotations
 
-import hmac
 from datetime import datetime, timezone
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, g, jsonify, request
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 
+from dbcore.billing_sync import account_for_identity, apply_entitlements, serialize_subscription
 from dbcore.config import config
 from dbcore.db import session_scope
+from dbcore.m4pay import WebhookError, verify_webhook
 from dbcore.models import Account, Subscription, WebhookEvent
-from dbcore.plans import all_plans, resolve_plan_from_entitlements
+from dbcore.plans import all_plans, price_keys
 from dbcore.posthog_client import capture
 
+from ..auth_utils import require_auth
 from ..errors import ApiError
+from ..extensions import limiter
 from ..features import require_feature
 
 bp = Blueprint("billing", __name__)
 
-# Event types that change a subscription's state.
-_RELEVANT = {
-    "INITIAL_PURCHASE",
-    "RENEWAL",
-    "PRODUCT_CHANGE",
-    "CANCELLATION",
-    "UNCANCELLATION",
-    "EXPIRATION",
-    "BILLING_ISSUE",
-}
-# Types after which the subscription will not auto-renew.
-_NON_RENEWING = {"CANCELLATION", "EXPIRATION", "BILLING_ISSUE"}
+_PLAN_RANK = {"free": 0, "pro": 1, "team": 2, "enterprise": 3}
 
 
-@bp.get("/offerings")
+@bp.get("/status")
+@require_auth
 @require_feature("billing", status=404)
-def offerings():
-    """Expose purchasable plans for the paywall (free/self-host excluded)."""
-    packages = []
-    for plan_id, plan in all_plans().items():
-        if plan_id in ("free", "selfhost", "enterprise"):
-            continue
-        packages.append(
-            {
-                "identifier": plan_id,
-                "label": plan.get("label", plan_id),
-                "entitlement": plan_id,  # entitlement id matches the plan id
-                "price_monthly": plan.get("price_monthly"),
-                "price_annual": plan.get("price_annual"),
-                "limits": {
-                    "projects": plan.get("projects"),
-                    "environments_per_project": plan.get("environments_per_project"),
-                    "flags_per_project": plan.get("flags_per_project"),
-                    "evaluations_per_month": plan.get("evaluations_per_month"),
-                    "api_keys": plan.get("api_keys"),
-                    "audit_retention_days": plan.get("audit_retention_days"),
-                    "max_users": plan.get("max_users"),
-                },
-            }
-        )
-    return jsonify({"offerings": packages})
+def status():
+    """What the billing page needs: the effective plan, the mirrored
+    subscription (``null`` when there is none) and where to buy."""
+    with session_scope() as session:
+        account = session.get(Account, g.account_id)
+        if account is None:
+            raise ApiError(404, "not_found", "Account not found.")
+        sub = session.scalar(select(Subscription).where(Subscription.account_id == account.id))
+        body = {
+            "plan": account.plan,
+            "label": all_plans().get(account.plan, {}).get("label", account.plan),
+            "subscription": serialize_subscription(sub),
+            "payments_url": config.payments_url,
+            "app": config.payments_app,
+            "price_keys": price_keys(),
+        }
+    return jsonify(body)
 
 
-def _parse_ts(ms) -> datetime | None:
-    """RevenueCat sends epoch milliseconds; convert to aware UTC datetime."""
-    if not ms:
-        return None
+def _record_event(session, event: dict) -> bool:
+    """Insert the dedupe row; False when the event id was already processed."""
+    if session.scalar(select(WebhookEvent.id).where(WebhookEvent.event_id == event["id"])) is not None:
+        return False
     try:
-        return datetime.fromtimestamp(int(ms) / 1000, tz=timezone.utc)
-    except (ValueError, TypeError, OSError):
-        return None
+        with session.begin_nested():
+            session.add(
+                WebhookEvent(
+                    provider="payments",
+                    event_id=str(event["id"]),
+                    type=event.get("type"),
+                    payload=event,
+                    processed_at=datetime.now(timezone.utc),
+                )
+            )
+    except IntegrityError:
+        return False  # two deliveries raced on the unique index
+    return True
 
 
 @bp.post("/webhook")
+@limiter.exempt
 def webhook():
-    # ---- Verify the shared secret -----------------------------------------
-    auth = request.headers.get("Authorization", "")
-    expected = config.revenuecat_webhook_token
-    # Accept either the raw token or a "Bearer <token>" form.
-    presented = auth[len("Bearer ") :] if auth.startswith("Bearer ") else auth
-    if not expected or not hmac.compare_digest(presented, expected):
-        raise ApiError(401, "unauthorized", "Invalid webhook authorization.")
+    try:
+        event = verify_webhook(config.payments_webhook_secret, request.get_data(), request.headers)
+    except WebhookError as err:
+        raise ApiError(400, "invalid_signature", str(err)) from err
 
-    payload = request.get_json(silent=True) or {}
-    event = payload.get("event") or {}
-    event_id = event.get("id")
-    event_type = event.get("type")
-    if not event_id:
-        raise ApiError(400, "invalid_event", "Missing event id.")
+    if event.get("app") and event["app"] != config.payments_app:
+        return jsonify({"status": "ignored", "reason": "other_app"}), 200
+    data = event.get("data") if isinstance(event.get("data"), dict) else {}
 
     with session_scope() as session:
-        # ---- Idempotency: dedupe on event_id ------------------------------
-        existing = session.scalar(
-            select(WebhookEvent).where(WebhookEvent.event_id == event_id)
-        )
-        if existing is not None:
+        if not _record_event(session, event):
             return jsonify({"status": "duplicate"}), 200
-
-        session.add(
-            WebhookEvent(
-                provider="revenuecat",
-                event_id=event_id,
-                type=event_type,
-                payload=payload,
-                processed_at=datetime.now(timezone.utc),
-            )
-        )
-
-        if event_type not in _RELEVANT:
-            # Acknowledge but take no state action (still recorded for audit).
-            return jsonify({"status": "ignored"}), 200
-
-        # app_user_id is our account_id (RC config: app_user_id = account_id).
-        app_user_id = event.get("app_user_id")
-        account = session.get(Account, app_user_id) if app_user_id else None
+        account = account_for_identity(session, event.get("identity_id"))
         if account is None:
-            # Unknown account — recorded for audit, nothing else to do.
-            return jsonify({"status": "no_account"}), 200
-
-        entitlements = event.get("entitlement_ids") or []
-        if not entitlements and event.get("entitlement_id"):
-            entitlements = [event["entitlement_id"]]
-        new_plan = resolve_plan_from_entitlements(entitlements)
-        previous_plan = account.plan
-
-        # ---- Upsert the subscription row ----------------------------------
-        sub = session.scalar(
-            select(Subscription).where(Subscription.account_id == account.id)
-        )
-        if sub is None:
-            sub = Subscription(account_id=account.id)
-            session.add(sub)
-
-        sub.rc_app_user_id = app_user_id
-        sub.entitlement = entitlements[0] if entitlements else None
-        sub.product_id = event.get("product_id")
-        sub.period = event.get("period_type")
-        sub.status = event_type
-        sub.current_period_start = _parse_ts(event.get("purchased_at_ms"))
-        sub.current_period_end = _parse_ts(event.get("expiration_at_ms"))
-        sub.will_renew = event_type not in _NON_RENEWING
-        sub.raw_payload = payload
-
-        # ---- Reflect the entitlement on the account -----------------------
-        account.plan = new_plan
+            # Recorded for audit; the identity has not signed in to exp yet.
+            return jsonify({"status": "unknown_identity"}), 200
+        account_id = str(account.id)
+        result = apply_entitlements(session, account, data)
 
     # Analytics outside the txn.
-    if event_type == "INITIAL_PURCHASE":
-        capture(str(app_user_id), "subscription_activated", {"plan": new_plan})
-    elif new_plan != previous_plan:
-        rank = {"free": 0, "pro": 1, "team": 2, "enterprise": 3}
-        direction = "upgrade" if rank.get(new_plan, 0) > rank.get(previous_plan, 0) else "downgrade"
-        capture(str(app_user_id), direction, {"from": previous_plan, "to": new_plan})
-    if event_type in ("EXPIRATION", "CANCELLATION"):
-        capture(str(app_user_id), "churn", {"plan": previous_plan, "type": event_type})
+    previous_plan, new_plan = result["previous_plan"], result["plan"]
+    event_type = event.get("type") or ""
+    if event_type.startswith("payment."):
+        capture(account_id, event_type.replace(".", "_"), {"plan": new_plan})
+    if new_plan != previous_plan:
+        if _PLAN_RANK.get(new_plan, 0) > _PLAN_RANK.get(previous_plan, 0):
+            capture(account_id, "subscription_activated" if previous_plan == "free" else "upgrade",
+                    {"from": previous_plan, "to": new_plan})
+        else:
+            capture(account_id, "downgrade", {"from": previous_plan, "to": new_plan})
+            if new_plan == "free":
+                capture(account_id, "churn", {"plan": previous_plan, "status": result["status"]})
 
     return jsonify({"status": "ok", "plan": new_plan}), 200

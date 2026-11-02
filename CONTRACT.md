@@ -199,8 +199,15 @@ Archived flags are never returned by the evaluation API.
 
 ### Billing (only when BILLING_ENABLED=true)
 
-- `GET  /billing/offerings` → offerings/packages for the paywall
-- `POST /billing/webhook` ← RevenueCat (server-to-server; verifies `Authorization` header)
+exp never talks to Stripe. The hosted portal **payments.3m4.net** (its
+`CONTRACT.md` is the source of truth) owns checkout, Stripe's Customer Portal,
+receipts and donations; exp (a) sends users there, (b) receives its signed
+push webhooks, (c) pulls entitlements with a service key.
+
+- `GET  /billing/status` (session) → `{plan, label, subscription: {id, entitlement, product, period, status, active, current_period_end, will_renew, updated_at} | null, payments_url, app: "exp", price_keys: {pro: {monthly: "pro_monthly", annual: "pro_annual"}}}`. Gated by the `billing` feature (404).
+- `POST /billing/webhook` ← payments push events (`X-M4Pay-Signature: v1=hmac_sha256(PAYMENTS_WEBHOOK_SECRET, "{ts}.{body}")`, verified with the vendored `dbcore/m4pay.py`, 300 s tolerance). Body `{id, type: "subscription.updated|payment.succeeded|payment.refunded|payment.claimed", created, app, identity_id, email, data: {entitlements, subscription|null, payment|null, updated_at}}`. Every event carries the FULL entitlement set, so the handler is a snapshot upsert (`dbcore/billing_sync.apply_entitlements`): the `Account` is resolved from `identity_id` (JWT `sub` → `users.identity_id` → owner membership), the `subscriptions` mirror row is upserted, `account.plan = resolve_plan_from_entitlements(data.entitlements)`. Answers: `200 {status: "ok", plan}`, `200 {status: "duplicate"}` (same event `id`, via `webhook_events`), `200 {status: "unknown_identity"}` (never signed in here; the reconcile catches up), `200 {status: "ignored"}` (another app's slug), `400 invalid_signature`. Never feature-gated, never rate-limited.
+- **Pull**: the worker runs `reconcile_billing` once a day (and `python -m dbcore.worker --reconcile` on demand): `GET {PAYMENTS_INTERNAL_URL}/api/v1/subscriptions?app=exp&updated_since=<2 days ago>` with `Authorization: Bearer PAYMENTS_SERVICE_KEY`, each row through the same `apply_entitlements`.
+- **Web**: `/dashboard/billing` opens `{VITE_PAYMENTS_URL}/subscribe?app=exp&price=pro_monthly|pro_annual&return_to=…` (popup via `lib/m4pay.ts`), then polls `/auth/me` until `account.plan` flips; "Manage subscription" → `/me?portal=1`; donate → `/donate?app=exp`. `/sponsors` lists `GET {PAYMENTS_INTERNAL_URL}/api/public/supporters?app=exp` (SSR, 60 s cache) and mounts the portal's `pay.js` donate button.
 
 ### Health
 

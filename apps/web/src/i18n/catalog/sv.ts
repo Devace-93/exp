@@ -237,13 +237,17 @@ const sv: PartialCatalog = {
   "sponsors.emptyBody": "Varje Pro / Supporter-prenumerant får en plats här och en inbäddningsbar badge.",
   "sponsors.emptyBodyEarly":
     "Supporter-prenumerationer öppnar tillsammans med betalplanerna, efter den tidiga åtkomsten. Fram till dess är varje konto gratis.",
-  "sponsors.tierSupporter": "{tier}-supporter",
   "sponsors.badgeTitle": "Supporter-badgen",
   "sponsors.badgeBody": "Pro-supportrar får en inbäddningsbar badge för sin webbplats eller README:",
   "sponsors.badgeBodyEarly": "Pro-supportrar kommer att få en inbäddningsbar badge för sin webbplats eller README:",
   "sponsors.badgeLabel": "exp-supporter",
   "sponsors.readPlans": "Läs om de kommande planerna",
   "sponsors.become": "Bli supporter",
+  "sponsors.tierPro": "Pro-supporter",
+  "sponsors.tierTeam": "Team-supporter",
+  "sponsors.tierDonor": "Supporter",
+  "sponsors.since": "sedan {date}",
+  "sponsors.donateIntro": "Hellre en engångsgåva? Bjud mig på en kaffe – givare som vill syns också här.",
 
   // Early-access banner
   "early.bannerTitle": "Tidig åtkomst.",
@@ -520,12 +524,9 @@ const sv: PartialCatalog = {
   "billing.currentPlan": "Nuvarande plan",
   "billing.processing": "Bearbetar…",
   "billing.upgradeTo": "Uppgradera till {plan}",
-  "billing.processedBy": "Betalningar hanteras av RevenueCat (Stripe).",
+  "billing.processedBy": "Betalningar hanteras av 3m4:s betalportal (Stripe).",
   "billing.entitlementsPrefix": "Entitlements",
   "billing.entitlementsSuffix": "kopplas automatiskt till din plan.",
-  "billing.notConfigured":
-    "Faktureringen är inte konfigurerad ännu (VITE_REVENUECAT_PUBLIC_KEY saknas). Lägg till din publika nyckel för RevenueCat Web Billing i .env och bygg om webbavbildningen.",
-  "billing.signInAgain": "Logga in igen för att uppgradera.",
   "billing.openingCheckout": "Öppnar säker kassa…",
   "billing.activating": "Betalningen är klar. Aktiverar din plan…",
   "billing.nowOnPlan": "Du har nu planen {plan}! 🎉",
@@ -533,5 +534,12 @@ const sv: PartialCatalog = {
   "billing.cancelled": "Kassan avbröts.",
   "billing.checkoutFailed": "Kassan misslyckades: {msg}",
   "billing.unknownError": "okänt fel",
+  "billing.manage": "Hantera prenumeration",
+  "billing.manageHint": "Byt betalmetod, ladda ner fakturor eller säg upp i kundportalen.",
+  "billing.donate": "Bjud mig på en kaffe",
+  "billing.donateThanks": "Tack för att du stöttar exp!",
+  "billing.notPurchasable": "Den här planen går inte att köpa ännu. Hör av dig om du behöver den.",
+  "billing.periodEnd": "Nuvarande period slutar {date}",
+  "billing.cancelsAtEnd": "Sägs upp vid slutet av nuvarande period.",
 };
 export default sv;

@@ -236,13 +236,17 @@ const th: PartialCatalog = {
   "sponsors.emptyBody": "สมาชิก Pro / Supporter ทุกคนจะได้พื้นที่บนหน้านี้และแบดจ์ที่ฝังในเว็บได้",
   "sponsors.emptyBodyEarly":
     "การสมัคร Supporter จะเปิดพร้อมกับแพ็กเกจแบบเสียเงินหลังช่วงเข้าใช้ก่อนใคร จนกว่าจะถึงตอนนั้น ทุกบัญชีใช้ฟรี",
-  "sponsors.tierSupporter": "ผู้สนับสนุน {tier}",
   "sponsors.badgeTitle": "แบดจ์ผู้สนับสนุน",
   "sponsors.badgeBody": "ผู้สนับสนุน Pro จะได้รับแบดจ์สำหรับฝังในเว็บไซต์หรือ README:",
   "sponsors.badgeBodyEarly": "ผู้สนับสนุน Pro จะได้รับแบดจ์สำหรับฝังในเว็บไซต์หรือ README:",
   "sponsors.badgeLabel": "exp Supporter",
   "sponsors.readPlans": "อ่านเกี่ยวกับแพ็กเกจที่กำลังจะมา",
   "sponsors.become": "เป็นผู้สนับสนุน",
+  "sponsors.tierPro": "ผู้สนับสนุน Pro",
+  "sponsors.tierTeam": "ผู้สนับสนุน Team",
+  "sponsors.tierDonor": "ผู้สนับสนุน",
+  "sponsors.since": "ตั้งแต่ {date}",
+  "sponsors.donateIntro": "อยากสนับสนุนครั้งเดียว? เลี้ยงกาแฟฉันสักแก้ว ผู้บริจาคที่ยินยอมจะปรากฏที่นี่ด้วย",
 
   // Early-access banner
   "early.bannerTitle": "ช่วงเข้าใช้ก่อนใคร",
@@ -519,12 +523,9 @@ const th: PartialCatalog = {
   "billing.currentPlan": "แพ็กเกจปัจจุบัน",
   "billing.processing": "กำลังดำเนินการ…",
   "billing.upgradeTo": "อัปเกรดเป็น {plan}",
-  "billing.processedBy": "การชำระเงินดำเนินการโดย RevenueCat (Stripe)",
+  "billing.processedBy": "การชำระเงินดำเนินการผ่านพอร์ทัลชำระเงินของ 3m4 (Stripe)",
   "billing.entitlementsPrefix": "สิทธิ์การใช้งาน (entitlements)",
   "billing.entitlementsSuffix": "จะจับคู่กับแพ็กเกจของคุณโดยอัตโนมัติ",
-  "billing.notConfigured":
-    "ยังไม่ได้ตั้งค่าการเรียกเก็บเงิน (ไม่มี VITE_REVENUECAT_PUBLIC_KEY) เพิ่มคีย์สาธารณะ RevenueCat Web Billing ของคุณใน .env แล้วบิลด์อิมเมจ web ใหม่",
-  "billing.signInAgain": "โปรดเข้าสู่ระบบอีกครั้งเพื่ออัปเกรด",
   "billing.openingCheckout": "กำลังเปิดหน้าชำระเงินที่ปลอดภัย…",
   "billing.activating": "ชำระเงินสำเร็จ — กำลังเปิดใช้แพ็กเกจของคุณ…",
   "billing.nowOnPlan": "ตอนนี้คุณใช้แพ็กเกจ {plan} แล้ว! 🎉",
@@ -532,5 +533,12 @@ const th: PartialCatalog = {
   "billing.cancelled": "ยกเลิกการชำระเงินแล้ว",
   "billing.checkoutFailed": "ชำระเงินไม่สำเร็จ: {msg}",
   "billing.unknownError": "ข้อผิดพลาดที่ไม่ทราบสาเหตุ",
+  "billing.manage": "จัดการการสมัครสมาชิก",
+  "billing.manageHint": "เปลี่ยนวิธีชำระเงิน ดาวน์โหลดใบแจ้งหนี้ หรือยกเลิกได้ในพอร์ทัลลูกค้า",
+  "billing.donate": "เลี้ยงกาแฟฉันสักแก้ว",
+  "billing.donateThanks": "ขอบคุณที่สนับสนุน exp!",
+  "billing.notPurchasable": "แพ็กเกจนี้ยังซื้อไม่ได้ หากต้องการโปรดติดต่อเรา",
+  "billing.periodEnd": "รอบปัจจุบันสิ้นสุดวันที่ {date}",
+  "billing.cancelsAtEnd": "จะยกเลิกเมื่อสิ้นสุดรอบปัจจุบัน",
 };
 export default th;

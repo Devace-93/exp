@@ -12,7 +12,9 @@ Zero framework dependency (PyJWT with the ``cryptography`` extra, and
 
     # 1. Anywhere: verify a token you got from the `3m4_session` cookie or a
     #    bearer header. Returns the claims (sub, sid, email, email_verified,
-    #    handle, name, avatar_url, iat, exp) or raises SessionError(code).
+    #    handle, name, avatar_url, iat, exp, and the optional currency: the
+    #    user's preferred currency as lowercase ISO 4217, e.g. "mxn", absent
+    #    when unset) or raises SessionError(code).
     claims = verify(token, jwks_url="https://accounts.3m4.net/.well-known/jwks.json",
                     issuer="https://accounts.3m4.net", audience="3m4")
 

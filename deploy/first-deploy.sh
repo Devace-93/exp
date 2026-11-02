@@ -22,10 +22,13 @@ if [ ! -f .env ]; then
   set_var ACCOUNTS_INTERNAL_URL http://accounts-api-1:5000
   set_var VITE_ACCOUNTS_URL https://accounts.3m4.net
   set_var PROTOCOL_HEADER x-forwarded-proto
-  set_var REVENUECAT_WEBHOOK_AUTH_TOKEN "$(python3 -c 'import secrets; print(secrets.token_urlsafe(32))')"
+  set_var PAYMENTS_URL https://payments.3m4.net
+  set_var PAYMENTS_INTERNAL_URL http://payments-api-1:5000
+  set_var VITE_PAYMENTS_URL https://payments.3m4.net
   set_var APP_BASE_URL https://exp.3m4.net
   set_var DASHBOARD_URL https://exp.3m4.net
-  # Billing stays off until exp has its own RevenueCat products; early access hides it anyway.
+  # Billing stays off until PAYMENTS_SERVICE_KEY / PAYMENTS_WEBHOOK_SECRET are set
+  # (`make app-key SLUG=exp …` in /opt/payments, see PRODUCTION.md); early access hides it anyway.
   set_var BILLING_ENABLED false
   set_var VITE_BILLING_ENABLED false
   set_var VITE_API_URL /api

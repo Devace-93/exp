@@ -48,7 +48,7 @@ English key (same placeholders, nothing extra) and that every locale in
 | `VITE_APP_URL` | `https://exp.3m4.net` | Public origin; used in docs/curl/MCP snippets. |
 | `VITE_POSTHOG_KEY` | – | PostHog project key. Unset → analytics no-ops. |
 | `VITE_POSTHOG_HOST` | `https://us.i.posthog.com` | PostHog host. |
-| `VITE_REVENUECAT_PUBLIC_KEY` | – | RevenueCat Web SDK key. |
+| `VITE_PAYMENTS_URL` | `https://payments.3m4.net` | Payments portal: Upgrade / Manage / Donate open its hosted pages, `pay.js` is loaded from it. |
 | `VITE_BILLING_ENABLED` | `true` | Set `false` for self-host → hides purchase UI. |
 | `VITE_INFO_URL` | `https://info.3m4.net` | Apps index linked from the footer. |
 
@@ -113,6 +113,9 @@ public/                    favicon.svg/.ico, PNG icons, og-image.png (rendered f
 - **Limits**: a 402 `limit_reached` is rendered per `error.which`
   (`projects | environments | flags | api_keys`) with an upgrade link when
   billing is on and early access is off.
-- **Billing**: `dashboard/billing` launches RevenueCat Web checkout
-  (`app_user_id = account id`, entitlements `pro`/`team`).
+- **Billing**: `dashboard/billing` opens the payments.3m4.net portal
+  (`lib/pay.ts` → hosted `/subscribe` popup, Customer Portal, donate); the
+  backend flips the plan when the portal's signed webhook lands (entitlements
+  `pro`/`team`). `/sponsors` lists the portal's public supporters (SSR via
+  `PAYMENTS_INTERNAL_URL`, compose: `http://payments-api-1:5000`).
 - Open source · MIT.
