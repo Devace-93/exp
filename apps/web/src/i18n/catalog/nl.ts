@@ -246,6 +246,7 @@ const nl: PartialCatalog = {
   "sponsors.tierPro": "Pro-supporter",
   "sponsors.tierTeam": "Team-supporter",
   "sponsors.tierDonor": "Supporter",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "sinds {date}",
   "sponsors.donateIntro": "Liever eenmalig? Trakteer me op een koffie – donateurs die dat willen staan hier ook.",
 

@@ -83,6 +83,11 @@ export interface Supporter {
   /** `YYYY-MM` */
   since: string;
   message: string | null;
+  /** Where the supporter came from (payments CONTRACT.md §5); GitHub sponsors appear in every app. */
+  source?: "stripe" | "github";
+  /** Profile link (GitHub sponsors). */
+  url?: string | null;
+  avatar_url?: string | null;
 }
 
 export interface Environment {

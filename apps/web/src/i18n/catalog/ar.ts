@@ -245,6 +245,7 @@ const ar: PartialCatalog = {
   "sponsors.tierPro": "داعم Pro",
   "sponsors.tierTeam": "داعم Team",
   "sponsors.tierDonor": "داعم",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "منذ {date}",
   "sponsors.donateIntro": "تفضّل تبرعًا لمرة واحدة؟ اشترِ لي قهوة، فالمتبرعون الذين يوافقون يظهرون هنا أيضًا.",
 

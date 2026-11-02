@@ -245,6 +245,7 @@ const zh: PartialCatalog = {
   "sponsors.tierPro": "Pro 支持者",
   "sponsors.tierTeam": "Team 支持者",
   "sponsors.tierDonor": "支持者",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "自 {date} 起",
   "sponsors.donateIntro": "更想一次性支持？请我喝杯咖啡——同意公开的捐赠者也会出现在这里。",
 

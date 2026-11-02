@@ -246,6 +246,7 @@ const vi: PartialCatalog = {
   "sponsors.tierPro": "Người ủng hộ Pro",
   "sponsors.tierTeam": "Người ủng hộ Team",
   "sponsors.tierDonor": "Người ủng hộ",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "từ {date}",
   "sponsors.donateIntro": "Thích ủng hộ một lần? Mời tôi một ly cà phê — người quyên góp đồng ý cũng xuất hiện ở đây.",
 

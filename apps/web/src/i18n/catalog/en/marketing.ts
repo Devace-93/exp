@@ -215,6 +215,7 @@ export const marketing = {
   "sponsors.tierPro": "Pro supporter",
   "sponsors.tierTeam": "Team supporter",
   "sponsors.tierDonor": "Supporter",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "since {date}",
   "sponsors.donateIntro": "Prefer a one-off? Buy me a coffee — supporters who opt in appear here too.",
 

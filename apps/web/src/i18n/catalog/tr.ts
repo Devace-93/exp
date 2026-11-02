@@ -246,6 +246,7 @@ const tr: PartialCatalog = {
   "sponsors.tierPro": "Pro destekçisi",
   "sponsors.tierTeam": "Team destekçisi",
   "sponsors.tierDonor": "Destekçi",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "{date} tarihinden beri",
   "sponsors.donateIntro": "Tek seferlik mi tercih edersiniz? Bana bir kahve ısmarlayın; izin veren bağışçılar da burada görünür.",
 

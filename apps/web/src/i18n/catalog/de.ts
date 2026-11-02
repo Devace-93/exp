@@ -246,6 +246,7 @@ const de: PartialCatalog = {
   "sponsors.tierPro": "Pro-Supporter",
   "sponsors.tierTeam": "Team-Supporter",
   "sponsors.tierDonor": "Supporter",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "seit {date}",
   "sponsors.donateIntro": "Lieber einmalig? Spendier mir einen Kaffee – Spender, die zustimmen, erscheinen ebenfalls hier.",
 
