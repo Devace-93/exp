@@ -245,6 +245,7 @@ const ko: PartialCatalog = {
   "sponsors.tierPro": "Pro 후원자",
   "sponsors.tierTeam": "Team 후원자",
   "sponsors.tierDonor": "후원자",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "{date}부터",
   "sponsors.donateIntro": "일회성이 더 좋으신가요? 커피 한 잔 사주세요. 동의한 기부자도 여기에 표시됩니다.",
 

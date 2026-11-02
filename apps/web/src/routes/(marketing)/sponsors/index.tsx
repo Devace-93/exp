@@ -82,12 +82,30 @@ export default component$(() => {
             class="card flex items-center justify-between gap-3 p-5"
           >
             <div class="flex min-w-0 items-center gap-3">
-              <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary-100 font-bold text-primary-700">
-                {(s.display_name || s.handle || "?").charAt(0).toUpperCase()}
-              </span>
+              {s.avatar_url ? (
+                <img
+                  src={s.avatar_url}
+                  alt=""
+                  width={40}
+                  height={40}
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  class="h-10 w-10 shrink-0 rounded-full bg-primary-100 object-cover"
+                />
+              ) : (
+                <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary-100 font-bold text-primary-700">
+                  {(s.display_name || s.handle || "?").charAt(0).toUpperCase()}
+                </span>
+              )}
               <div class="min-w-0">
                 <p class="truncate font-semibold text-slate-900">
-                  {s.display_name || s.handle}
+                  {s.url ? (
+                    <a href={s.url} target="_blank" rel="noopener nofollow" class="hover:underline">
+                      {s.display_name || s.handle}
+                    </a>
+                  ) : (
+                    s.display_name || s.handle
+                  )}
                   {s.handle && <span class="ml-1 font-normal text-slate-400">@{s.handle}</span>}
                 </p>
                 <p class="text-xs text-slate-500">
@@ -96,18 +114,23 @@ export default component$(() => {
                 </p>
               </div>
             </div>
-            <span
-              class={[
-                "badge shrink-0",
-                s.tier === "team"
-                  ? "bg-primary-600 text-white"
-                  : s.tier === "pro"
-                    ? "bg-primary-100 text-primary-700"
-                    : "bg-slate-100 text-slate-600",
-              ]}
-            >
-              {tr(i18n, TIER_KEY[s.tier] ?? "sponsors.tierDonor")}
-            </span>
+            <div class="flex shrink-0 flex-wrap items-center justify-end gap-1.5">
+              {s.source === "github" && (
+                <span class="badge bg-slate-900 text-white">{tr(i18n, "sponsors.viaGithub")}</span>
+              )}
+              <span
+                class={[
+                  "badge",
+                  s.tier === "team"
+                    ? "bg-primary-600 text-white"
+                    : s.tier === "pro"
+                      ? "bg-primary-100 text-primary-700"
+                      : "bg-slate-100 text-slate-600",
+                ]}
+              >
+                {tr(i18n, TIER_KEY[s.tier] ?? "sponsors.tierDonor")}
+              </span>
+            </div>
           </div>
         ))}
       </div>

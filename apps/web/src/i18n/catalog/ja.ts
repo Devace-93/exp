@@ -245,6 +245,7 @@ const ja: PartialCatalog = {
   "sponsors.tierPro": "Pro サポーター",
   "sponsors.tierTeam": "Team サポーター",
   "sponsors.tierDonor": "サポーター",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "{date} から",
   "sponsors.donateIntro": "単発がお好みですか？コーヒーをおごってください。同意した寄付者もここに表示されます。",
 

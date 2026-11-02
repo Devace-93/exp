@@ -246,6 +246,7 @@ const ro: PartialCatalog = {
   "sponsors.tierPro": "Susținător Pro",
   "sponsors.tierTeam": "Susținător Team",
   "sponsors.tierDonor": "Susținător",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "din {date}",
   "sponsors.donateIntro": "Preferi o donație unică? Fă-mi cinste cu o cafea – donatorii care acceptă apar și ei aici.",
 

@@ -245,6 +245,7 @@ const th: PartialCatalog = {
   "sponsors.tierPro": "ผู้สนับสนุน Pro",
   "sponsors.tierTeam": "ผู้สนับสนุน Team",
   "sponsors.tierDonor": "ผู้สนับสนุน",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "ตั้งแต่ {date}",
   "sponsors.donateIntro": "อยากสนับสนุนครั้งเดียว? เลี้ยงกาแฟฉันสักแก้ว ผู้บริจาคที่ยินยอมจะปรากฏที่นี่ด้วย",
 

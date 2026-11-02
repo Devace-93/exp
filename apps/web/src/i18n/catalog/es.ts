@@ -246,6 +246,7 @@ const es: PartialCatalog = {
   "sponsors.tierPro": "Patrocinador Pro",
   "sponsors.tierTeam": "Patrocinador Team",
   "sponsors.tierDonor": "Patrocinador",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "desde {date}",
   "sponsors.donateIntro": "¿Prefieres algo puntual? Invítame un café: quienes donan y lo permiten también aparecen aquí.",
 

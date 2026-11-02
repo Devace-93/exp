@@ -246,6 +246,7 @@ const el: PartialCatalog = {
   "sponsors.tierPro": "Υποστηρικτής Pro",
   "sponsors.tierTeam": "Υποστηρικτής Team",
   "sponsors.tierDonor": "Υποστηρικτής",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "από {date}",
   "sponsors.donateIntro": "Προτιμάτε εφάπαξ; Κεράστε με έναν καφέ – οι δωρητές που συμφωνούν εμφανίζονται κι αυτοί εδώ.",
 

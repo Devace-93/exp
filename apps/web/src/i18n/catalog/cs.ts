@@ -246,6 +246,7 @@ const cs: PartialCatalog = {
   "sponsors.tierPro": "Podporovatel Pro",
   "sponsors.tierTeam": "Podporovatel Team",
   "sponsors.tierDonor": "Podporovatel",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "od {date}",
   "sponsors.donateIntro": "Raději jednorázově? Kupte mi kávu – dárci, kteří souhlasí, se zde objeví také.",
 

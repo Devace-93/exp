@@ -246,6 +246,7 @@ const ru: PartialCatalog = {
   "sponsors.tierPro": "Сторонник Pro",
   "sponsors.tierTeam": "Сторонник Team",
   "sponsors.tierDonor": "Сторонник",
+  "sponsors.viaGithub": "GitHub Sponsors",
   "sponsors.since": "с {date}",
   "sponsors.donateIntro": "Предпочитаете разово? Угостите меня кофе — доноры, давшие согласие, тоже появятся здесь.",
 
