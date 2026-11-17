@@ -12,6 +12,7 @@ import {
 import qwikCityPlan from "@qwik-city-plan";
 import { manifest } from "@qwik-client-manifest";
 import render from "./entry.ssr";
+import { sitemapXml } from "./lib/sitemap";
 import { createServer } from "node:http";
 
 declare global {
@@ -35,6 +36,13 @@ const HOST = process.env.HOST ?? "0.0.0.0";
 const server = createServer();
 
 server.on("request", (req, res) => {
+  // The build leaves an empty dist/sitemap.xml (it lists statically generated
+  // pages, and there are none), so answer before the static files do.
+  if ((req.url || "").split("?")[0] === "/sitemap.xml") {
+    res.writeHead(200, { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=3600" });
+    res.end(req.method === "HEAD" ? undefined : sitemapXml());
+    return;
+  }
   staticFile(req, res, () => {
     router(req, res, () => {
       notFound(req, res, () => {});
