@@ -53,7 +53,13 @@ services:
     expose: ["5000"]
     # `edge` is the external network shared with the accounts and payments
     # stacks (and the sibling apps in production). `make up` creates it when missing.
-    networks: [default, edge]
+    # `exp-api` is this stack's own name for the API. The bare service name `api`
+    # is also registered on the shared `edge` network by every sibling app, so
+    # resolving it there can return another app's API.
+    networks:
+      default:
+        aliases: [exp-api]
+      edge: {}
     restart: unless-stopped
 
   # Billing worker: reconciles subscriptions with payments.3m4.net once a day
@@ -95,7 +101,7 @@ services:
     env_file: ../.env
     environment:
       # SSR resolves exp's feature switches straight from the API over the internal network.
-      API_INTERNAL_URL: http://api:5000/api
+      API_INTERNAL_URL: http://exp-api:5000/api
       # SSR fetches the public supporters list from the payments api over `edge`.
       PAYMENTS_INTERNAL_URL: ${PAYMENTS_INTERNAL_URL:-http://payments-api-1:5000}
     expose: ["3000"]
@@ -107,7 +113,7 @@ services:
   mcp:
     build: { context: .., dockerfile: packages/mcp-server/Dockerfile }
     environment:
-      EXP_API_URL: http://api:5000/api
+      EXP_API_URL: http://exp-api:5000/api
       EXP_MCP_PORT: "3333"
       EXP_AUDIT_LOG: stderr
     depends_on:

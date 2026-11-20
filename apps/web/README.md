@@ -52,7 +52,7 @@ English key (same placeholders, nothing extra) and that every locale in
 | `VITE_BILLING_ENABLED` | `true` | Set `false` for self-host → hides purchase UI. |
 | `VITE_INFO_URL` | `https://info.3m4.net` | Apps index linked from the footer. |
 
-Runtime (SSR only): `API_INTERNAL_URL` (compose: `http://api:5000/api`) is
+Runtime (SSR only): `API_INTERNAL_URL` (compose: `http://exp-api:5000/api`) is
 where the server resolves `GET /api/features` for the first paint; when the
 API is unreachable the registry defaults are used, so SSR never fails.
 
